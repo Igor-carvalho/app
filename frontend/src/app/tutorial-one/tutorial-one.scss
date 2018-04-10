@@ -1,0 +1,6 @@
+app-tutorial-one { //these are selector, defined in component.ts, which make sure css is specific to this component, so do write css inside of this body
+
+  h1 {
+    margin-top: 20px;
+  }
+}

@@ -56,6 +56,14 @@ export const routes: Routes = [
             {
                 path: 'sample-page',
                 loadChildren: 'app/sample-page/sample-page.module#SamplePageModule'
+            },
+            {
+                path: 'tutorial-one',
+                loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
+            },
+            {
+                path: 'tutorial-two',
+                loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
             }
         ],
     },

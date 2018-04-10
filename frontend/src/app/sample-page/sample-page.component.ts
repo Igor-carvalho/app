@@ -6,15 +6,15 @@ import {ActivatedRoute} from "@angular/router";
     templateUrl: './sample-page.component.html',
 })
 export class SamplePageComponent implements OnInit {
-    private _id:number;
-    private _parameters:any;
+    private _id: number;
+    private _parameters: any;
 
-    constructor(private _activatedRoute:ActivatedRoute) {
+    constructor(private _activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {
         this._parameters = this._activatedRoute.params.subscribe(params => {
-            if(typeof params['id'] !== "undefined") {
+            if (typeof params['id'] !== "undefined") {
                 this._id = Number.parseInt(params['id']);
             } else {
                 // do something here

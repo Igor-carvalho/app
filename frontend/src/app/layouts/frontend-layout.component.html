@@ -11,13 +11,23 @@
             <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
 
                 <div class="dropdown-header text-center"><strong>Sample Pages</strong></div>
-                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/1']"><i class="fa fa-star-o"></i> Page1</a>
-                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/2']"><i class="fa fa-star-o"></i> Page2</a>
-                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/sse-example']"><i class="fa fa-server"></i> Server Send Event</a>
+                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/1']"><i
+                        class="fa fa-star-o"></i> Page1</a>
+                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/2']"><i
+                        class="fa fa-star-o"></i> Page2</a>
+                <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/sse-example']"><i
+                        class="fa fa-server"></i> Server Send Event</a>
             </div>
         </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/tutorial-one']"
+               [routerLinkActiveOptions]="{exact:true}">Tutorial One</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/tutorial-two']"
+               [routerLinkActiveOptions]="{exact:true}">Tutorial Two</a>
+        </li>
     </ul>
-
 
 
     <ul class="nav navbar-nav ml-auto mr-4" *ngIf="this._userService.isLoggedIn() == false">
@@ -48,7 +58,7 @@
     <main class="main">
         <!-- Breadcrumb -->
         <!--<ol class="breadcrumb">-->
-            <!--<app-breadcrumbs></app-breadcrumbs>-->
+        <!--<app-breadcrumbs></app-breadcrumbs>-->
         <!--</ol>-->
 
         <div class="container-fluid">

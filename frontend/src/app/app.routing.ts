@@ -64,6 +64,18 @@ export const routes: Routes = [
             {
                 path: 'tutorial-two',
                 loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
+            },
+            {
+                path: 'wishlist',
+                loadChildren: 'app/wishlist/wishlist.module#WishlistModule'
+            },
+            {
+                path: 'itinerary',
+                loadChildren: 'app/itinerary/Itinerary.module#ItineraryModule'
+            },
+            {
+                path: 'activity-details',
+                loadChildren: 'app/activity-details/activity-details.module#ActivityDetailsModule'
             }
         ],
     },

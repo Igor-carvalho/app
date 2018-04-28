@@ -33,6 +33,7 @@
     "core-js": "2.5.0",
     "event-source": "git://github.com/AlexGalays/EventSource.git#923b9a0998fcfd7753040e09aa83764b3cc0230d",
     "gsap": "^1.20.4",
+    "jquery": "^3.3.1",
     "moment": "2.18.1",
     "ng-validators": "^0.2.1",
     "ng2-charts": "1.6.0",

@@ -86,6 +86,7 @@ app-tutorial-two {
   }
   #add_child, #add_adult, #remove_child, #remove_adult {
     cursor: pointer;
+    position: relative;
   }
   .arrow_imgs {
     width: 40px;
@@ -93,6 +94,18 @@ app-tutorial-two {
   }
   #person_number, #child_number {
     display: inline-block;
+  }
+  .child_number_display, .person_number_display {
+    display: none;
+    vertical-align: middle;
+    line-height: 80px;
+  }
+  .child_number_count, .person_number_count {
+    font-size: 50px;
+  }
+  .multiplication_sign {
+    font-size: 30px;
+    margin: 0px 10px;
   }
   .low_budget_image {
     width: 147px;
@@ -112,20 +125,51 @@ app-tutorial-two {
     display: none;
   }
   .checkboxes_wrapper {
-    max-width: 500px;
-    margin-top: 50px;
+    max-width: 600px;
     margin: 0px auto;
     font-size: 22px;
     font-weight: 600;
     text-align: left;
+    margin-top: 50px;
     .checkbox {
       width: 50%;
       float: left;
+      position: relative;
       label{
         input {
           margin-right: 15px;
         }
       }
     }
+  }
+  .checkboxRound {
+    width: 44px;
+    height: 44px;
+    background: #E52050;
+    border: 2px solid #fff;
+    margin: 0px;
+    border-radius: 50%;
+    position: relative;
+    top: 14px;
+    display: inline-block;
+  }
+  .checkboxRound input {
+    display: none;
+  }
+  .checkboxRound label {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+    background: #E52050;
+  }
+  .checkboxRound input[type=checkbox]:checked + label {
+      background: #fff;
   }
 }

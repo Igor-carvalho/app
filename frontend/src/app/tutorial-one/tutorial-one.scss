@@ -8,10 +8,11 @@ app-tutorial-one { //these are selector, defined in component.ts, which make sur
     max-width: 400px;
     margin: 0px auto;
     font-size: 42px;
+    position: relative;
   }
   .tutorials-section {
     width: 1140px;
-    margin: 60px auto 30px;
+    margin: 30px auto 30px;
     display: block;
     overflow: auto;
   }
@@ -24,6 +25,7 @@ app-tutorial-one { //these are selector, defined in component.ts, which make sur
   .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
     text-align: center;
     width: 360px;
+    padding-top: 30px;
   }
   .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
     font-size: 29px;

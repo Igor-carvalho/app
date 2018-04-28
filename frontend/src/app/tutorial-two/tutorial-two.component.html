@@ -2,48 +2,75 @@
 <div class="slider_container" id="slider_container">
     <div class="slider_wrapper">
         <div class="slider_section">
-            <h1 class="slider_section_heading">How many travelers?</h1>
+            <h1 class="slider_section_heading heading-one">How many travelers?</h1>
             <div class="slider_icons">
-                <img id="add_child" src="assets/img/add child.svg" alt="add child" class="child_image">
-                <img id="remove_child" src="assets/img/remove child.svg" alt="remove child" class="child_image">
+                <input type="hidden" name="childNumberCount" id="childNumberCountInput" value="0">
+                <input type="hidden" name="personNumberCount" id="personNumberCountInput" value="1">
+                <div class="child_number_display" id="child_number_display">
+                    <span class="child_number_count">0</span>
+                    <span class="multiplication_sign">&#x2716;</span>
+                </div>
+                <img id="add_child" src="assets/img/add-child.svg" alt="add child" class="child_image">
+                <img id="remove_child" src="assets/img/remove-child.svg" alt="remove child" class="child_image">
                 <div id="child_number"></div>
                 <div id="person_number">
                     <img src="assets/img/person.svg" class="adult_person" alt="person">
                 </div>
-                <img id="remove_adult" src="assets/img/remove person.svg" alt="remove person">
-                <img id="add_adult" src="assets/img/add person.svg" alt="add person">
+                <img id="remove_adult" src="assets/img/remove-person.svg" alt="remove person">
+                <img id="add_adult" src="assets/img/add-person.svg" alt="add person">
+                <div class="person_number_display" id="person_number_display">
+                    <span class="multiplication_sign">&#x2716;</span>
+                    <span class="person_number_count">1</span>
+                </div>
             </div>
         </div>
         <div class="slider_section">
-            <h1 class="slider_section_heading">How many days?</h1>
+            <h1 class="slider_section_heading heading-one">How many days?</h1>
             <div class="slider_icons"></div>
         </div>
         <div class="slider_section">
-            <h1 class="slider_section_heading">What's the budget</h1>
+            <h1 class="slider_section_heading heading-one">What's the budget</h1>
             <div class="slider_icons">
-                <img id="low_budget_image" src="assets/img/low budget.svg" alt="low budget" class="low_budget_image">
-                <img id="low_budget_image_checked" src="assets/img/low budget selected.svg" alt="low budget" class="low_budget_image">
-                <img id="middle_range_budget_image" src="assets/img/middle range budget.svg" alt="middle budget" class="middle_range_budget_image">
-                <img id="middle_range_budget_image_checked" src="assets/img/middle range budget selected.svg" alt="middle budget" class="middle_range_budget_image">
-                <img id="high_range_budget_image" src="assets/img/high range budget.svg" alt="high budget" class="high_range_budget_image">
-                <img id="high_range_budget_image_checked" src="assets/img/high budget selected.svg" alt="high budget" class="high_range_budget_image">
+                <img id="low_budget_image" src="assets/img/low-budget.svg" alt="low budget" class="low_budget_image">
+                <img id="low_budget_image_checked" src="assets/img/low-budget-selected.svg" alt="low budget" class="low_budget_image">
+                <img id="middle_range_budget_image" src="assets/img/middle-range-budget.svg" alt="middle budget" class="middle_range_budget_image">
+                <img id="middle_range_budget_image_checked" src="assets/img/middle-range-budget-selected.svg" alt="middle budget" class="middle_range_budget_image">
+                <img id="high_range_budget_image" src="assets/img/high-range-budget.svg" alt="high budget" class="high_range_budget_image">
+                <img id="high_range_budget_image_checked" src="assets/img/high-budget-selected.svg" alt="high budget" class="high_range_budget_image">
             </div>
         </div>
         <div class="slider_section">
-            <h1 class="slider_section_heading">What are you into?</h1>
+            <h1 class="slider_section_heading heading-one">What are you into?</h1>
             <div class="slider_icons">
                 <div class="checkboxes_wrapper">
                     <div class="checkbox">
-                        <label><input type="checkbox" value="">Fun &amp; Party</label>
+                        <div class="checkboxRound">
+                            <input type="checkbox" value="1" id="checkboxOneInput" name="" />
+                            <label for="checkboxOneInput"></label>
+                        </div>
+                        <label>Fun &amp; Party</label>
+                    </div>
+                    
+                    <div class="checkbox">
+                        <div class="checkboxRound">
+                            <input type="checkbox" value="1" id="checkboxTwoInput" name="" />
+                            <label for="checkboxTwoInput"></label>
+                        </div>
+                        <label>Culture &amp; Tradition</label>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" value="">Culture &amp; Tradition</label>
+                        <div class="checkboxRound">
+                            <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                            <label for="checkboxThreeInput"></label>
+                        </div>
+                        <label>Nature &amp; Relax</label>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" value="">Nature &amp; Relax</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" value="">Eat &amp; Taste</label>
+                        <div class="checkboxRound">
+                            <input type="checkbox" value="1" id="checkboxFourInput" name="" />
+                            <label for="checkboxFourInput"></label>
+                        </div>
+                        <label>Eat &amp; Taste</label>
                     </div>
                 </div>
             </div>

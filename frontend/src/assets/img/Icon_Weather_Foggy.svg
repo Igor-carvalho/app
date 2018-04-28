@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#ECECEC;stroke-width:12.4894;stroke-linecap:round;stroke-miterlimit:10;}
+	.st1{fill:#ECECEC;}
+</style>
+<g>
+	<line class="st0" x1="38.8" y1="131.6" x2="167.1" y2="131.6"/>
+	<g>
+		<path class="st1" d="M38.8,110.9C20.7,110.9,6,96.2,6,78.1s14.7-32.8,32.8-32.8S71.6,60,71.6,78.1S56.9,110.9,38.8,110.9"/>
+		<circle class="st1" cx="100.8" cy="57.9" r="52.9"/>
+		<path class="st1" d="M154.6,110.9c21.8,0,39.4-17.6,39.4-39.4s-17.6-39.4-39.4-39.4s-39.4,17.6-39.4,39.4S132.8,110.9,154.6,110.9
+			"/>
+		<rect x="38.8" y="83.6" class="st1" width="115.8" height="27.3"/>
+	</g>
+	<line class="st0" x1="18.4" y1="160.4" x2="115.2" y2="160.4"/>
+	<line class="st0" x1="51" y1="187" x2="179.3" y2="187"/>
+</g>
+</svg>

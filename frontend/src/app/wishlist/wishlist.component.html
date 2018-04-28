@@ -1,30 +1,291 @@
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet"> 
-<div class="h1-container">
-    <h1 id="heading">How to use the dobedoo app</h1>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+<div class="sidebar_section">
+    <div class="close_container">
+        <img src="assets/img/Icon_Close.svg" alt="close">
+    </div>
+    <div class="filters_edit">
+        <div class="filter_edit_text">Edit filters</div>
+        <div class="filter_edit_text">Remove all</div>
+        <div class="filter_edit_text">Advanced filters</div>
+    </div>
+    <div class="filters">
+        <div class="filters_one">
+            <input type="text" name="adults_number" id="adults_number_input" value="2">
+            <div class="icon_container">
+                <img class="adult_img" src="assets/img/person.svg" alt="person">
+            </div>
+            <div class="person_info">
+                <div class="person_stats_container">
+                    <span class="person_number">2</span>
+                    <div class="person">Adult<span>s</span></div>
+                </div>
+                <span class="add_person" id="add_person" data-ng-click="addPeople($event)">
+                    <img src="assets/img/Icon_Filter_Plus.svg" alt="add person">
+                </span>
+                <span class="remove_person" id="remove_person">
+                    <img src="assets/img/Icon_Filter_Minus.svg" alt="remove person">
+                </span>
+            </div>
+        </div>
+        <div class="filters_one">
+            <input type="text" name="children_number" id="children_number_input" value="0">
+            <div class="icon_container">
+                <img class="child_img" src="assets/img/child.svg" alt="person">
+            </div>
+            <div class="person_info">
+                <div class="person_stats_container">
+                    <span class="person_number">0</span>
+                    <span class="person">Children</span>
+                    </div>
+                <span class="add_person" id="add_child" data-ng-click="addPeople($event)">
+                    <img src="assets/img/Icon_Filter_Plus.svg" alt="add child">
+                </span>
+                <span class="remove_person">
+                    <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child">
+                </span>
+            </div>
+        </div>
+        <div class="filters_one">
+            <div class="icon_container icon_calendar">
+                <img class="child_img" src="assets/img/Icon_Calendar_White.svg" alt="person">
+            </div>
+            <div class="calendar_container">
+                <div class="from">from</div>
+                <div class="month_container">
+                    <div class="month_wrapper">
+                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
+                        <div class="month">December</div>
+                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                    </div>
+                </div>
+                <div class="day_container">
+                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
+                    <div class="day">21</div>
+                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                </div>
+            </div>
+            <div class="calendar_container">
+                <div class="from">to</div>
+                <div class="month_container">
+                    <div class="month_wrapper">
+                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
+                        <div class="month">December</div>
+                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                    </div>
+                </div>
+                <div class="day_container">
+                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
+                    <div class="day">30</div>
+                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                </div>
+            </div>
+        </div>
+        <div class="filters_one">
+            <div class="budget_icons_container">
+                <img class="low_budget_icon" src="assets/img/low-budget-selected.svg" alt="low budget">
+            </div>
+            <div class="budget_icons_container">
+                <img class="mid_budget_icon" src="assets/img/middle-range-budget-selected.svg" alt="low budget">
+            </div>
+            <div class="budget_icons_container">
+                <img class="high_budget_icon" src="assets/img/high-budget-selected.svg" alt="low budget">
+            </div>
+        </div>
+        <div class="filters_one">
+            <div class="checkboxes_wrapper">
+                <div class="checkbox">
+                    <div class="checkboxRound">
+                        <input type="checkbox" value="1" id="checkboxOneInput" name="" />
+                        <label for="checkboxOneInput"></label>
+                    </div>
+                    <label>Fun &amp; Party</label>
+                </div>
+                    
+                <div class="checkbox">
+                    <div class="checkboxRound">
+                        <input type="checkbox" value="1" id="checkboxTwoInput" name="" />
+                        <label for="checkboxTwoInput"></label>
+                    </div>
+                    <label>Culture &amp; Tradition</label>
+                </div>
+                <div class="checkbox">
+                    <div class="checkboxRound">
+                        <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                        <label for="checkboxThreeInput"></label>
+                    </div>
+                    <label>Nature &amp; Relax</label>
+                </div>
+                <div class="checkbox">
+                    <div class="checkboxRound">
+                        <input type="checkbox" value="1" id="checkboxFourInput" name="" />
+                        <label for="checkboxFourInput"></label>
+                    </div>
+                    <label>Eat &amp; Taste</label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<section class="tutorials-section">
-    <div class="tutorial_description">
-        <div class="tutorial_one_wrapper">
-            <div class="tutorial_icon_div">1</div>
-            <p>Sign up and<br/>tell us more about<br/>your trip</p>
+<div class="container-fluid wishlist_container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/leopoldo_pasticceria.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/ferrigno_pastori.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Nature_Landscapes.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/leon_d'oro_resturan.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Itineraries.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/napolinvespa_tour.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Events.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/pompei.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Events.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/buco_pertuso.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Traditions_Culture.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/catacombe_san_gennaro.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Food.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="element_container">
+                        <div class="image_container">
+                            <div class="image">
+                                <img src="assets/img/leopoldo_pasticceria.jpg" alt="image">
+                            </div>
+                            <div class="icon">
+                                <img src="assets/img/Icon_Movida.svg" alt="Museum category">
+                            </div>
+                        </div>
+                        <div class="place_name_container">
+                            <div class="place_name">Chapel of san severo</div>
+                            <div class="arrow">
+                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="edit_itinerary_container">
+                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
+                    <div class="edit_itinerary" (click)="editItinerary()">Show my<br>Itinerary</div>
+                </div>
+                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
+                    <div class="edit_itinerary" (click)="backToItinerary()">Hide my<br>Itinerary</div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="tutorial_description">
-        <div class="tutorial_two_wrapper">
-            <div class="tutorial_icon_div">2</div>
-            <p>Make a whishlist<br/>with the activities<br/>that you like</p>
-        </div>
-    </div>
-    <div class="tutorial_description">
-        <div class="tutorial_three_wrapper">
-            <div class="tutorial_icon_div">3</div>
-            <p>Receive a<br/>customized plan<br/>for your stay</p>
-        </div>
-    </div>
-    <div class="tutorials_get_started">
-        <div class="tutorials_get_started_container">
-            <div class="tutorials_get_started_wrapper">Let's get started</div>
-            <div class="underline_border_get_started"></div>
-        </div>
-    </div>
-</section>
+</div>

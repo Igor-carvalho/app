@@ -1,200 +1,349 @@
 app-wishlist { //these are selector, defined in component.ts, which make sure css is specific to this component, so do write css inside of this body
-  .h1-container {
-    margin-top: 70px;
+  .sidebar_section {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 480px;
+    background-color: #E52050;
+    height: 100vh;
+    z-index: 1050;
+    overflow-y: scroll;
+    .close_container {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      height: 60px;
+      padding: 10px;
+      text-align: right;
+      img {
+        height: 100%;
+      }
+    }
+    .filters_edit {
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 10px 10px 25px;
+      .filter_edit_text {
+        font-size: 17px;
+        line-height: 30px;
+      }
+    }
+    .filters {
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 10px 10px 25px;
+      .filters_one {
+        position: relative;
+        display: block;
+        float: left;
+        width: 100%;
+        margin: 20px 0px;
+        text-transform: uppercase;
+        .icon_container {
+          display: inline-block;
+          width: 80px;
+          .adult_img {
+            max-height: 110px;
+            display: inline-block;
+          }
+          .child_img {
+            max-height: 70px;
+            display: inline-block;
+          }
+        }
+        .person_info {
+          display: inline-block;
+          vertical-align: middle;
+          padding-left: 0px;
+          font-size: 21px;
+          .person_stats_container {
+            display: inline-block;
+            width: 180px;
+            height: 40px;
+            position: relative;
+            float: left;
+            .person_number {
+              display: inline-block;
+              position: relative;
+              float: left;
+              margin: 0px 10px 0px 0px;
+            }
+            .person {
+              display: inline-block;
+              position: relative;
+              float: left;
+              margin-right: 40px;
+            }
+          }
+          .add_person {
+            cursor: pointer;
+            display: inline-block;
+            float: left;
+            position: relative;
+            width: 25px;
+            height: 25px;
+            padding: 0px;
+            margin: 0px 10px;
+            img {
+              width: 100%;
+              margin: 0px;
+            }
+          }
+          .remove_person {
+            cursor: pointer;
+            display: inline-block;
+            float: left;
+            position: relative;
+            width: 25px;
+            height: 25px;
+            margin: 0px 10px;
+            img {
+              width: 100%;
+              margin: 0px;
+            }
+          }
+        }
+        .icon_calendar, .calendar_container, .from, .month_container, .month_wrapper, .icon_left, .month, .icon_right, .day_container, .day {
+          display: inline-block;
+          position: relative;
+          float: left;
+        }
+        .calendar_container {
+          padding-top: 8px;
+          padding-bottom: 5px;
+          .from {
+            width: 60px;
+            text-transform: lowercase;
+          }
+          .month_container {
+            width: 156px;
+            .month_wrapper {
+              width: 176px;
+              .icon_left {
+                width: 20px;
+                transform: rotate(180deg);
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+              }
+              .month {
+                margin: 0px;
+                width: 116px;
+                text-align: center;
+              }
+              .icon_right {
+                width: 20px;
+              }
+            }
+          }
+          .day_container {
+            width: 90px;
+            margin-left: 20px;
+            .icon_left {
+              width: 20px;
+              transform: rotate(180deg);
+              -moz-transform: rotate(180deg);
+              -webkit-transform: rotate(180deg);
+            }
+            .day {
+              margin: 0px;
+              width: 40px;
+              text-align: center;
+            }
+            .icon_right {
+              width: 20px;
+            }
+          }
+        }
+        .budget_icons_container {
+          display: inline-block;
+          position: relative;
+          float: left;
+          width: 100px;
+          text-align: center;
+          width: 120px;
+          .low_budget_icon {
+            max-width: 60px;
+            top: 20px;
+            position: relative;
+          }
+          .mid_budget_icon {
+            max-width: 80px;
+            position: relative;
+            top: 12px;
+          }
+          .high_budget_icon {
+            max-width: 100px;
+          }
+        }
+        .checkboxes_wrapper {
+          max-width: 600px;
+          margin: 0px auto;
+          font-size: 18px;
+          font-weight: 600;
+          text-align: left;
+          .checkbox {
+            width: 100%;
+            float: left;
+            position: relative;
+            label{
+              input {
+                margin-right: 15px;
+              }
+            }
+          }
+        }
+        .checkboxRound {
+          width: 37px;
+          height: 38px;
+          background: #E52050;
+          border: 2px solid #fff;
+          margin: 0px 10px 0px 0px;
+          border-radius: 50%;
+          position: relative;
+          top: 14px;
+          display: inline-block;
+        }
+        .checkboxRound input {
+          display: none;
+        }
+        .checkboxRound label {
+          display: block;
+          width: 26px;
+          height: 27px;
+          border-radius: 50%;
+          transition: all .5s ease;
+          cursor: pointer;
+          position: absolute;
+          top: 4px;
+          left: 4px;
+          z-index: 1;
+          background: #E52050;
+        }
+        .checkboxRound input[type=checkbox]:checked + label {
+            background: #fff;
+        }
+      }
+    }
   }
-  h1 {
-    text-transform: uppercase;
-    text-align: center;
-    max-width: 400px;
-    margin: 0px auto;
-    font-size: 42px;
-  }
-  .tutorials-section {
-    width: 1140px;
-    margin: 60px auto 30px;
+  .wishlist_container {
+    padding-top: 50px !important;
     display: block;
-    overflow: auto;
+    background-color: #d4d3d3;
+    padding-bottom: 50px !important;
   }
-  .tutorial_description {
-    width: 380px;
-    display: block;
-    float: left;
-    overflow: auto;
+  .col-lg-3 {
+    margin-bottom: 45px;
   }
-  .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
-    text-align: center;
-    width: 360px;
-  }
-  .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
-    font-size: 29px;
-    margin-top: 20px;
-  }
-  .tutorial_two_wrapper {
-    margin: 0px auto;
-  }
-  .tutorial_three_wrapper {
-    float: right;
-  }
-  .tutorial_icon_div {
-    width: 100px;
-    height: 100px;
+  .element_container {
     background-color: #fff;
-    color: #E52050;
-    border-radius: 50%;
-    line-height: 100px;
-    font-size: 64px;
-    font-weight: 800;
-    margin: 0px auto 10px;
-    box-shadow: -8px 8px $shadowColor;
-  }
-  .tutorials_get_started_container {
-    width: 262px;
-    margin: 0px auto;
-    cursor: pointer;
-  }
-  .tutorials_get_started {
     width: 100%;
-    position: relative;
+    color: #E52251;
+    overflow: visible;
+    padding: 0px 0px 0px 5px;
     display: block;
-    float: left;
-    text-align: center;
-    margin-top: 40px;
-    font-size: 32px;
+    box-shadow: -5px 5px #E52251;
+    border-radius: 10px;
+    position: relative;
+    padding-bottom: 5px;
+    .image_container {
+      width: 100%;
+      display: block;
+      -ms-transform: translate(10px,-10px);
+      -webkit-transform: translate(10px,-10px);
+      transform: translate(6px,-10px);
+      border-radius: 10px;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
+      height: 204px;
+      .image {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 4;
+        img {
+          height: 204px;
+        }
+      }
+      .icon {
+        width: 90px;
+        height: 90px;
+        display: block;
+        position: absolute;
+        top:0px;
+        left: 0px;
+        z-index: 6;
+      }
+    }
+    .place_name_container {
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      padding: 0px 0px 0px 15px;
+      .place_name {
+        max-width: 60%;
+        display: inline-block;
+        text-transform: uppercase;
+      }
+      .arrow {
+        display: inline-block;
+        position: relative;
+        float: right;
+        width: 20px;
+        height: 24px;
+        margin-right: 10px;
+        top: 10px;
+      }
+    }
   }
-  .underline_border_get_started {
-    border: 3px solid #fff;
-    border-radius: 3px;
+  .edit_itinerary_container {
     width: 100%;
+    height: 50px;
+    display: block;
+    overflow: hidden;
+    .edit_itinerary_wrapper {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      position: relative;
+      float: left;
+      text-transform: uppercase;
+      .edit_itinerary {
+        max-width: 75px;
+        display: block;
+        margin: 0px auto;
+        color: $themeColor;
+        border-bottom: 5px solid $themeColor;
+        cursor: pointer;
+      }
+    }
   }
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
-    .tutorials-section {
-      width: 962px;
-      margin: 60px auto 30px;
-    }
-    .tutorial_description {
-      width: 320px;
-    }
-    .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
-      width: 300px;
-    }
-    .tutorial_icon_div {
-      width: 96px;
-      height: 96px;
-      line-height: 96px;
-    }
-    .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
-      font-size: 27px;
-    }
-    .tutorials_get_started_container {
-      width: 235px;
-    }
-    .tutorials_get_started {
-      font-size: 29px;
-    }
   }
 
   /* Medium Devices, Desktops */
   @media only screen and (min-width : 769px) and (max-width : 992px) {
-    .h1-container {
-      margin-top: 60px;
-    }
-    .h1-container h1 {
-      font-size: 38px;
-    }
-    .tutorials-section {
-      width: 748px;
-      margin: 60px auto 30px;
-    }
-    .tutorial_description {
-      width: 249px;
-    }
-    .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
-      width: 239px;
-    }
-    .tutorial_icon_div {
-      width: 86px;
-      height: 86px;
-      line-height: 86px;
-      font-size: 54px;
-    }
-    .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
-      font-size: 27px;
-    }
-    .tutorials_get_started_container {
-      width: 228px;
-    }
-    .tutorials_get_started {
-      font-size: 28px;
-    }
   }
 
   /* Small Devices, Tablets */
   @media only screen and (min-width : 481px) and (max-width : 768px) {
-    .h1-container {
-      margin-top: 60px;
-    }
-    .h1-container h1 {
-      font-size: 38px;
-    }
-    .tutorials-section {
-      width: 480px;
-      margin: 60px auto 30px;
-    }
-    .tutorial_description {
-      width: 480px;
-      margin-bottom: 20px;
-    }
-    .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
-      width: 480px;
-    }
-    .tutorial_icon_div {
-      
-    }
-    .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
-      font-size: 28px;
-    }
-    .tutorials_get_started_container {
-      width: 203px;
-    }
-    .tutorials_get_started {
-      font-size: 25px;
-    }
+    
   }
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
-    .h1-container {
-      margin-top: 50px;
-    }
-    .h1-container h1 {
-      font-size: 30px;
-    }
-    .tutorials-section {
-      width: 320px;
-      margin: 60px auto 30px;
-    }
-    .tutorial_description {
-      width: 320px;
-      margin-bottom: 20px;
-    }
-    .tutorial_one_wrapper, .tutorial_two_wrapper, .tutorial_three_wrapper {
-      width: 320px;
-    }
-    .tutorial_icon_div {
-      width: 80px;
-      height: 80px;
-      line-height: 80px;
-      font-size: 54px;
-    }
-    .tutorial_one_wrapper p, .tutorial_two_wrapper p, .tutorial_three_wrapper p {
-      font-size: 22px;
-    }
-    .tutorials_get_started_container {
-      width: 186px;
-    }
-    .tutorials_get_started {
-      font-size: 23px;
-    }
+    
   }
 }

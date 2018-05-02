@@ -3,7 +3,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     position: fixed;
     left: 0px;
     top: 0px;
-    width: 480px;
+    width: 460px;
     background-color: #E52050;
     height: 100vh;
     z-index: 1050;
@@ -29,6 +29,17 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       .filter_edit_text {
         font-size: 17px;
         line-height: 30px;
+        cursor: pointer;
+        border: 0px;
+        background-color: transparent;
+        color: #fff;
+        padding-left: 0px;
+      }
+      .editFilters {
+        border-bottom: 0px solid #FFF;
+      }
+      .applyFilters {
+        border-bottom: 0px solid #fff;
       }
     }
     .filters {
@@ -45,9 +56,14 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         width: 100%;
         margin: 20px 0px;
         text-transform: uppercase;
+        .budget_range_text_display {
+          font-size: 20px;
+          display: inline-block;
+          padding-top: 30px;
+        }
         .icon_container {
           display: inline-block;
-          width: 80px;
+          width: 120px;
           .adult_img {
             max-height: 110px;
             display: inline-block;
@@ -66,6 +82,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
             display: inline-block;
             width: 180px;
             height: 40px;
+            line-height: 40px;
             position: relative;
             float: left;
             .person_number {
@@ -90,6 +107,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
             height: 25px;
             padding: 0px;
             margin: 0px 10px;
+            display: none;
             img {
               width: 100%;
               margin: 0px;
@@ -103,6 +121,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
             width: 25px;
             height: 25px;
             margin: 0px 10px;
+            display: none;
             img {
               width: 100%;
               margin: 0px;
@@ -114,9 +133,16 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
           position: relative;
           float: left;
         }
+        .calendar_dates_display {
+          display: inline-block;
+          font-size: 20px;
+          padding-top: 2px;
+          max-width: 270px;
+        }
         .calendar_container {
           padding-top: 8px;
           padding-bottom: 5px;
+          display: none;
           .from {
             width: 60px;
             text-transform: lowercase;
@@ -154,6 +180,8 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
               margin: 0px;
               width: 40px;
               text-align: center;
+              font-size: 18px;
+              line-height: 20px;
             }
             .icon_right {
               width: 20px;
@@ -164,9 +192,8 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
           display: inline-block;
           position: relative;
           float: left;
-          width: 100px;
-          text-align: center;
           width: 120px;
+          text-align: left;
           .low_budget_icon {
             max-width: 60px;
             top: 20px;
@@ -179,6 +206,9 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
           }
           .high_budget_icon {
             max-width: 100px;
+          }
+          .budget_inputs {
+            display: none;
           }
         }
         .checkboxes_wrapper {

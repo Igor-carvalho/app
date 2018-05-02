@@ -1,46 +1,49 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
 <div class="sidebar_section">
     <div class="close_container">
-        <img src="assets/img/Icon_Close.svg" alt="close">
+        <img src="assets/img/Icon_Close.svg" alt="close" (click)="closeSidebar()">
     </div>
     <div class="filters_edit">
-        <div class="filter_edit_text">Edit filters</div>
-        <div class="filter_edit_text">Remove all</div>
-        <div class="filter_edit_text">Advanced filters</div>
+        <button class="filter_edit_text editFilters" (click)="edifFiltersFunction()">Edit filters</button>
+        <br />
+        <button class="filter_edit_text applyFilters" (click)="applyFiltersFunction()">Apply Filters</button>
+        <br />
+        <button class="filter_edit_text">Reset all</button>
+        <!--<div class="filter_edit_text">Advanced filters</div>-->
     </div>
     <div class="filters">
         <div class="filters_one">
-            <input type="text" name="adults_number" id="adults_number_input" value="2">
+            <input type="hidden" name="adults_number" id="adults_number_input" value="2">
             <div class="icon_container">
                 <img class="adult_img" src="assets/img/person.svg" alt="person">
             </div>
             <div class="person_info">
                 <div class="person_stats_container">
-                    <span class="person_number">2</span>
+                    <span id="adult_number" class="person_number">2</span>
                     <div class="person">Adult<span>s</span></div>
                 </div>
-                <span class="add_person" id="add_person" data-ng-click="addPeople($event)">
+                <span class="add_person" id="add_person" (click)="addAdults()">
                     <img src="assets/img/Icon_Filter_Plus.svg" alt="add person">
                 </span>
-                <span class="remove_person" id="remove_person">
+                <span class="remove_person" id="remove_person" (click)="removeAdults()">
                     <img src="assets/img/Icon_Filter_Minus.svg" alt="remove person">
                 </span>
             </div>
         </div>
         <div class="filters_one">
-            <input type="text" name="children_number" id="children_number_input" value="0">
+            <input type="hidden" name="children_number" id="children_number_input" value="0">
             <div class="icon_container">
                 <img class="child_img" src="assets/img/child.svg" alt="person">
             </div>
             <div class="person_info">
                 <div class="person_stats_container">
-                    <span class="person_number">0</span>
+                    <span id="child_number" class="person_number">0</span>
                     <span class="person">Children</span>
                     </div>
-                <span class="add_person" id="add_child" data-ng-click="addPeople($event)">
+                <span class="add_person" id="add_child"  (click)="addChild('add_child')">
                     <img src="assets/img/Icon_Filter_Plus.svg" alt="add child">
                 </span>
-                <span class="remove_person">
+                <span class="remove_person" id="remove_child"  (click)="removeChild()">
                     <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child">
                 </span>
             </div>
@@ -49,39 +52,64 @@
             <div class="icon_container icon_calendar">
                 <img class="child_img" src="assets/img/Icon_Calendar_White.svg" alt="person">
             </div>
+            <div class="calendar_dates_display">
+                <span id="calendar_dates_month_display_one"></span>
+                <span id="calendar_dates_day_display_one"></span>
+                <span> - </span>
+                <span id="calendar_dates_month_display_two"></span>
+                <span id="calendar_dates_day_display_two"></span>
+            </div>
             <div class="calendar_container">
                 <div class="from">from</div>
                 <div class="month_container">
                     <div class="month_wrapper">
-                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
-                        <div class="month">December</div>
-                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous" (click)="minusMonth('one')">
+                        <input type="hidden" name="from_month" id="month-one" value="november">
+                        <div id="month_one" class="month"></div>
+                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next" (click)="plusMonth('one')">
                     </div>
                 </div>
                 <div class="day_container">
-                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
-                    <div class="day">21</div>
-                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                    <input type="hidden" name="date_from" id="date_one" value="2">
+                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous" (click)="minusDay('one')">
+                    <div id="day_one" class="day"></div>
+                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next" (click)="plusDay('one')">
                 </div>
             </div>
             <div class="calendar_container">
                 <div class="from">to</div>
                 <div class="month_container">
                     <div class="month_wrapper">
-                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
-                        <div class="month">December</div>
-                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                        <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous" (click)="minusMonth('two')">
+                        <input type="hidden" name="month_to" id="month-two" value="december">
+                        <div id="month_two" class="month"></div>
+                        <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next" (click)="plusMonth('two')">
                     </div>
                 </div>
                 <div class="day_container">
-                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous">
-                    <div class="day">30</div>
-                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next">
+                    <input type="hidden" name="date_to" id="date_two" value="12">
+                    <img class="icon_left" src="assets/img/Icon_Arrow_White.svg" alt="previous" (click)="minusDay('two')">
+                    <div id="day_two" class="day"></div>
+                    <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next" (click)="plusDay('two')">
                 </div>
             </div>
         </div>
         <div class="filters_one">
-            <div class="budget_icons_container">
+            <label class="radio-inline budget_icons_container budget_icons_container_one">
+                <input class="budget_inputs" type="radio" name="budget_input" value="low_budget">
+                <img class="low_budget_icon budget_icons" src="assets/img/low-budget.svg" alt="low budget" (click)="budgetSelection('low')">
+            </label>
+            <label class="radio-inline budget_icons_container budget_icons_container_two">
+                <input class="budget_inputs" type="radio" name="budget_input" value="mid_range_budget" checked="checked">
+                <img class="mid_budget_icon budget_icons" src="assets/img/middle-range-budget.svg" alt="medium budget" (click)="budgetSelection('medium')">
+            </label>
+            <label class="radio-inline budget_icons_container budget_icons_container_three">
+                <input class="budget_inputs" type="radio" name="budget_input" value="high_range_budget">
+                <img class="high_budget_icon budget_icons" src="assets/img/high-range-budget.svg" alt="high budget" (click)="budgetSelection('high')">
+            </label>
+            <div class="budget_range_text_display"></div>
+            
+            <!--<div class="budget_icons_container">
                 <img class="low_budget_icon" src="assets/img/low-budget-selected.svg" alt="low budget">
             </div>
             <div class="budget_icons_container">
@@ -89,7 +117,8 @@
             </div>
             <div class="budget_icons_container">
                 <img class="high_budget_icon" src="assets/img/high-budget-selected.svg" alt="low budget">
-            </div>
+            </div>-->
+
         </div>
         <div class="filters_one">
             <div class="checkboxes_wrapper">

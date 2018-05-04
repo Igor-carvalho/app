@@ -1,0 +1,59 @@
+<div class="row" *ngIf="_errorMessage">
+    <div class="col-sm-12">
+        <p class="alert alert-danger">{{_errorMessage}}</p>
+    </div>
+</div>
+<div class="animated fadeIn" *ngIf="!_mode && !_errorMessage">
+    <span class="spinner"></span>
+
+</div>
+<div class="animated fadeIn" *ngIf="_mode">
+    <div class="row">
+        <div class="col-sm-12">
+            <form (ngSubmit)="onSubmit()">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-create" *ngIf="_mode == 'create'">
+                            <strong>Create new Macro Category</strong>
+                        </div>
+                        <div class="update" *ngIf="_mode == 'update'">
+                            <strong>Staff - {{_object.id}}</strong><br/>
+                            <small>Update Macro Category</small>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group-wrapper">
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="label">Label <span class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="label" class="form-control" id="label"
+                                           placeholder="Enter label"
+                                           [(ngModel)]="_object.label"/>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-sm btn-primary"
+                                        [disabled]="_submitted == true"><i
+                                        class="fa fa-dot-circle-o"></i> Save
+                                </button>
+                                <div *ngIf="_submitted" class="spinner"></div>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <a [routerLink]="['/micro-categories']" class="btn btn-sm btn-warning"><i
+                                        class="fa fa-arrow-left"></i> Back to list</a>
+                            </div>
+                            <div *ngIf="_errorMessage" class="col-xs-12 error-block mt-h">
+                                <div class="alert alert-danger">{{_errorMessage}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -266,6 +266,9 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     display: block;
     background-color: #d4d3d3;
     padding-bottom: 50px !important;
+    .selected-activity {
+      background: rgba(229, 34, 81, 0.05);
+    }
   }
   .col-lg-3 {
     margin-bottom: 45px;
@@ -335,6 +338,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         top: 10px;
       }
     }
+
   }
   .edit_itinerary_container {
     width: 100%;

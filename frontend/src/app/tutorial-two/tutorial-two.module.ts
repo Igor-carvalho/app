@@ -6,12 +6,13 @@ import {TutorialTwoComponent} from "./tutorial-two.component";
 import {TutorialTwoRoutingModule} from "./tutorial-two-routing.module";
 
 
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        TutorialTwoRoutingModule
+        TutorialTwoRoutingModule,
     ],
     declarations: [
         TutorialTwoComponent,

@@ -1,4 +1,5 @@
 app-tutorial-two {
+
   .slider_container {
     width: 100%;
     height: auto;
@@ -171,5 +172,19 @@ app-tutorial-two {
   }
   .checkboxRound input[type=checkbox]:checked + label {
       background: #fff;
+  }
+
+  #days-selector {
+    .daterangepicker {
+      position: relative !important;
+      top: 0 !important;
+    }
+  }
+
+  .calendar.right {
+    display: none !important;
+  }
+  .daterangepicker_input {
+    display: none;
   }
 }

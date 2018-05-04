@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
-import {SimpleLayoutComponent}  from './layouts/simple-layout.component';
+import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {P404Component} from './pages/404.component';
 
 import {AuthGuard} from './model/auth.guard';
@@ -37,12 +37,24 @@ export const routes: Routes = [
             {
                 path: 'setting',
                 loadChildren: 'app/setting/setting.module#SettingModule'
+            },
+            {
+                path: 'activities',
+                loadChildren: 'app/activities/activities.module#ActivitiesModule'
+            },
+            {
+                path: 'micro-categories',
+                loadChildren: 'app/micro-categories/micro-categories.module#MicroCategoriesModule'
+            },
+            {
+                path: 'macro-categories',
+                loadChildren: 'app/macro-categories/macro-categories.module#MacroCategoriesModule'
             }
         ]
     },
     {
         path: '',
-        component:SimpleLayoutComponent,
+        component: SimpleLayoutComponent,
         children: [
             {
                 path: 'login',
@@ -55,7 +67,7 @@ export const routes: Routes = [
         ],
     },
     // otherwise redirect to home
-    { path: '**', component: P404Component }
+    {path: '**', component: P404Component}
 ];
 
 @NgModule({

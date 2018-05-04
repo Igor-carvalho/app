@@ -1,11 +1,13 @@
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
 <div class="slider_container" id="slider_container">
     <div class="slider_wrapper">
         <div class="slider_section">
             <h1 class="slider_section_heading heading-one">How many travelers?</h1>
             <div class="slider_icons">
-                <input type="hidden" name="childNumberCount" id="childNumberCountInput" value="0">
-                <input type="hidden" name="personNumberCount" id="personNumberCountInput" value="1">
+                <input type="hidden" name="childNumberCount"
+                       id="childNumberCountInput" value="0">
+                <input type="hidden" name="personNumberCount"
+                       id="personNumberCountInput" value="1">
                 <div class="child_number_display" id="child_number_display">
                     <span class="child_number_count">0</span>
                     <span class="multiplication_sign">&#x2716;</span>
@@ -32,45 +34,33 @@
             <h1 class="slider_section_heading heading-one">What's the budget</h1>
             <div class="slider_icons">
                 <img id="low_budget_image" src="assets/img/low-budget.svg" alt="low budget" class="low_budget_image">
-                <img id="low_budget_image_checked" src="assets/img/low-budget-selected.svg" alt="low budget" class="low_budget_image">
-                <img id="middle_range_budget_image" src="assets/img/middle-range-budget.svg" alt="middle budget" class="middle_range_budget_image">
-                <img id="middle_range_budget_image_checked" src="assets/img/middle-range-budget-selected.svg" alt="middle budget" class="middle_range_budget_image">
-                <img id="high_range_budget_image" src="assets/img/high-range-budget.svg" alt="high budget" class="high_range_budget_image">
-                <img id="high_range_budget_image_checked" src="assets/img/high-budget-selected.svg" alt="high budget" class="high_range_budget_image">
+                <img id="low_budget_image_checked" src="assets/img/low-budget-selected.svg" alt="low budget"
+                     class="low_budget_image">
+                <img id="middle_range_budget_image" src="assets/img/middle-range-budget.svg" alt="middle budget"
+                     class="middle_range_budget_image">
+                <img id="middle_range_budget_image_checked" src="assets/img/middle-range-budget-selected.svg"
+                     alt="middle budget" class="middle_range_budget_image">
+                <img id="high_range_budget_image" src="assets/img/high-range-budget.svg" alt="high budget"
+                     class="high_range_budget_image">
+                <img id="high_range_budget_image_checked" src="assets/img/high-budget-selected.svg" alt="high budget"
+                     class="high_range_budget_image">
             </div>
         </div>
         <div class="slider_section">
             <h1 class="slider_section_heading heading-one">What are you into?</h1>
             <div class="slider_icons">
                 <div class="checkboxes_wrapper">
-                    <div class="checkbox">
-                        <div class="checkboxRound">
-                            <input type="checkbox" value="1" id="checkboxOneInput" name="" />
+                    <div class="checkbox" *ngFor="let category of macroCategories"
+                         (click)="_activityFilter.toggleMacroCategory(category.id)"
+                    >
+                        <div class="checkboxRound"
+                        >
+                            <input type="checkbox"
+                                   [checked]="_arrayUtils.search_string_array(_activityFilter.macro_categories, category.id)"
+                                   id="checkboxOneInput" name=""/>
                             <label for="checkboxOneInput"></label>
                         </div>
-                        <label>Fun &amp; Party</label>
-                    </div>
-                    
-                    <div class="checkbox">
-                        <div class="checkboxRound">
-                            <input type="checkbox" value="1" id="checkboxTwoInput" name="" />
-                            <label for="checkboxTwoInput"></label>
-                        </div>
-                        <label>Culture &amp; Tradition</label>
-                    </div>
-                    <div class="checkbox">
-                        <div class="checkboxRound">
-                            <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
-                            <label for="checkboxThreeInput"></label>
-                        </div>
-                        <label>Nature &amp; Relax</label>
-                    </div>
-                    <div class="checkbox">
-                        <div class="checkboxRound">
-                            <input type="checkbox" value="1" id="checkboxFourInput" name="" />
-                            <label for="checkboxFourInput"></label>
-                        </div>
-                        <label>Eat &amp; Taste</label>
+                        <label>{{ category.name }}</label>
                     </div>
                 </div>
             </div>
@@ -84,8 +74,10 @@
         <div class="slider_dot"></div>
         <div class="slider_dot"></div>
         <div class="slider_dot"></div>
-        <div class="slider_right_arrow" id="nextButton">            
+        <div class="slider_right_arrow" id="nextButton">
             <img src="assets/img/arrow_right.svg" alt="slide right arrow" class="arrow_imgs">
         </div>
     </div>
+
+    <button (click)="getStarted()"> Next Step</button>
 </div>

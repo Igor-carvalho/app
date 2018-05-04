@@ -30,6 +30,8 @@ import {GlobalService} from './model/global.service';
 import {UserService} from './model/user.service';
 import {UserDataService} from './model/user-data.service';
 import {SettingDataService} from './model/setting-data.service';
+import {ActivitiesDataService} from "./services/activities-data.service";
+import {StaticDataService} from "./services/static-data.service";
 
 @NgModule({
     imports: [
@@ -52,14 +54,12 @@ import {SettingDataService} from './model/setting-data.service';
         P404Component,
     ],
     providers: [
-        {
-            provide: LocationStrategy,
-            useClass: HashLocationStrategy
-        },
         AuthGuard,
         UserService,
         GlobalService,
         SettingDataService,
+        ActivitiesDataService,
+        StaticDataService,
         UserDataService,
     ],
     bootstrap: [AppComponent]

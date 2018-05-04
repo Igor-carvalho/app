@@ -1,0 +1,258 @@
+<div class="row" *ngIf="_errorMessage">
+    <div class="col-sm-12">
+        <p class="alert alert-danger">{{_errorMessage}}</p>
+    </div>
+</div>
+<div class="animated fadeIn" *ngIf="!_mode && !_errorMessage">
+    <span class="spinner"></span>
+
+</div>
+<div class="animated fadeIn" *ngIf="_mode">
+    <div class="row">
+        <div class="col-sm-12">
+            <form (ngSubmit)="onSubmit()">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-create" *ngIf="_mode == 'create'">
+                            <strong>Create new activity</strong>
+                        </div>
+                        <div class="update" *ngIf="_mode == 'update'">
+                            <strong>Activity - {{_activity.name}}</strong><br/>
+                            <small>Update Activity</small>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="form-group-wrapper">
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="name">Name <span class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                           placeholder="Enter Activity Name" [(ngModel)]="_activity.name"/>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="description">Description <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="description" name="description"
+                                              placeholder="Enter Activity Name"
+                                              [(ngModel)]="_activity.description"></textarea>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="address">Address <span class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="address" name="address"
+                                           placeholder="Enter Activity Name" [(ngModel)]="_activity.address"/>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="city">City <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="city" name="city"
+                                               placeholder="Enter Activity Name" [(ngModel)]="_activity.city"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="country">Country <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="country" name="country"
+                                               placeholder="Enter Activity Name" [(ngModel)]="_activity.country"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="longitude">Longitude <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="longitude" name="longitude"
+                                               placeholder="Enter Activity Name" [(ngModel)]="_activity.longitude"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="latitude">Latitude <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="latitude" name="latitude"
+                                               placeholder="Activity Latitude" [(ngModel)]="_activity.latitude"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="date_starts">Time Starts</label>
+                                    <div class="col-sm-7">
+                                        <div class="col-sm-12">
+                                            <my-date-picker [options]="myDatePickerOptions"
+                                                            id="date_starts" name="date_starts"
+                                                            placeholder="(Optional) Activity Start Time"
+                                                            [(ngModel)]="_activity.date_starts"></my-date-picker>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2" style="padding: 0">
+                                        <select class="form-control" id="time_start_hh" name="time_start_hh"
+                                                [(ngModel)]="_activity.time_start_hh">
+                                            <option *ngFor="let each of hoursLlist" [value]="each">
+                                                {{each}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1"
+                                         style="font-size: 20px; text-align: center; font-weight: 700;">
+                                        :
+                                    </div>
+                                    <div class="col-sm-2" style="padding: 0">
+                                        <select class="form-control" id="time_start_mm" name="time_start_mm"
+                                                [(ngModel)]="_activity.time_start_mm">
+                                            <option *ngFor="let each of minutesList" [value]="each">
+                                                {{each}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="date_ends">Time End <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-7">
+                                        <my-date-picker [options]="myDatePickerOptions"
+                                                        id="date_ends" name="date_ends"
+                                                        placeholder="(Optional) Activity End Time"
+                                                        [(ngModel)]="_activity.date_ends"></my-date-picker>
+                                    </div>
+                                    <div class="col-sm-2" style="padding: 0">
+                                        <select class="form-control" id="time_end_hh" name="time_end_hh"
+                                                [(ngModel)]="_activity.time_end_hh">
+                                            <option *ngFor="let each of hoursLlist" [value]="each">
+                                                {{each}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1"
+                                         style="font-size: 20px; text-align: center; font-weight: 700;">
+                                        :
+                                    </div>
+                                    <div class="col-sm-2" style="padding: 0">
+                                        <select class="form-control" id="time_end_mm" name="time_end_mm"
+                                                [(ngModel)]="_activity.time_end_mm">
+                                            <option *ngFor="let each of minutesList" [value]="each">
+                                                {{each}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="budget">Budget <span class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="budget" name="budget"
+                                            [(ngModel)]="_activity.budget">
+                                        <option value=""> Select Budget</option>
+                                        <option *ngFor="let budget of budgetList" [value]="budget.id">
+                                            {{budget.name}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="max_people">Max People <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="max_people" name="max_people"
+                                           placeholder="Enter Max People allowed for the activity"
+                                           [(ngModel)]="_activity.max_people"/>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="weather_types">Friendly Weathers <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-8">
+                                    <ss-multiselect-dropdown [options]="weatherTypes" name="weather_types"
+                                                             id="weather_types"
+                                                             [(ngModel)]="_activity.weather_types"></ss-multiselect-dropdown>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="micro_category">Micro Category</label>
+                                    <div class="col-sm-12">
+                                        <ss-multiselect-dropdown [options]="microCategories" name="micro_category"
+                                                                 id="micro_category"
+                                                                 [(ngModel)]="_activity.micro_category"></ss-multiselect-dropdown>
+
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-sm-12" for="macro_category">Macro Category <span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-12">
+                                        <ss-multiselect-dropdown [options]="macroCategories" name="macro_category"
+                                                                 id="macro_category"
+                                                                 [(ngModel)]="_activity.macro_category"></ss-multiselect-dropdown>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12" for="activity_images">Activity Images <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-12" style="margin-bottom: 20px;">
+                                    <div *ngFor="let image of _activity.images">
+                                        <img style="height: 100px;width: auto;padding: 5px; border-style: solid; border-width: 1px; border-color: #dbdbdb;"
+                                             [src]="image"/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <button type="button" for="activity-image-upload" class="btn btn-sm btn-primary"
+                                    ><i
+                                            class="fa fa-image"></i> Add Images
+                                        <input (change)="fileUploadRequest($event)"
+                                               style="opacity: 0;position: absolute; left: 0; width: 20%;" type="file"
+                                               id="activity-image-upload"/>
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-sm btn-primary"
+                                ><i
+                                        class="fa fa-dot-circle-o"></i> Save
+                                </button>
+                                <div *ngIf="_submitted" class="spinner"></div>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <a [routerLink]="['/activities']" class="btn btn-sm btn-warning"><i
+                                        class="fa fa-arrow-left"></i> Back to list</a>
+                            </div>
+                            <div *ngIf="_errorMessage" class="col-xs-12 error-block mt-h">
+                                <div class="alert alert-danger">{{_errorMessage}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

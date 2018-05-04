@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivitiesDataService} from "app/services/activities-data.service";
+import {UserService} from "../model/user.service";
 
 @Component({
     selector: 'app-index',
@@ -6,8 +8,8 @@ import {Component, OnInit} from '@angular/core';
 })
 export class IndexComponent implements OnInit {
 
-    constructor() {
-
+    constructor(private _activitesDataService: ActivitiesDataService,
+                private _userService: UserService) {
 
     }
 

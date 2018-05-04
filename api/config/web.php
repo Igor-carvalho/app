@@ -21,7 +21,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'authManager' => [
-	        'class' => 'yii\rbac\DbManager',
+            'class' => 'yii\rbac\DbManager',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -49,70 +49,134 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => true,
             'rules' => [
-                'ping'  =>  'site/ping',
+                'ping' => 'site/ping',
                 [
-	                'class'         => 'yii\rest\UrlRule',
-	                'controller'    => 'v1/user',
-	                'pluralize'     => false,
-	                'tokens' => [
-		                '{id}'             => '<id:\d+>',
-	                ],
-	                'extraPatterns' => [
-		                'OPTIONS {id}'      =>  'options',
-		                'POST login'        =>  'login',
-		                'OPTIONS login'     =>  'options',
-		                'POST signup'       =>  'signup',
-		                'OPTIONS signup'    =>  'options',
-		                'POST confirm'      =>  'confirm',
-		                'OPTIONS confirm'   =>  'options',
-		                'POST password-reset-request'       =>  'password-reset-request',
-		                'OPTIONS password-reset-request'    =>  'options',
-		                'POST password-reset-token-verification'       =>  'password-reset-token-verification',
-		                'OPTIONS password-reset-token-verification'    =>  'options',
-		                'POST password-reset'       =>  'password-reset',
-		                'OPTIONS password-reset'    =>  'options',
-		                'GET me'            =>  'me',
-		                'POST me'           =>  'me-update',
-		                'OPTIONS me'        =>  'options',
-	                ]
-                ],
-                [
-                    'class'         => 'yii\rest\UrlRule',
-                    'controller'    => 'v1/staff',
-                    'pluralize'     => false,
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/user',
+                    'pluralize' => false,
                     'tokens' => [
-                        '{id}'             => '<id:\d+>',
+                        '{id}' => '<id:\d+>',
                     ],
                     'extraPatterns' => [
-                        'OPTIONS {id}'              =>  'options',
-                        'POST login'                =>  'login',
-                        'OPTIONS login'             =>  'options',
-                        'GET get-permissions'       =>  'get-permissions',
-                        'OPTIONS get-permissions'   =>  'options',
+                        'OPTIONS {id}' => 'options',
+                        'POST login' => 'login',
+                        'OPTIONS login' => 'options',
+                        'POST signup' => 'signup',
+                        'OPTIONS signup' => 'options',
+                        'POST confirm' => 'confirm',
+                        'OPTIONS confirm' => 'options',
+                        'POST password-reset-request' => 'password-reset-request',
+                        'OPTIONS password-reset-request' => 'options',
+                        'POST password-reset-token-verification' => 'password-reset-token-verification',
+                        'OPTIONS password-reset-token-verification' => 'options',
+                        'POST password-reset' => 'password-reset',
+                        'OPTIONS password-reset' => 'options',
+                        'GET me' => 'me',
+                        'POST me' => 'me-update',
+                        'OPTIONS me' => 'options',
                     ]
                 ],
                 [
-                    'class'         => 'yii\rest\UrlRule',
-                    'controller'    => 'v1/setting',
-                    'pluralize'     => false,
-                    'tokens'        => [
-                        '{id}'             => '<id:\d+>',
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/staff',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
                     ],
                     'extraPatterns' => [
-                        'GET public'       =>  'public',
-                        'OPTIONS public'    =>  'options',
+                        'OPTIONS {id}' => 'options',
+                        'POST login' => 'login',
+                        'OPTIONS login' => 'options',
+                        'GET get-permissions' => 'get-permissions',
+                        'OPTIONS get-permissions' => 'options',
                     ]
                 ],
                 [
-	                'class'         => 'yii\rest\UrlRule',
-	                'controller'    => 'v1/page',
-	                'pluralize'     => false,
-	                'tokens'        => [
-	                ],
-	                'extraPatterns' => [
-		                'GET sse'       =>  'sse',
-		                'OPTIONS sse'    =>  'sse',
-	                ]
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/setting',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+                        'GET public' => 'public',
+                        'OPTIONS public' => 'options',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/page',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'GET sse' => 'sse',
+                        'OPTIONS sse' => 'sse',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/activities',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+                        'GET sse' => 'sse',
+                        'OPTIONS sse' => 'sse',
+                        'OPTIONS filter' => 'options',
+                        'GET filter' => 'filter',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/macro-categories',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/micro-categories',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/file-upload',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'GET sse' => 'sse',
+                        'OPTIONS sse' => 'sse',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/static-data',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS weather-types' => 'options',
+                        'GET weather-types' => 'weather-types',
+                        'OPTIONS macro-categories' => 'options',
+                        'GET macro-categories' => 'macro-categories',
+                        'OPTIONS micro-categories' => 'options',
+                        'GET micro-categories' => 'micro-categories',
+                        'OPTIONS budget-types' => 'options',
+                        'GET budget-types' => 'budget-types',
+                    ]
                 ],
             ]
         ],
@@ -121,28 +185,28 @@ $config = [
             'on beforeSend' => function ($event) {
 
                 $response = $event->sender;
-                if($response->format == 'html') {
+                if ($response->format == 'html') {
                     return $response;
                 }
 
                 $responseData = $response->data;
 
-                if(is_string($responseData) && json_decode($responseData)) {
+                if (is_string($responseData) && json_decode($responseData)) {
                     $responseData = json_decode($responseData, true);
                 }
 
 
-                if($response->statusCode >= 200 && $response->statusCode <= 299) {
+                if ($response->statusCode >= 200 && $response->statusCode <= 299) {
                     $response->data = [
-                        'success'   => true,
-                        'status'    => $response->statusCode,
-                        'data'      => $responseData,
+                        'success' => true,
+                        'status' => $response->statusCode,
+                        'data' => $responseData,
                     ];
                 } else {
                     $response->data = [
-                        'success'   => false,
-                        'status'    => $response->statusCode,
-                        'data'      => $responseData,
+                        'success' => false,
+                        'status' => $response->statusCode,
+                        'data' => $responseData,
                     ];
 
                 }
@@ -150,7 +214,7 @@ $config = [
             },
         ],
         'sse' => [
-	        'class' => \odannyc\Yii2SSE\LibSSE::class
+            'class' => \odannyc\Yii2SSE\LibSSE::class
         ]
 
     ],

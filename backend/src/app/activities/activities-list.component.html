@@ -1,0 +1,85 @@
+<div class="row" *ngIf="_errorMessage">
+    <div class="col-sm-12">
+        <p class="alert alert-danger">{{_errorMessage}}</p>
+    </div>
+</div>
+
+<div class="animated fadeIn" *ngIf="!_activities && !_errorMessage">
+    <span class="spinner"></span>
+</div>
+<div class="animated fadeIn" *ngIf="_activities">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Activities
+                </div>
+                <div class="card-block">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th class="text-xs-center">ID</th>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Budget</th>
+                                <th width="15%" class="text-xs-center">Max People</th>
+
+                                <th width="15%" class="text-xs-center">City</th>
+                                <th width="20%" class="text-xs-center">Country</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let activity of _activities">
+                                <td class="text-xs-center">
+                                    {{activity.id}}
+                                </td>
+                                <td style="text-align: center;">
+                                    <img height="86" [src]="activity.images[0]"/>
+                                </td>
+                                <td>
+                                    {{activity.name}}
+                                </td>
+                                <td>
+                                    {{activity.budget}}
+                                </td>
+                                <td class="text-xs-center">
+                                    {{activity.max_people}}
+                                </td>
+                                <!--<td class="text-xs-center">-->
+                                <!--<span *ngIf="staff.blocked_at == null" class="help-text text-success">Not Blocked</span>-->
+                                <!--<span *ngIf="staff.blocked_at != null" class="text-danger">Blocked since {{staff.blocked_at}}</span>-->
+                                <!--</td>-->
+                                <td class="text-xs-center">
+                                    {{activity.city}}
+
+                                </td>
+                                <td>
+                                    {{activity.country}}
+                                </td>
+                                <td class="text-xs-center">
+                                    <div *ngIf="activity.status != -1">
+                                        <button class="btn btn-primary btn-sm" type="button"
+                                                (click)="viewActivity(activity)">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" type="button"
+                                                (click)="confirmDeleteStaff(activity)">
+                                            <i class="fa fa-remove"></i> Remove
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-sm" [routerLink]="['/activities', 'create']"
+                       routerLinkActive="active"><i class="fa fa-plus-square"></i> Create New Activity</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

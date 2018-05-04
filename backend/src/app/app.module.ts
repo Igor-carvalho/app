@@ -32,6 +32,11 @@ import {StaffService} from './model/staff.service';
 import {StaffDataService} from './model/staff-data.service';
 import {UserDataService} from './model/user-data.service';
 import {SettingDataService} from './model/setting-data.service';
+import {ActivitiesDataService} from "./model/activities-data.service";
+import {ImageUploadService} from "./model/image-upload.service";
+import {StaticDataService} from "./model/static-data.service";
+import {MacroCategoriesDataService} from "./model/macro-categories-data.service";
+import {MicroCategoriesDataService} from "./model/micro-categories-data.service";
 
 @NgModule({
     imports: [
@@ -64,6 +69,11 @@ import {SettingDataService} from './model/setting-data.service';
         GlobalService,
         SettingDataService,
         StaffDataService,
+        ActivitiesDataService,
+        ImageUploadService,
+        StaticDataService,
+        MacroCategoriesDataService,
+        MicroCategoriesDataService,
         UserDataService,
     ],
     bootstrap: [AppComponent]

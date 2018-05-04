@@ -11,7 +11,7 @@ export class GlobalService{
 
     constructor(){
         if(environment.production == true) {
-            this.apiHost = 'http://localhost/dobedoo/source/api/web/v1';
+            this.apiHost = 'http://dobedoo.acorn-labs.com/api/web/v1';
         } else {
             this.apiHost = 'http://localhost/dobedoo/source/api/web/v1';
         }

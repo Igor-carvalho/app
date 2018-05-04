@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../model/user.service";
+import {TweenMax, Power2, Back, Power0, Elastic, Bounce, SplitText, TimelineLite, TweenLite, CSSPlugin, EasePack} from "gsap";
+import * as $ from 'jquery';
 
 @Component({
     selector: 'app-frontend',
@@ -30,5 +32,8 @@ export class FrontendLayoutComponent implements OnInit {
         $event.preventDefault();
         $event.stopPropagation();
         this.status.isopen = !this.status.isopen;
+    }
+    public openSideMenu() {
+        $('.side_menu').toggle(400);
     }
 }

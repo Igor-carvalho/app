@@ -10,9 +10,8 @@ import {AuthGuard} from './model/auth.guard';
 export const routes: Routes = [
     {
         path: '',
-        component:FrontendLayoutComponent,
         pathMatch: 'full',
-        loadChildren: 'app/index/index.module#IndexModule'
+        loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
     },
     {
         path: '',

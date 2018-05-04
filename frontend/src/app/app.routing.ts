@@ -27,6 +27,19 @@ export const routes: Routes = [
     },
     {
         path: '',
+        children: [
+            {
+                path: 'tutorial-one',
+                loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
+            },
+            {
+                path: 'tutorial-two',
+                loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
+            },
+        ],
+    },
+    {
+        path: '',
         component:FrontendLayoutComponent,
         children: [
             {

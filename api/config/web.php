@@ -126,6 +126,20 @@ $config = [
                         'OPTIONS sse' => 'sse',
                         'OPTIONS filter' => 'options',
                         'GET filter' => 'filter',
+                        'OPTIONS cooking-itinerary' => 'options',
+                        'GET cooking-itinerary' => 'cooking-itinerary',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/itinerary',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS cooking' => 'options',
+                        'GET cooking' => 'cooking',
                     ]
                 ],
                 [

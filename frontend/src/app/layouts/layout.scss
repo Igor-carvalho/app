@@ -12,6 +12,87 @@ body {
 .app-header.navbar {
     height: 60px;
 }
+.login_button {
+    color: $themeColor;
+    font-size: 22px;
+    border-bottom: 3px solid $themeColor;
+    display: inline-block;
+    margin: 0px 20px 20px 0px;
+    padding-bottom: 4px;
+}
+.registration_container {
+    border-radius: 12px;
+    box-shadow: -10px 10px 0px rgba(160, 19, 54, 0.4);
+}
+.card {
+    border-radius: 12px;
+    border: 0px;
+}
+.signup_button {
+    color: $themeColor;
+    font-size: 22px;
+    opacity: 0.6;
+    display: inline-block;
+    margin: 0px 0px 20px 0px;
+    padding: 0px 0px 4px 0px;
+}
+.registration_inputs {
+    border: 0px;
+    border-bottom: 3px solid $themeColor;
+}
+.registration_inputs:focus {
+    border-bottom: 3px solid #ef7694;
+}
+.registration_radios, .forgot_pass {
+    color: rgb(141, 140, 140);
+}
+.registration_radios .radio_inputs {
+    margin-right: 10px;
+    position: relative;
+    top: 2px;
+}
+.login_inputs {
+    margin-top: 25px;
+}
+.submit_button_row {
+    margin-top: 35px;
+}
+.form_submit_buttons {
+    min-width: 280px;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #E52050;
+    box-shadow: -3px 3px 1px #ef7694;
+}
+.sign_up_form_bottom_row {
+    margin-bottom: 15px;
+}
+.or_div {
+    margin: 15px 0px;
+    color: $themeColor;
+    display: block;
+}
+.google_and_facebook_signup_rows {
+    margin: 20px 0px 5px 0px;
+}
+.btn_google {
+    color: #fff;
+    background-color: #E20613;
+    box-shadow: -3px 3px 1px rgba(250, 56, 69, 0.5);
+    border-radius: 6px;
+}
+.btn_facebook {
+    color: #fff;
+    background-color: #312782;
+    box-shadow: -3px 3px 1px rgba(93, 78, 202, 0.5);
+    border-radius: 6px;
+}
+.center_text {
+    text-align: center;
+}
+.form_group_top_row {
+    margin-top: 60px;
+}
 .main_top_menu {
     position: relative;
     float: left;

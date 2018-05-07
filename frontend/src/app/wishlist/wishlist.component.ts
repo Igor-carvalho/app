@@ -71,9 +71,13 @@ export class WishlistComponent implements OnInit {
             $('.budget_range_text_display').html('high range');
         }
 
+        $('.edit_filters_icon').click(function(){
+            $(".sidebar_section").toggle(400);
+        });
+
     }
 
-    closeSidebar() {
+    toggleSidebar() {
         $('.sidebar_section').toggle(400);
     }
 

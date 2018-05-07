@@ -51,10 +51,8 @@
             <div class="slider_icons">
                 <div class="checkboxes_wrapper">
                     <div class="checkbox" *ngFor="let category of macroCategories"
-                         (click)="_activityFilter.toggleMacroCategory(category.id)"
-                    >
-                        <div class="checkboxRound"
-                        >
+                         (click)="_activityFilter.toggleMacroCategory(category.id)">
+                        <div class="checkboxRound">
                             <input type="checkbox"
                                    [checked]="_arrayUtils.search_string_array(_activityFilter.macro_categories, category.id)"
                                    id="checkboxOneInput" name=""/>
@@ -78,6 +76,5 @@
             <img src="assets/img/arrow_right.svg" alt="slide right arrow" class="arrow_imgs">
         </div>
     </div>
-
-    <button (click)="getStarted()"> Next Step</button>
+    <button class="next_button" (click)="getStarted()">Next Step!</button>
 </div>

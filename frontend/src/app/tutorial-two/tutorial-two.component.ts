@@ -117,7 +117,9 @@ export class TutorialTwoComponent implements OnInit {
                 childNumberContainer.innerHTML += "<img src='assets/img/child.svg' alt='child' class='child_image child_image_added'>";
             }
             $('.child_number_count').html($addChildClickCount);
-
+            if(childNumberContainer.childElementCount > 0) {
+                $removeChild.css('display', 'inline-block');
+            }
         }.bind(this);
         removeChild.onclick = function () {
             if ($addChildClickCount > 0) {
@@ -126,13 +128,16 @@ export class TutorialTwoComponent implements OnInit {
                 this._activityFilter.num_childs = $addChildClickCount;
                 childNumberContainer.removeChild(childNumberContainer.lastChild);
                 if (($addChildClickCount + $addPersonClickCount) <= 6) {
-                    childNumberContainer.style.display = "inline-block";
+                    childNumberContainer.style.display = "inline";
                     personNumberContainer.style.display = "inline-block";
                     document.getElementById('person_number_display').style.display = "none";
                     document.getElementById('child_number_display').style.display = "none";
                 }
             }
             $('.child_number_count').html($addChildClickCount);
+            if(childNumberContainer.childElementCount == 0) {
+                $removeChild.hide(400);
+            }
         }.bind(this);
         addAdult.onclick = function () {
             $addPersonClickCount += 1;
@@ -153,6 +158,9 @@ export class TutorialTwoComponent implements OnInit {
                 document.getElementById('child_number_display').style.display = "inline-block";
             }
             $('.person_number_count').html($addPersonClickCount);
+            if (personNumberContainer.childElementCount > 1) {
+                $removePerson.css('display', 'inline-block');
+            }
         }.bind(this);
         removeAdult.onclick = function () {
             if ($addPersonClickCount > 1) {
@@ -163,11 +171,14 @@ export class TutorialTwoComponent implements OnInit {
                 if (($addChildClickCount + $addPersonClickCount) <= 6) {
                     document.getElementById('person_number_display').style.display = "none";
                     document.getElementById('child_number_display').style.display = "none";
-                    childNumberContainer.style.display = "inline-block";
+                    childNumberContainer.style.display = "inline";
                     personNumberContainer.style.display = "inline-block";
                 }
             }
             $('.person_number_count').html($addPersonClickCount);
+            if (personNumberContainer.childElementCount == 1) {
+                $removePerson.hide(400);
+            }
         }.bind(this);
         lowBudget.onclick = function () {
             lowBudget.style.display = "none";

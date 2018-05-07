@@ -187,6 +187,137 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
       }
     }
   }
+  .modal_popup {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    padding-top: 100px;
+    padding-bottom: 40px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    color: #000;
+    .modal_content_wrapper {
+      position: relative;
+      background-color: transparent;
+      margin: 0px auto;
+      box-sizing: border-box;
+      padding-right: 0px;
+      max-width: 750px;
+      box-shadow: 0px 4px 8px 0 rgba(0,0,0,0.2), 0px 6px 20px 0 rgba(0,0,0,0.19);
+      -webkit-animation-name: animateTop;
+      -webkit-animation-duration: 0.4s;
+      animation-name: animateTop;
+      animation-duration: 0.4s;
+      border-radius: 12px;
+      .toggle_close_modal {
+        display: inline-block;
+        width: 40px;
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        cursor: pointer;
+        z-index: 1;
+      }
+      .modal_category_icon {
+        position: absolute;
+        top: 0px;
+        width: 100px;
+        left: 0px;
+        display: inline-block;
+        z-index: 1;
+      }
+      .modal_content {
+        overflow: auto;
+        position: relative;
+        width: 100%;
+        float: left;
+        padding: 40px 20px 20px 20px;
+        border-radius: 12px;
+        background-color: #fff;
+        .modal_content_left_section, .modal_content_right_section {
+          position: relative;
+          display: block;
+          float: left;
+        }
+        .modal_content_left_section {
+          width: 220px;
+          .modal_left_section_image {
+            height: 220px;
+            width: 220px;
+            overflow: hidden;
+            border-radius: 20px;
+            img {            
+              height: 100%;
+            }
+          }
+          .info {
+            display: block;
+            text-transform: uppercase;
+            color: $themeColor;
+            font-size: 17px;
+            height: 30px;
+            margin-top: 20px;
+            line-height: 30px;
+            width: 100%;
+          }
+          .modal_description_address {
+            font-size: 14px;
+          }
+          .modal_pricing_container {
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            font-size: 14px;
+          }
+          .modal_schedule_container {
+            width: 100%;
+            margin: 15px 0px 0px 0px;
+            padding: 0px;
+            font-size: 14px;
+          }
+          .modal_schedule_container {
+            .closing_day {
+              margin-top: 15px;
+            }
+          }
+        }
+      }
+      .modal_content_right_section {
+        width: 490px;
+        box-sizing: border-box;
+        padding: 0px 10px 10px 30px;
+        .modal_right_heading {
+          color: $themeColor;
+          margin-bottom: 25px;
+          .modal_h2 {
+            font-size: 22px;
+            .modal_h2_dynamic {
+              border-bottom: 5px solid $themeColor;
+            }
+          }
+        }
+        .modal_right_description {
+          font-size: 14px;
+          p {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  @-webkit-keyframes animateTop {
+    from {top: -300px; opacity: 0}
+    to {top: 0px; opacity: 1}
+  }
+  @keyframes animateTop {
+    from {top: -300px; opacity: 0}
+    to {top: 0px; opacity: 1}
+  }
 
   /* Medium Devices, Desktops */
   @media only screen and (min-width : 769px) and (max-width : 992px) {

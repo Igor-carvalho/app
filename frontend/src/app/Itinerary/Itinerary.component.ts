@@ -33,7 +33,16 @@ export class ItineraryComponent implements OnInit {
         TweenLite.from($circleTwo, 0.8, {scale: 0, delay: 2.2, ease: Back.easeOut});
         TweenLite.from($timeOne, 0.8, {scale: 0, delay: 2.4, ease: Back.easeOut});
         TweenLite.from($timeTwo, 0.8, {scale: 0, delay: 2.4, ease: Back.easeOut});
-		TweenMax.staggerFrom($events, 0.4, {delay: 0.8, opacity:0, rotationX: -90, transformOrigin:"50% top"}, 0.2);
+        TweenMax.staggerFrom($events, 0.4, {delay: 0.8, opacity:0, rotationX: -90, transformOrigin:"50% top"}, 0.2);
+        
+        // code for modal pop-ups
+        var $closeModals = $('.toggle_close_modal');
+        $('#modalClickButton').click(function(){
+            $('#myModal').css('display', 'block');
+        });
+        $closeModals.click(function() {
+            $('#myModal').css('display', 'none');
+        });
  
     }
     editItinerary() {

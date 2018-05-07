@@ -1,25 +1,25 @@
 <div class="app flex-row align-items-center">
     <div class="container">
-        <div class="row justify-content-center mb-3">
+        <!--<div class="row justify-content-center mb-3">
             <div class="col-sm-12 text-sm-center">
                 <img src="assets/img/logo.png" width="350px" />
             </div>
-        </div>
-
+        </div>-->
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-5">
                 <div class="card-group mb-0">
-                    <div class="card p-4">
+                    <div class="card mx-4 registration_container">
                         <div class="card-body">
                             <form [formGroup]="_loginForm" (ngSubmit)="onSubmit(_loginForm.value)">
-                                <h1>Login</h1>
-                                <p class="text-muted">Sign In to your account</p>
+                                <h2 class="login_button">Sign In</h2>
+                                <a [routerLink]="['/signup']" class="signup_button">Sign Up</a>
+                                <!--<p class="text-muted">Sign In to your account</p>-->
 
-                                <div class="form-group row" [ngClass]="{'has-danger': !_isValid('username')}">
+                                <div class="form-group row form_group_top_row" [ngClass]="{'has-danger': !_isValid('username')}">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="icon-user"></i></span>
-                                            <input class="form-control" type="text" placeholder="Username" [formControl]="_loginForm.controls['username']" [ngClass]="{'form-control-danger': !_isValid('username')}">
+                                            <!--<span class="input-group-addon"><i class="icon-user"></i></span>-->
+                                            <input class="form-control registration_inputs login_inputs" type="email" placeholder="Email" [formControl]="_loginForm.controls['username']" [ngClass]="{'form-control-danger': !_isValid('username')}">
                                         </div>
                                         <span class="help-block help-block-error" *ngIf="!_formErrors.username.valid">{{_formErrors.username.message}}</span>
                                     </div>
@@ -27,20 +27,31 @@
                                 <div class="form-group row" [ngClass]="{'has-danger': !_isValid('password')}">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="icon-lock"></i></span>
-                                            <input class="form-control" type="password" placeholder="Password" [formControl]="_loginForm.controls['password']" [ngClass]="{'form-control-danger': !_isValid('password')}">
+                                            <!--<span class="input-group-addon"><i class="icon-lock"></i></span>-->
+                                            <input class="form-control registration_inputs login_inputs" type="password" placeholder="Password" [formControl]="_loginForm.controls['password']" [ngClass]="{'form-control-danger': !_isValid('password')}">
                                         </div>
                                         <span class="help-block help-block-error" *ngIf="!_formErrors.password.valid">{{_formErrors.password.message}}</span>
                                     </div>
                                 </div>
+                                <div class="form-group row" [ngClass]="{'has-danger': !_isValid('password')}">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <div class="radio registration_radios">
+                                                <label><input class="registration_inputs radio_inputs" type="radio" name="rememberMe">Remember me</label>
+                                            </div>
+                                        </div>
+                                        <span class="help-block help-block-error" *ngIf="!_formErrors.password.valid">{{_formErrors.password.message}}</span>
+                                    </div>
+                                </div>
+                                
 
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <button type="submit" class="btn btn-primary px-2" [disabled]="!_loginForm.valid || _submitted == true">Login</button>
+                                <div class="row submit_button_row">
+                                    <div class="col-xs-12 center_text">
+                                        <button type="submit" class="btn form_submit_buttons px-2" [disabled]="!_loginForm.valid || _submitted == true">Login</button>
                                         <div class="spinner spinner-login" *ngIf="_submitted"></div>
                                     </div>
-                                    <div class="col-xs-6 text-xs-right">
-                                        <a [routerLink]="['/password-reset-request']" class="btn btn-link px-0">Forgot password?</a>
+                                    <div class="col-xs-12 center_text">
+                                        <a [routerLink]="['/password-reset-request']" class="btn forgot_pass px-0">Forgot password?</a>
                                     </div>
                                     <div *ngIf="_errorMessage" class="col-xs-12 error-block mt-h">
                                         <div class="alert alert-danger">{{_errorMessage}}</div>
@@ -50,6 +61,7 @@
                             </form>
                         </div>
                     </div>
+                    <!--
                     <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
                         <div class="card-body text-center">
                             <div>
@@ -60,6 +72,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>

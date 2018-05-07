@@ -93,8 +93,14 @@ app-tutorial-two {
     width: 40px;
     height: 53px;
   }
+  #remove_child {
+    display: none;
+  }
+  #remove_adult {
+    display: none;
+  }
   #person_number, #child_number {
-    display: inline-block;
+    display: inline;
   }
   .child_number_display, .person_number_display {
     display: none;
@@ -186,5 +192,18 @@ app-tutorial-two {
   }
   .daterangepicker_input {
     display: none;
+  }
+  .next_button {
+    color: #fff;
+    background-color: #e52050;
+    border: 0px;
+    border-bottom: 4px solid #fff;
+    font-size: 22px;
+    text-align: left;
+    padding: 0pc 15px 0px 0px;
+    position: relative;
+    float: right;
+    right: 40px;
+    padding-top: 30px;
   }
 }

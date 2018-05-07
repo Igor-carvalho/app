@@ -8,6 +8,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     height: 100vh;
     z-index: 1050;
     overflow-y: scroll;
+    display: none;
     .close_container {
       display: block;
       width: 100%;
@@ -324,9 +325,10 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       box-sizing: border-box;
       padding: 0px 0px 0px 15px;
       .place_name {
-        max-width: 60%;
+        max-width: 80%;
         display: inline-block;
         text-transform: uppercase;
+        height: 40px;
       }
       .arrow {
         display: inline-block;

@@ -306,7 +306,11 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         left: 0px;
         z-index: 4;
         img {
-          height: 204px;
+          position: relative;
+          max-height: 130%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
         }
       }
       .icon {
@@ -325,10 +329,12 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       box-sizing: border-box;
       padding: 0px 0px 0px 15px;
       .place_name {
-        max-width: 80%;
+        width: calc(100% - 30px);
         display: inline-block;
         text-transform: uppercase;
-        height: 40px;
+        height: auto;
+        overflow: auto;
+        padding-top: 4px;
       }
       .arrow {
         display: inline-block;
@@ -337,7 +343,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         width: 20px;
         height: 24px;
         margin-right: 10px;
-        top: 10px;
+        top: 5px;
       }
     }
 
@@ -366,20 +372,159 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
   }
   /* Large Devices, Wide Screens */
+  
+  /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
+    .activity_container {
+      flex: 0 0 33.333333334%;
+      max-width: 33.333333334%;
+    }
   }
 
   /* Medium Devices, Desktops */
   @media only screen and (min-width : 769px) and (max-width : 992px) {
+    .wishlist_container {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
   }
 
   /* Small Devices, Tablets */
   @media only screen and (min-width : 481px) and (max-width : 768px) {
-    
+    .sidebar_section {
+      width: 100%;
+    }
+    .wishlist_container {
+      box-sizing: border-box;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    } 
+    .elem_image {
+      max-height: 160% !important;
+    }
+    .icon_container {
+      width: 68px !important;
+    }
+    .calendar_image {
+      width: 58px;
+    }
+    .person_info {
+      font-size: 18px !important;
+      line-height: 34px !important;
+    }
+    .person_info .person_stats_container {
+      width: 140px !important;
+      height: 30px !important;
+    }
+    .person_info .person_stats_container .person {
+      margin-right: 0px !important;
+    }
+    .sidebar_section .filters .filters_one .person_info .add_person {
+      width: 20px !important;
+      height: 20px !important;
+      top: 10px !important;
+    }
+    .sidebar_section .filters .filters_one .person_info .add_person img {
+      position: absolute !important;
+      top: 0px !important;
+    }
+    .sidebar_section .filters .filters_one .person_info .remove_person {
+      width: 20px !important;
+      height: 20px !important;
+      top: 10px !important;
+    }
+    .sidebar_section .filters .filters_one .person_info .remove_person img {
+      position: absolute !important;
+      top: 0px !important;
+    }
+    .sidebar_section .filters .filters_one .calendar_container .month_container .month_wrapper {
+      width: 156px !important;
+    }
+    .from {
+      font-size: 14px !important;
+      width: 45px !important;
+    }
+    .icon_left, .icon_right, .day_container .icon_left, .day_container .icon_right {
+      box-sizing: border-box !important;
+      padding: 2px !important;
+    }
+    .day_container {
+      margin-left: 10px !important;
+    }
+    .day {
+      font-size: 14px !important;
+    }
+    .budget_icons_container {
+      width: 112px !important;
+    }
+    .checkboxes_wrapper {
+      font-size: 15px !important;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
-    
+    .wishlist_container {
+      box-sizing: border-box;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }  
+    .sidebar_section {
+      width: 100%;
+    }
+    /*.person_info {
+      max-width: 150px;
+    }
+    .add_person {
+      margin: 0px 10px 0px 0px;
+    }*/
+    .filters_one {
+      text-align: center !important;
+      padding: 10px 0px !important;
+    }
+    .icon_container {
+      width: 100% !important;
+      text-align: center !important;
+    }
+    .icon_calendar img {
+      max-width: 100px !important;
+    }
+    .calendar_container {
+      width: 100% !important;
+      text-align: center !important;
+    }
+    .from, .month_wrapper, .month_container, .month, .day_container, .day, .icon_left, .icon_right {
+      float: none !important;
+    }
+    .from {
+      width: 100% !important;
+      line-height: 20px !important;
+    }
+    .calendar_dates_display {
+      font-size: 17px !important;
+      max-width: 300px !important;
+    }
+    .budget_icons_container {
+      float: none;
+    }
+    .person_info .person_stats_container {
+      width: auto !important;
+      display: inline-block !important;
+    }
+    .person {
+      margin-right: 15px !important;
+    }
+    .checkboxes_wrapper {
+      text-align: center !important;
+    }
+    .checkbox {
+      width: 300px !important;
+      float: none !important;
+      text-align: left !important;
+      margin: 0px auto !important;
+    }
+    .budget_icons_container {
+      width: 100px !important;
+    }
   }
 }

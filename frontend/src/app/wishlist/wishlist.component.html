@@ -50,7 +50,7 @@
         </div>
         <div class="filters_one">
             <div class="icon_container icon_calendar">
-                <img class="child_img" src="assets/img/Icon_Calendar_White.svg" alt="person">
+                <img class="calendar_image" src="assets/img/Icon_Calendar_White.svg" alt="person">
             </div>
             <div class="calendar_dates_display">
                 <span id="calendar_dates_month_display_one"></span>
@@ -167,16 +167,16 @@
 </div>
 <div class="container-fluid wishlist_container">
     <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
+        <div class="col-lg-1 left_container"></div>
+        <div class="col-lg-9 middle_container">
             <div class="row">
 
-                <div class="col-lg-3" *ngFor="let activity of _activities">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container" *ngFor="let activity of _activities">
                     <div class="element_container selected-activity" [class.selected-activity]="check_activity_selected(activity.id)"
                          (click)="toggle_selected_acctivity(activity.id)">
                         <div class="image_container">
                             <div class="image">
-                                <img [src]="activity.images[0]" alt="image">
+                                <img class="elem_image" [src]="activity.images[0]" alt="image">
                             </div>
                             <div class="icon">
                                 <img [src]="'assets/img/'+activity.micro_icon" alt="Museum category">
@@ -193,7 +193,7 @@
 
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 right_container">
             <div class="edit_itinerary_container">
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
                     <div class="edit_itinerary" (click)="editItinerary()">Show my<br>Itinerary</div>

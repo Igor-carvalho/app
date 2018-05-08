@@ -117,7 +117,7 @@ export class TutorialTwoComponent implements OnInit {
                 childNumberContainer.innerHTML += "<img src='assets/img/child.svg' alt='child' class='child_image child_image_added'>";
             }
             $('.child_number_count').html($addChildClickCount);
-            if(childNumberContainer.childElementCount > 0) {
+            if (childNumberContainer.childElementCount > 0) {
                 $removeChild.css('display', 'inline-block');
             }
         }.bind(this);
@@ -135,7 +135,7 @@ export class TutorialTwoComponent implements OnInit {
                 }
             }
             $('.child_number_count').html($addChildClickCount);
-            if(childNumberContainer.childElementCount == 0) {
+            if (childNumberContainer.childElementCount == 0) {
                 $removeChild.hide(400);
             }
         }.bind(this);
@@ -300,6 +300,20 @@ export class TutorialTwoComponent implements OnInit {
 
         console.log(this._activityFilter);
         this._router.navigate(['/wishlist'], {queryParams: this._activityFilter});
+    }
+
+    showGetStarted() {
+        if (
+            this._activityFilter.budget_type != null &&
+            this._activityFilter.date_ends != null &&
+            this._activityFilter.date_starts != null &&
+            this._activityFilter.macro_categories.length > 0 &&
+            this._activityFilter.num_adults > 0
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

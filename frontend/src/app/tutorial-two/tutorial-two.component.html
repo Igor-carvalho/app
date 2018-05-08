@@ -55,7 +55,7 @@
                         <div class="checkboxRound">
                             <input type="checkbox"
                                    [checked]="_arrayUtils.search_string_array(_activityFilter.macro_categories, category.id)"
-                                   id="checkboxOneInput" name=""/>
+                                    name=""/>
                             <label for="checkboxOneInput"></label>
                         </div>
                         <label>{{ category.name }}</label>
@@ -76,5 +76,5 @@
             <img src="assets/img/arrow_right.svg" alt="slide right arrow" class="arrow_imgs">
         </div>
     </div>
-    <button class="next_button" (click)="getStarted()">Next Step!</button>
+    <button class="next_button" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!</button>
 </div>

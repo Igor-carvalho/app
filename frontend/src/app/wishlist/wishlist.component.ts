@@ -74,6 +74,9 @@ export class WishlistComponent implements OnInit {
         $('.edit_filters_icon').click(function(){
             $(".sidebar_section").toggle(400);
         });
+        if ($(window).width() <= 480) {
+            TweenLite.to('.budget_icons_container', 0.4, {float: 'none'});
+        }
 
     }
 
@@ -82,8 +85,15 @@ export class WishlistComponent implements OnInit {
     }
 
     edifFiltersFunction() {
-
-        TweenLite.to('.sidebar_section', 0.4, {width: 530});
+        if ($(window).width() > 768) {
+            TweenLite.to('.sidebar_section', 0.4, {width: 530});
+        }
+        if ($(window).width() > 480) {
+            TweenLite.to('.budget_icons_container', 0.4, {float: 'left'});
+        }
+        if ($(window).width() <= 480) {
+            TweenLite.to('.budget_icons_container', 0.4, {float: 'left'});
+        }
         TweenLite.to('.editFilters', 0.4, {visibility: 'hidden', borderBottomWidth: 0});
         TweenLite.to('.applyFilters', 0.4, {borderBottomWidth: 5, visibility: 'visible'});
         TweenLite.to('.add_person', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
@@ -95,7 +105,7 @@ export class WishlistComponent implements OnInit {
         TweenLite.from('.calendar_container', 0.4, {scale: 0, delay: 0.4});
         TweenLite.to('.budget_range_text_display', 0.4, {display: 'none', clearProps: "transform"});
         TweenLite.to('.budget_icons_container', 0.4, {
-            display: 'block',
+            display: 'inline-block',
             textAlign: 'center',
             delay: 0.4,
             clearProps: "transform"
@@ -111,10 +121,10 @@ export class WishlistComponent implements OnInit {
         TweenLite.to('.editFilters', 0.4, {borderBottomWidth: 5, visibility: 'visible'});
         TweenLite.to('.add_person', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
         TweenLite.to('.remove_person', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.calendar_dates_display', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.calendar_dates_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
         TweenLite.from('.calendar_dates_display', 0.4, {scale: 0, delay: 0.4});
         TweenLite.to('.calendar_container', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.budget_range_text_display', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.budget_range_text_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
         TweenLite.from('.budget_range_text_display', 0.4, {scale: 0, delay: 0.4});
         //TweenLite.to('.budget_icons_container', 0.4, {display: 'none', textAlign: 'left', clearProps:"transform"});
         if ($('input[name=budget_input]:checked').val() == 'low_budget') {
@@ -122,7 +132,12 @@ export class WishlistComponent implements OnInit {
             $('.budget_icons_container_two').css('display', 'none');
             $('.budget_icons_container_three').css('display', 'none');
             $('.budget_range_text_display').html('low range');
-            $('.budget_icons_container').css('text-align', 'left');
+            if ($(window).width() > 480) {
+                $('.budget_icons_container').css('text-align', 'left');
+            }
+            if ($(window).width() <= 480) {
+                $('.budget_icons_container').css('float', 'none');
+            }
         }
 
         if ($('input[name=budget_input]:checked').val() == 'mid_range_budget') {
@@ -130,7 +145,12 @@ export class WishlistComponent implements OnInit {
             $('.mid_budget_icon').attr('src', 'assets/img/middle-range-budget-selected.svg');
             $('.budget_icons_container_three').css('display', 'none');
             $('.budget_range_text_display').html('mid range');
-            $('.budget_icons_container').css('text-align', 'left');
+            if ($(window).width() > 480) {
+                $('.budget_icons_container').css('text-align', 'left');
+            }
+            if ($(window).width() <= 480) {
+                $('.budget_icons_container').css('float', 'none');
+            }
         }
 
         if ($('input[name=budget_input]:checked').val() == 'high_range_budget') {
@@ -138,7 +158,12 @@ export class WishlistComponent implements OnInit {
             $('.budget_icons_container_two').css('display', 'none');
             $('.high_budget_icon').attr('src', 'assets/img/high-budget-selected.svg');
             $('.budget_range_text_display').html('high range');
-            $('.budget_icons_container').css('text-align', 'left');
+            if ($(window).width() > 480) {
+                $('.budget_icons_container').css('text-align', 'left');
+            }
+            if ($(window).width() <= 480) {
+                $('.budget_icons_container').css('float', 'none');
+            }
         }
     }
 

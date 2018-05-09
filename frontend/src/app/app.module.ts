@@ -32,6 +32,7 @@ import {UserDataService} from './model/user-data.service';
 import {SettingDataService} from './model/setting-data.service';
 import {ActivitiesDataService} from "./services/activities-data.service";
 import {StaticDataService} from "./services/static-data.service";
+import {ItineraryDataService} from "./services/itinerary-data.service";
 
 @NgModule({
     imports: [
@@ -59,6 +60,7 @@ import {StaticDataService} from "./services/static-data.service";
         GlobalService,
         SettingDataService,
         ActivitiesDataService,
+        ItineraryDataService,
         StaticDataService,
         UserDataService,
     ],

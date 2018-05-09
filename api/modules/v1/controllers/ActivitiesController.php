@@ -2,6 +2,7 @@
 
 namespace app\modules\v1\controllers;
 
+use app\componenets\HelperFunction;
 use app\filters\auth\HttpBearerAuth;
 use app\models\database\Activities;
 use app\models\database\ActivitiesMacroCategories;
@@ -266,8 +267,9 @@ class ActivitiesController extends ActiveController
             ->where([
                 'budget' => $budget,
             ])
-            ->andWhere(['>=', 'date_starts', $date_start])
-            ->andWhere(['<=', 'date_ends', $date_end])
+//            ->andWhere(['>=', 'date_starts', $date_start])
+//            ->andWhere(['<=', 'date_ends', $date_end])
+            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) AND ('$date_end' BETWEEN date_starts AND date_ends)")
             ->andWhere(['>=', 'max_people', $people])
             ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
             ->all();
@@ -281,6 +283,7 @@ class ActivitiesController extends ActiveController
             ->all();
         $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
 
+//        HelperFunction::output($activityMicroIcon);
         $return = [];
 
         foreach ($activities as $activity) {

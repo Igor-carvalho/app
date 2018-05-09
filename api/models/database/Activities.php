@@ -27,6 +27,7 @@ use Yii;
  * @property integer $max_people
  * @property string $created_at
  * @property string $updated_at
+ * @property string $duration
  * @property integer $created_by
  *
  * @property User $createdBy
@@ -59,7 +60,7 @@ class Activities extends \yii\db\ActiveRecord
             [['max_people', 'created_by'], 'integer'],
             [['time_start_hh', 'time_start_mm', 'time_end_hh', 'time_end_mm'], 'string', 'max' => 4],
             [['macro_category', 'micro_category', 'weather_types'], 'each', 'rule' => ['integer']],
-            [['created_by'], 'required'],
+            [['created_by', 'duration'], 'required'],
             [['name'], 'string', 'max' => 200],
             [['city', 'country'], 'string', 'max' => 45],
             [['budget'], 'string', 'max' => 10],

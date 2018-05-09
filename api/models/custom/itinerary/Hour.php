@@ -11,9 +11,15 @@ namespace app\models\custom\itinerary;
 
 class Hour
 {
-    public $hour_from;
-    public $hour_to;
-    public $activity;
+    public $hour_from = 0;
+    public $hour_to = 0;
+
+    public $scheduled_hour_from;
+    public $scheduled_hour_to;
+
     public $distances_activity;
-    public $duration = 2; //hours TODO: implement this on database end
+    public $duration = 30; //minutes
+    public $activity;
+
+    public $debug = ""; //TODO: Remvoe This
 }

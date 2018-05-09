@@ -18,6 +18,8 @@ import {ActivityFilter} from "../model/ActivityFilter";
 import {ActivitiesDataService} from "../services/activities-data.service";
 import {UserService} from "../model/user.service";
 import {ArrayUtils} from "../utilities/ArrayUtils";
+import {ItineraryDataService} from "../services/itinerary-data.service";
+import {Itinerary} from "../model/itinerary/Itinerary";
 
 @Component({
     selector: 'app-wishlist',
@@ -29,17 +31,21 @@ export class WishlistComponent implements OnInit {
     public _activities: any;
     public _selectedActivities: any;
 
+    public _itinerary: Itinerary;
+
     constructor(private _router: Router,
                 private _userService: UserService,
+                private _itineraryDataService: ItineraryDataService,
                 private _activitesDataService: ActivitiesDataService) {
         this._selectedActivities = [];
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             this._activityFilter = <ActivityFilter> params;
-            this.getActivities(this._activityFilter);
         });
     }
 
     ngOnInit() {
+
+        this.getActivities(this._activityFilter);
         TweenLite.to("#heading", 2, {rotation: 360});
         $('#day_one').html($('#date_one').val());
         $('#calendar_dates_day_display_one').html($('#date_one').val());
@@ -71,7 +77,7 @@ export class WishlistComponent implements OnInit {
             $('.budget_range_text_display').html('high range');
         }
 
-        $('.edit_filters_icon').click(function(){
+        $('.edit_filters_icon').click(function () {
             $(".sidebar_section").toggle(400);
         });
         if ($(window).width() <= 480) {
@@ -481,6 +487,30 @@ export class WishlistComponent implements OnInit {
         return this._selectedActivities.indexOf(id) != -1;
     }
 
+    show_my_itinerary() {
+        if (this._selectedActivities.length == 0) {
+            alert("Wishlist is empty, Please select one or more items. ");
+        } else {
+            this._itineraryDataService
+                .cookItinerary(this._selectedActivities, this._activityFilter)
+                .subscribe(
+                    itinerary => {
+                        this._itinerary = itinerary;
+                        this._router.navigate(['/itinerary'], {queryParams: {id: this._itinerary.id}});
+                    },
+                    error => {
+                        // unauthorized access
+                        if (error.status == 401 || error.status == 403) {
+                            this._userService.unauthorizedAccess(error);
+                        } else {
+                            alert(error.data.message);
+                            //this._errorMessage = error.data.message; // TODO: uncomment later
+                        }
+                    }
+                );
+
+        }
+    }
 
 
 }

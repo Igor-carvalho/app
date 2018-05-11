@@ -13,5 +13,4 @@ class Itinerary
 {
     public $days;
 
-
 }

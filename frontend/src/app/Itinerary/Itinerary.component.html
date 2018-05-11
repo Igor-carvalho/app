@@ -1,448 +1,133 @@
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
 <div class="container-fluid itinerary-container">
     <div class="row">
-        <div class="col-lg-10">
-            <div class="row">
-                <div class="col-lg-2 weather_section_div">
-                    <div class="weather-container">
-                        <div class="date">
-                            <span class="date-weekday">Sunday,</span>
-                            <span class="date-span">20 MAY</span>
-                        </div>
-                        <div class="temperature">22&deg;</div>
-                        <div class="weather-icon">
-                            <img src="assets/img/Icon_Weather_Clear.svg" alt="weather">
+        <div class="col-lg-10" *ngIf="_itinerary != null && _itinerary.itinerary_cook_raw != null">
+            <div *ngFor="let day of _itinerary.itinerary_cook_raw.days">
+                <div class="row" *ngIf="day.hours.length > 0">
+                    <div class="col-lg-2 weather_section_div">
+                        <div class="weather-container">
+                            <div class="date">
+                                <span class="date-weekday">{{dateUtils.mysqlDateToDayhName(day.day)}},</span>
+                                <span class="date-span">{{dateUtils.mysqlDateToDay(day.day)}} {{dateUtils.mysqlDateToMonthName(day.day)}}</span>
+                            </div>
+                            <div class="temperature">22&deg;</div>
+                            <div class="weather-icon">
+                                <img src="assets/img/Icon_Weather_Clear.svg" alt="weather">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-10 middle_section_div">
-                    <div class="top_timimg_bar">
-                        <div class="red-line"></div>
-                        <div class="circle_one"></div>
-                        <div class="circle_two"></div>
-                        <div class="time_one">10:00</div>
-                        <div class="time_two">22:00</div>
-                    </div>
-                    <div class="events_container">
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/catacombe_san_gennaro.jpg" alt="image">
-                                <div class="events_transparent_layer" id="modalClickButton">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
+                    <div class="col-lg-10 middle_section_div">
+                        <div class="top_timimg_bar">
+                            <div class="red-line"></div>
+                            <div class="circle_one"></div>
+                            <div class="circle_two"></div>
+                            <div class="time_one">{{dateUtils.mysqlDateTimeHour(day.hours[0].scheduled_hour_from)}}
+                            </div>
+                            <div class="time_two">{{dateUtils.mysqlDateTimeHour(day.hours[day.hours.length -1
+                                ].scheduled_hour_to)}}
+                            </div>
+                        </div>
+                        <div class="events_container">
+                            <div class="events" *ngFor="let hour of day.hours">
+                                <div class="events_wrapper">
+                                    <img class="itinerary_images" src="{{hour.activity.images[0]}}"
+                                         alt="image">
+                                    <div class="events_transparent_layer" id="modalClickButton">
+                                        <div class="title">{{hour.activity.name}}</div>
+                                        <span class="time">{{dateUtils.mysqlDateTimeHour(hour.scheduled_hour_from)}}-{{dateUtils.mysqlDateTimeHour(hour.scheduled_hour_to)}}</span>
+                                        <span class="cart">
                                         <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
                                     </span>
-                                    <span class="cross">
+                                        <span class="cross">
                                         <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
                                     </span>
-                                    <span class="double_arrow">
+                                        <span class="double_arrow">
                                         <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
                                     </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>                        
-                        <div id="myModal" class="modal_popup">
-                            <div class="modal_content_wrapper">
+                            <div id="myModal" class="modal_popup">
+                                <div class="modal_content_wrapper">
                                 <span class="toggle_close_modal">
                                     <img src="assets/img/Icon_Close.svg" alt="close modal">
                                 </span>
-                                <span class="modal_category_icon">
+                                    <span class="modal_category_icon">
                                     <img src="assets/img/Icon_Museum.svg" alt="category name here">
                                 </span>
-                                <div class="modal_content">
-                                    <div class="modal_content_left_section">
-                                        <div class="modal_left_section_image">
-                                            <img src="assets/img/leon_d'oro_resturan.jpg" alt="description image here">
+                                    <div class="modal_content">
+                                        <div class="modal_content_left_section">
+                                            <div class="modal_left_section_image">
+                                                <img src="assets/img/leon_d'oro_resturan.jpg"
+                                                     alt="description image here">
+                                            </div>
+                                            <div class="info">info</div>
+                                            <div class="modal_description_address">Via Francesco De Sanctis, 19/21,
+                                                80134
+                                                Naples
+                                            </div>
+                                            <div class="modal_pricing_container">
+                                                <span class="price">Price:</span>
+                                                <div class="ordinary_ticket">Ordinary ticket: <span
+                                                        id="ordinary_ticket_price">&euro; 7.00</span></div>
+                                                <span class="price">Children</span>
+                                                <div class="ordinary_ticket">from 10 to 25 years: <span
+                                                        id="activity_children_range_price">&euro; 5.00</span></div>
+                                                <div class="ordinary_ticket">FAI members: <span id="activity_fai_price">&euro; 5.00</span>
+                                                </div>
+                                                <div class="ordinary_ticket">Schools: <span id="activity_schools_price">&euro; 3.00</span>
+                                                </div>
+                                                <div class="ordinary_ticket">Children up to 9 years: <span
+                                                        id="activity_children_upto_nine_price">free</span></div>
+                                                <div class="ordinary_ticket">Audio guide: <span
+                                                        id="activity_audio_guide">&euro; 3.50</span>
+                                                </div>
+                                                <br/>
+                                            </div>
+                                            <div class="modal_schedule_container">
+                                                <span class="price">Schedule:</span>
+                                                <div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>
+                                                </div>
+                                                <div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>
+                                                </div>
+                                                <div class="closing_day">Closed on <span
+                                                        id="activity_closing_day">Tuesday</span></div>
+                                            </div>
                                         </div>
-                                        <div class="info">info</div>
-                                        <div class="modal_description_address">Via Francesco De Sanctis, 19/21, 80134 Naples</div>
-                                        <div class="modal_pricing_container">
-                                            <span class="price">Price:</span>
-                                            <div class="ordinary_ticket">Ordinary ticket: <span id="ordinary_ticket_price">&euro; 7.00</span></div>
-                                            <span class="price">Children</span>
-                                            <div class="ordinary_ticket">from 10 to 25 years: <span id="activity_children_range_price">&euro; 5.00</span></div>
-                                            <div class="ordinary_ticket">FAI members: <span id="activity_fai_price">&euro; 5.00</span></div>
-                                            <div class="ordinary_ticket">Schools: <span id="activity_schools_price">&euro; 3.00</span></div>
-                                            <div class="ordinary_ticket">Children up to 9 years: <span id="activity_children_upto_nine_price">free</span></div>       
-                                            <div class="ordinary_ticket">Audio guide: <span id="activity_audio_guide">&euro; 3.50</span></div>
-                                            <br />
-                                        </div>
-                                        <div class="modal_schedule_container">
-                                            <span class="price">Schedule:</span>
-                                            <div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span></div>
-                                            <div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span></div>
-                                            <div class="closing_day">Closed on <span id="activity_closing_day">Tuesday</span></div>
+                                        <div class="modal_content_right_section">
+                                            <div class="modal_right_heading">
+                                                <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">Chapel of San Severo</span>
+                                                </h2>
+                                            </div>
+                                            <div class="modal_right_description">
+                                                <p>Located in the heart of Naples, behind the church of San Domenico
+                                                    Maggiore, there is one of the most striking chapels in the city,
+                                                    which
+                                                    contains one of the most fascinating secrets in the history of
+                                                    Partenope: Chapel of San Severo.</p>
+                                                <p>The chapel of San Severo belonged to the family of the same name and
+                                                    was
+                                                    conceived not only as a place of worship but, above all, as a
+                                                    testimony
+                                                    rich in symbolism that wants to tell, through the centuries, the
+                                                    greatness of the family and the artistic inspiration of Raimondo di
+                                                    Sangro. seventh Prince of San Severo, creator and commissioner of
+                                                    the
+                                                    main works that we find today inside the chapel.</p>
+                                                <p>It stands out above all that of the famous “Veiled Christ“, created
+                                                    by
+                                                    Giuseppe Sanmartino in 1753, capable of transferring unique emotions
+                                                    and
+                                                    recognized as one of the great sculptural masterpieces in the world
+                                                    such
+                                                    that at that time possessed great admirers such as Antonio
+                                                    Canova.</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="modal_content_right_section">
-                                        <div class="modal_right_heading">
-                                            <h2 class="modal_h2">About the <br /><span class="modal_h2_dynamic">Chapel of San Severo</span></h2>
-                                        </div>
-                                        <div class="modal_right_description">
-                                            <p>Located in the heart of Naples, behind the church of San Domenico Maggiore, there is one of the most striking chapels in the city, which contains one of the most fascinating secrets in the history of Partenope: Chapel of San Severo.</p>
-                                            <p>The chapel of San Severo belonged to the family of the same name and was conceived not only as a place of worship but, above all, as a testimony rich in symbolism that wants to tell, through the centuries, the greatness of the family and the artistic inspiration of Raimondo di Sangro. seventh Prince of San Severo, creator and commissioner of the main works that we find today inside the chapel.</p>
-                                            <p>It stands out above all that of the famous “Veiled Christ“, created by Giuseppe Sanmartino in 1753, capable of transferring unique emotions and recognized as one of the great sculptural masterpieces in the world such that at that time possessed great admirers such as Antonio Canova.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                            
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/buco_pertuso.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Ferrigno Artisan Shop</div>
-                                    <span class="time">13-14.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/ferrigno_pastori.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">15-15.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leon_d'oro_resturan.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Leon d'oro Restaurant</div>
-                                    <span class="time">16-18</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leopoldo_pasticceria.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Pasticceria Leopoldo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">19-20</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2 weather_section_div">
-                    <div class="weather-container">
-                        <div class="date">
-                            <span class="date-weekday">Monday,</span>
-                            <span class="date-span">21 MAY</span>
-                        </div>
-                        <div class="temperature">23&deg;</div>
-                        <div class="weather-icon">
-                            <img src="assets/img/Icon_Weather_Cloudy.svg" alt="weather">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-10 middle_section_div">
-                    <div class="top_timimg_bar">
-                        <div class="red-line"></div>
-                        <div class="circle_one"></div>
-                        <div class="circle_two"></div>
-                        <div class="time_one">9:00</div>
-                        <div class="time_two">00:00</div>
-                    </div>
-                    <div class="events_container">
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/catacombe_san_gennaro.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/buco_pertuso.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Ferrigno Artisan Shop</div>
-                                    <span class="time">13-14.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/ferrigno_pastori.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">15-15.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leon_d'oro_resturan.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Leon d'oro Restaurant</div>
-                                    <span class="time">16-18</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leopoldo_pasticceria.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Pasticceria Leopoldo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">19-20</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2 weather_section_div">
-                    <div class="weather-container">
-                        <div class="date">
-                            <span class="date-weekday">Sunday,</span>
-                            <span class="date-span">20 MAY</span>
-                        </div>
-                        <div class="temperature">22&deg;</div>
-                        <div class="weather-icon">
-                            <img src="assets/img/Icon_Weather_Clear.svg" alt="weather">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-10 middle_section_div">
-                    <div class="top_timimg_bar">
-                        <div class="red-line"></div>
-                        <div class="circle_one"></div>
-                        <div class="circle_two"></div>
-                        <div class="time_one">10:00</div>
-                        <div class="time_two">22:00</div>
-                    </div>
-                    <div class="events_container">
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/catacombe_san_gennaro.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/buco_pertuso.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Ferrigno Artisan Shop</div>
-                                    <span class="time">13-14.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/ferrigno_pastori.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">15-15.30</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leon_d'oro_resturan.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Leon d'oro Restaurant</div>
-                                    <span class="time">16-18</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/leopoldo_pasticceria.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Pasticceria Leopoldo</div>
-                                    <span class="time">10-12</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="events">
-                            <div class="events_wrapper">
-                                <img class="itinerary_images" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                <div class="events_transparent_layer">
-                                    <div class="title">Chapel of San Severo</div>
-                                    <span class="time">19-20</span>
-                                    <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                    <span class="cross">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                    <span class="double_arrow">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

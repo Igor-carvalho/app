@@ -2,6 +2,7 @@
 
 namespace app\models\database;
 
+use app\models\User;
 use Yii;
 
 /**
@@ -10,9 +11,14 @@ use Yii;
  * @property integer $id
  * @property string $date_starts
  * @property string $date_ends
+ * @property integer $adults
+ * @property integer $childrens
+ * @property integer $budget_type
+ * @property string $macro_categories
+ * @property string $itinerary_cook_raw
+ * @property integer $user_id
  * @property string $created_at
  * @property string $updated_at
- * @property integer $user_id
  *
  * @property User $user
  * @property ItinerariesActivities[] $itinerariesActivities
@@ -35,8 +41,9 @@ class Itineraries extends \yii\db\ActiveRecord
     {
         return [
             [['date_starts', 'date_ends', 'created_at', 'updated_at'], 'safe'],
+            [['adults', 'childrens', 'budget_type', 'user_id'], 'integer'],
+            [['macro_categories', 'itinerary_cook_raw'], 'string'],
             [['user_id'], 'required'],
-            [['user_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -50,9 +57,14 @@ class Itineraries extends \yii\db\ActiveRecord
             'id' => 'ID',
             'date_starts' => 'Date Starts',
             'date_ends' => 'Date Ends',
+            'adults' => 'Adults',
+            'childrens' => 'Childrens',
+            'budget_type' => 'Budget Type',
+            'macro_categories' => 'Macro Categories',
+            'itinerary_cook_raw' => 'Itinerary Cook Raw',
+            'user_id' => 'User ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'user_id' => 'User ID',
         ];
     }
 

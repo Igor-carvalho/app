@@ -88,7 +88,7 @@
 
 	    public function sendConfirmationEmail(){
 
-		    $confirmURL = \Yii::$app->params['frontendURL'].'#/confirm?id='.$this->_user->id.'&auth_key='.$this->_user->auth_key;
+		    $confirmURL = \Yii::$app->params['frontendURL'].'/confirm?id='.$this->_user->id.'&auth_key='.$this->_user->auth_key;
 
 		    $email = \Yii::$app->mailer
 			    ->compose(

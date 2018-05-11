@@ -54,7 +54,7 @@
                 }
             }
 
-            $resetURL = \Yii::$app->params['frontendURL'].'#/password-reset?token='.$user->password_reset_token;
+            $resetURL = \Yii::$app->params['frontendURL'].'password-reset?token='.$user->password_reset_token;
 
 
             return Yii::$app

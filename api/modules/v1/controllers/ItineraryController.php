@@ -2,6 +2,8 @@
 
 namespace app\modules\v1\controllers;
 
+use app\componenets\DistanceHelper;
+use app\componenets\HelperFunction;
 use app\componenets\ItineraryCooker;
 use app\filters\auth\HttpBearerAuth;
 use app\models\database\Activities;
@@ -38,7 +40,7 @@ use app\models\PasswordResetTokenVerificationForm;
 
 class ItineraryController extends ActiveController
 {
-    public $modelClass = 'app\models\database\Activities';
+    public $modelClass = 'app\models\database\Itineraries';
 
     public function __construct($id, $module, $config = [])
     {
@@ -93,13 +95,13 @@ class ItineraryController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'cooking'];
+        $behaviors['authenticator']['except'] = ['options', 'cooking', 'view'];
 
 
         // setup access
         $behaviors['access'] = [
             'class' => AccessControl::className(),
-            'only' => ['index', 'view', 'create', 'update', 'delete'], //only be applied to
+            'only' => ['index', 'create', 'update', 'delete'], //only be applied to
             'rules' => [
                 [
                     'allow' => true,
@@ -128,23 +130,17 @@ class ItineraryController extends ActiveController
 
     public function actionView($id)
     {
-        $activity = Activities::find()
+        $object = Itineraries::find()
             ->where([
                 'id' => $id
             ])
             ->one();
 
 
-        if ($activity) {
-            $activityObj = json_decode(json_encode($activity->toArray()));
-            $activityObj->macro_category = $activity->getWeatherTypeIds();
-            $activityObj->micro_category = $activity->getMicroCategoryIds();
-            $activityObj->weather_types = $activity->getMacroCategoryIds();
+        if ($object) {
+            $object->itinerary_cook_raw = json_decode($object->itinerary_cook_raw);
+            return $object;
 
-            $activityObj->date_starts = $this->toFrontDateObject($activityObj->date_starts);
-            $activityObj->date_ends = $this->toFrontDateObject($activityObj->date_ends);
-
-            return $activityObj;
         } else {
             throw new NotFoundHttpException("Object not found: $id");
         }
@@ -257,47 +253,35 @@ class ItineraryController extends ActiveController
         return "ok";
     }
 
-    public function actionCooking($activities, $date_start, $date_end)
+    public function actionCooking($activities, $date_starts, $date_ends, $num_adults, $num_childs, $budget_type, $macro_categories)
     {
+
         $activities = explode(",", $activities);
-//        $connection = \Yii::$app->db;
-//        $transaction = $connection->beginTransaction();
-//
-//        $itinerary = new Itineraries();
-//        $itinerary->user_id = 1; // TODO: change with logged in user
-//        $itinerary->date_starts = $date_start;
-//        $itinerary->date_ends = $date_end;
-//
-//        try {
-//            if ($itinerary->save()) {
-//
-//                foreach ($activities as $activity) {
-//                    $itineraryActivity = new ItinerariesActivities();
-//                    $itineraryActivity->itineraries_id = $itinerary->id;
-//                    $itineraryActivity->itineraries_user_id = $itinerary->user_id;
-//                    $itineraryActivity->activities_id = $activity;
-//                    $itineraryActivity->itineraries_user_id = $itinerary->user_id;
-//                    $itineraryActivity->save();
-//                }
-//
-//
-//            } else {
-//
-//            }
-//        } catch (Exception $e) {
-//            $transaction->rollback();
-////                echo "Exception";
-//            throw new HttpException(500, json_encode("unable to complete database transactions"));
-//        }
+//        $user_id = Yii::$app->user->id;
+        $user_id = 1;   // TODO: change with logged in user
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        $itinerary = new Itineraries();
+        $itinerary->user_id = $user_id;
+        $itinerary->date_starts = $date_starts;
+        $itinerary->date_ends = $date_ends;
+        $itinerary->adults = $num_adults;
+        $itinerary->childrens = $num_childs;
+        $itinerary->budget_type = $budget_type;
+        $itinerary->macro_categories = $macro_categories;
+
+//        HelperFunction::output($itinerary);
 
 
         $dbActivities = Activities::find()
             ->select([
                 'id', 'longitude', 'latitude', 'date_starts', 'time_start_hh', 'time_start_mm',
-                'date_ends', 'time_end_hh', 'time_end_mm',
+                'date_ends', 'time_end_hh', 'time_end_mm', 'duration', 'name', 'images'
             ])
             ->where(['id' => $activities])
             ->all();
+
 
 //        $dbActivities[0]->toArray();
 
@@ -305,11 +289,44 @@ class ItineraryController extends ActiveController
             throw new HttpException(404, json_encode("Couldn't find any activities selected"));
         }
 
+        $iteraryCooker = new ItineraryCooker($dbActivities, $date_starts, $date_ends);
+        $activitiesIternery = $iteraryCooker->sort_activities();
 
-        $iteraryCooker = new ItineraryCooker($dbActivities);
-        $iteraryCooker->sort_activities();
-//        $iteraryCooker->
 
+        $itinerary->itinerary_cook_raw = json_encode($activitiesIternery);
+
+        try {
+            if ($itinerary->save()) {
+
+                foreach ($activitiesIternery->days as $day) {
+
+                    foreach ($day->hours as $hour) {
+                        $itineraryActivity = new ItinerariesActivities();
+                        $itineraryActivity->itineraries_id = $itinerary->id;
+                        $itineraryActivity->user_id = $itinerary->user_id;
+                        $itineraryActivity->activities_id = $hour->activity['id'];
+                        $itineraryActivity->start_time = $hour->scheduled_hour_from;
+                        $itineraryActivity->end_time = $hour->scheduled_hour_to;
+                        if (!$itineraryActivity->save()) {
+                            throw new HttpException(500, json_encode($itineraryActivity->errors));
+                        }
+                    }
+                }
+
+                $transaction->commit();
+            } else {
+                throw new HttpException(500, $itinerary->errors);
+            }
+        } catch (Exception $e) {
+            HelperFunction::output("Exception");
+
+            $transaction->rollback();
+            throw new HttpException(500, json_encode("unable to complete database transactions"));
+        }
+
+        //remove extra data
+        $itinerary->itinerary_cook_raw = "";
+        return $itinerary;
 
     }
 

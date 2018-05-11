@@ -1,6 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TweenMax, Power2, Back, Power0, Elastic, Bounce, SplitText, TimelineLite, TweenLite, CSSPlugin, EasePack} from "gsap";
 import * as $ from 'jquery';
+import {ItineraryDataService} from "../services/itinerary-data.service";
+import {Params, Router} from "@angular/router";
+import {UserService} from "../model/user.service";
+import {ActivityFilter} from "../model/ActivityFilter";
+import {Itinerary} from "../model/itinerary/Itinerary";
+import {DateUtils} from "../utilities/date-utils";
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-itinerary',
@@ -8,12 +15,23 @@ import * as $ from 'jquery';
 })
 export class ItineraryComponent implements OnInit {
 
-    constructor() {
+    private _itineraryId: number;
+    private _itinerary: Itinerary;
 
+    private dateUtils: DateUtils;
 
+    constructor(private _router: Router,
+                private _userService: UserService,
+                private _itineraryDataService: ItineraryDataService,) {
+        this.dateUtils = new DateUtils();
+        this._router.routerState.root.queryParams.subscribe((params: Params) => {
+            this._itineraryId = params.id;
+        });
     }
 
     ngOnInit() {
+
+        this.getItinerary();
         //TweenLite.to("#heading", 2, {rotation:360});
         var $weekDay = $(".date-weekday"), $dateSpan = $(".date-span"), $temperature = $(".temperature"), $weatherIcon = $(".weather-icon"), $redBar = $(".red-line"), $circleOne = $(".circle_one"), $circleTwo = $(".circle_two"), $timeOne = $(".time_one"), $timeTwo = $(".time_two"), $events = $(".events");
         
@@ -66,5 +84,35 @@ export class ItineraryComponent implements OnInit {
         TweenLite.to($addActivity, 0.4, {bottom:-44});
         TweenLite.to($itineraryWrapperOne, 0.4, {top:0});
         TweenLite.to($itineraryWrapperTwo, 0.4, {top:0});
+    }
+
+    getItinerary() {
+        this._itineraryDataService
+            .getOne(this._itineraryId)
+            .subscribe(
+                itinerary => {
+                    this._itinerary = itinerary;
+                    console.log(this._itinerary.itinerary_cook_raw.days);
+                },
+                error => {
+                    // unauthorized access
+                    if (error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    } else {
+                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                    }
+                }
+            );
+    }
+
+    getDayStartTime(datetime) {
+        let date = this.dateUtils.mysqlDateTimeToDate(datetime);
+
+        return moment(date).format("hh");
+    }
+    getDayEndTime(datetime) {
+        let date = this.dateUtils.mysqlDateTimeToDate(datetime);
+
+        return moment(date).format("mm");
     }
 }

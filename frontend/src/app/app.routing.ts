@@ -35,12 +35,6 @@ export const routes: Routes = [
                 path: 'tutorial-two',
                 loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
             },
-        ],
-    },
-    {
-        path: '',
-        component:FrontendLayoutComponent,
-        children: [
             {
                 path: 'login',
                 loadChildren: 'app/login/login.module#LoginModule'
@@ -65,6 +59,13 @@ export const routes: Routes = [
                 path: 'password-reset',
                 loadChildren: 'app/password-reset/password-reset.module#PasswordResetModule'
             },
+        ],
+    },
+    {
+        path: '',
+        component:FrontendLayoutComponent,
+        children: [
+
             {
                 path: 'sample-page',
                 loadChildren: 'app/sample-page/sample-page.module#SamplePageModule'

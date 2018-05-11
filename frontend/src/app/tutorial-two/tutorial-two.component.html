@@ -4,35 +4,115 @@
         <div class="slider_section">
             <h1 class="slider_section_heading heading-one">How many travelers?</h1>
             <div class="slider_icons">
-                <input type="hidden" name="childNumberCount"
-                       id="childNumberCountInput" value="0">
-                <input type="hidden" name="personNumberCount"
-                       id="personNumberCountInput" value="1">
-                <div class="child_number_display" id="child_number_display">
-                    <span class="child_number_count">0</span>
-                    <span class="multiplication_sign">&#x2716;</span>
+                <input type="hidden" name="childNumberCount" id="childNumberCountInput" value="0">
+                <input type="hidden" name="personNumberCount" id="personNumberCountInput" value="1">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-4 col-sm-6 col-md-4 margins_top_bottom">
+                    <div id="adult_number">
+                        <img src="assets/img/Icon_Filter_Plus.svg" class="add_person_icon" alt="person" (click)="addPerson('adult')">
+                        <div class="adult_wrapper">
+                            <div class="adult_text">Adults</div>
+                            <div class="image_wrapper">
+                                <img id="adult" src="assets/img/person.svg" alt="person">
+                            </div>
+                            <div class="adult_number_display"></div>
+                        </div>
+                        <img class="remove_person_icon" src="assets/img/Icon_Filter_Minus.svg" alt="remove person" (click)="removePerson('adult')">
+                    </div>
                 </div>
-                <img id="add_child" src="assets/img/add-child.svg" alt="add child" class="child_image">
-                <img id="remove_child" src="assets/img/remove-child.svg" alt="remove child" class="child_image">
-                <div id="child_number"></div>
-                <div id="person_number">
-                    <img src="assets/img/person.svg" class="adult_person" alt="person">
+                <div class="col-lg-4 col-sm-6 col-md-4 children_column margins_top_bottom">
+                    <div id="child_number">
+                        <img src="assets/img/Icon_Filter_Plus.svg" alt="add child" class="add_person_icon" (click)="addPerson('child')">
+                        <div class="child_wrapper">
+                            <div class="child_text">Children</div>
+                            <div class="image_wrapper">
+                                <img src="assets/img/child.svg" alt="child" class="child_image">
+                            </div>
+                            <div class="child_number_display"></div>
+                        </div>
+                        <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child" class="remove_person_icon" (click)="removePerson('child')">
+                    </div>
                 </div>
-                <img id="remove_adult" src="assets/img/remove-person.svg" alt="remove person">
-                <img id="add_adult" src="assets/img/add-person.svg" alt="add person">
-                <div class="person_number_display" id="person_number_display">
-                    <span class="multiplication_sign">&#x2716;</span>
-                    <span class="person_number_count">1</span>
-                </div>
+                <div class="col-lg-2"></div>
             </div>
         </div>
         <div class="slider_section">
-            <h1 class="slider_section_heading heading-one">How many days?</h1>
-            <div class="slider_icons"></div>
+            <h1 class="slider_section_heading heading-one">When?</h1>
+            <input type="hidden" name="date_one" id="date_one" value="21">
+            <input type="hidden" name="date_two" id="date_two" value="21">
+            <input type="hidden" name="month-one" id="month-one" value="december">
+            <input type="hidden" name="month-two" id="month-two" value="december">
+            <div class="slider_icons">
+                <div class="calendar_row">
+                    <div class="from_container">
+                        <div class="from">from</div>
+                    </div>
+                    <div class="month_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="minusMonth('one')">
+                        </div>
+                        <div id="month_one" class="month"></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="plusMonth('one')">
+                        </div>
+                    </div>
+                    <div class="day_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="minusDay('one')">
+                        </div>
+                        <div id="day_one" class="day"></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="plusDay('one')">
+                        </div>
+                    </div>
+                </div>
+                <div class="calendar_row">
+                    <div class="from_container">
+                        <div class="from">to</div>
+                    </div>
+                    <div class="month_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="minusMonth('two')">
+                        </div>
+                        <div id="month_two" class="month"></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="plusMonth('two')">
+                        </div>
+                    </div>
+                    <div class="day_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="minusDay('two')">
+                        </div>
+                        <div id="day_two" class="day"></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="plusDay('two')">
+                        </div>
+                    </div>
+                </div>   
+                
+                <!--
+                <div class="calendar_row">
+                    <div class="from_container">
+                    </div>
+                    <div class="month_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous">
+                        </div>
+                        <div class="month">2018</div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next">
+                        </div>
+                    </div>
+                    <div class="day_container">
+                        
+                    </div>
+                </div>
+            -->
+            </div>
         </div>
         <div class="slider_section">
             <h1 class="slider_section_heading heading-one">What's the budget</h1>
-            <div class="slider_icons">
+            <div class="slider_icons budget_icons_group">
                 <img id="low_budget_image" src="assets/img/low-budget.svg" alt="low budget" class="low_budget_image">
                 <img id="low_budget_image_checked" src="assets/img/low-budget-selected.svg" alt="low budget"
                      class="low_budget_image">

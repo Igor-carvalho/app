@@ -102,19 +102,19 @@
         </div>
         <div class="filters_one">
             <label class="radio-inline budget_icons_container budget_icons_container_one">
-                <input class="budget_inputs" type="radio" name="budget_input" value="low_budget">
+                <input class="budget_inputs" type="radio" id="low-budget-radio" name="budget_input" value="low_budget">
                 <img class="low_budget_icon budget_icons" src="assets/img/low-budget.svg" alt="low budget"
                      (click)="budgetSelection('low')">
             </label>
             <label class="radio-inline budget_icons_container budget_icons_container_two">
-                <input class="budget_inputs" type="radio" name="budget_input" value="mid_range_budget"
+                <input class="budget_inputs" type="radio" id="medium-budget-radio" name="budget_input" value="mid_range_budget"
                        checked="checked">
                 <img class="mid_budget_icon budget_icons" src="assets/img/middle-range-budget.svg" alt="medium budget"
                      (click)="budgetSelection('medium')">
             </label>
             <label class="radio-inline budget_icons_container budget_icons_container_three">
                 <input class="budget_inputs" type="radio" name="budget_input" value="high_range_budget">
-                <img class="high_budget_icon budget_icons" src="assets/img/high-range-budget.svg" alt="high budget"
+                <img class="high_budget_icon budget_icons"  id="high-budget-radio" src="assets/img/high-range-budget.svg" alt="high budget"
                      (click)="budgetSelection('high')">
             </label>
             <div class="budget_range_text_display"></div>
@@ -132,34 +132,18 @@
         </div>
         <div class="filters_one">
             <div class="checkboxes_wrapper">
-                <div class="checkbox">
-                    <div class="checkboxRound">
-                        <input type="checkbox" value="1" id="checkboxOneInput" name=""/>
+                <div class="checkbox" *ngFor="let category of macroCategories"
+                     (click)="_activityFilter.toggleMacroCategory(category.id)"
+                >
+                    <div class="checkboxRound"
+
+                    >
+                        <input type="checkbox"
+                               [checked]="_arrayUtils.search_string_array(_activityFilter.macro_categories, category.id)"
+                               value="1" name=""/>
                         <label for="checkboxOneInput"></label>
                     </div>
-                    <label>Fun &amp; Party</label>
-                </div>
-
-                <div class="checkbox">
-                    <div class="checkboxRound">
-                        <input type="checkbox" value="1" id="checkboxTwoInput" name=""/>
-                        <label for="checkboxTwoInput"></label>
-                    </div>
-                    <label>Culture &amp; Tradition</label>
-                </div>
-                <div class="checkbox">
-                    <div class="checkboxRound">
-                        <input type="checkbox" value="1" id="checkboxThreeInput" name=""/>
-                        <label for="checkboxThreeInput"></label>
-                    </div>
-                    <label>Nature &amp; Relax</label>
-                </div>
-                <div class="checkbox">
-                    <div class="checkboxRound">
-                        <input type="checkbox" value="1" id="checkboxFourInput" name=""/>
-                        <label for="checkboxFourInput"></label>
-                    </div>
-                    <label>Eat &amp; Taste</label>
+                    <label>{{ category.name }}</label>
                 </div>
             </div>
         </div>
@@ -171,8 +155,10 @@
         <div class="col-lg-9 middle_container">
             <div class="row">
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container" *ngFor="let activity of _activities">
-                    <div class="element_container selected-activity" [class.selected-activity]="check_activity_selected(activity.id)"
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
+                     *ngFor="let activity of _activities">
+                    <div class="element_container selected-activity"
+                         [class.selected-activity]="check_activity_selected(activity.id)"
                          (click)="toggle_selected_acctivity(activity.id)">
                         <div class="image_container">
                             <div class="image">

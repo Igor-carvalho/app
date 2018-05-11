@@ -117,11 +117,14 @@ class ActivitiesController extends ActiveController
 
     public function actionIndex()
     {
-        return new ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider([
             'query' => Activities::find()->where([
                 'soft_deleted' => 0
-            ])
+            ]),
+            'pagination' => false
         ]);
+
+        return $dataProvider;
     }
 
     public function actionView($id)
@@ -269,19 +272,29 @@ class ActivitiesController extends ActiveController
             ])
 //            ->andWhere(['>=', 'date_starts', $date_start])
 //            ->andWhere(['<=', 'date_ends', $date_end])
-            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) AND ('$date_end' BETWEEN date_starts AND date_ends)")
+            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
             ->andWhere(['>=', 'max_people', $people])
             ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
             ->all();
 
+        if (sizeof($activities) == 0)
+            return [];
+
+        $activityIds = array_map(function ($activity) {
+            return $activity->id;
+        }, $activities);
+        $activitiesIdComma = implode(",", $activityIds);
+
+
         $activitesMicroCategories = SystemMicroCategories::find()
             ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
-            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($macros) )")
+            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($activitiesIdComma) )")
             ->leftJoin($activities_micro_table, "{$activities_micro_table}.system_micro_categories_id = {$system_micro_table}.id")
             ->groupBy("{$activities_micro_table}.activities_id")
             ->asArray()
             ->all();
         $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
+
 
 //        HelperFunction::output($activityMicroIcon);
         $return = [];

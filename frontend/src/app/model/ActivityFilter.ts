@@ -6,7 +6,7 @@ export class ActivityFilter {
     date_starts: string;
     date_ends: string;
     budget_type: number;
-    macro_categories: any;
+    macro_categories: number[];
 
 
     constructor(values: Object = {}) {
@@ -19,6 +19,7 @@ export class ActivityFilter {
     }
 
     toggleMacroCategory(id) {
+        id = id + "";
         console.log(id);
         let arrayUtils = new ArrayUtils();
         var index = this.macro_categories.indexOf(id);

@@ -20,6 +20,7 @@ import {UserService} from "../model/user.service";
 import {ArrayUtils} from "../utilities/ArrayUtils";
 import {ItineraryDataService} from "../services/itinerary-data.service";
 import {Itinerary} from "../model/itinerary/Itinerary";
+import {StaticDataService} from "../services/static-data.service";
 
 @Component({
     selector: 'app-wishlist',
@@ -30,21 +31,70 @@ export class WishlistComponent implements OnInit {
     public _activityFilter: ActivityFilter;
     public _activities: any;
     public _selectedActivities: any;
+    public macroCategories: any;
+    public _arrayUtils: ArrayUtils;
 
     public _itinerary: Itinerary;
 
     constructor(private _router: Router,
                 private _userService: UserService,
+                private _staticDataService: StaticDataService,
                 private _itineraryDataService: ItineraryDataService,
                 private _activitesDataService: ActivitiesDataService) {
         this._selectedActivities = [];
+
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
-            this._activityFilter = <ActivityFilter> params;
+            // this._activityFilter = <ActivityFilter> params;
+            this._activityFilter = new ActivityFilter(params);
+            console.log(this._activityFilter);
         });
+        this._arrayUtils = new ArrayUtils();
+        this.macroCategories = [];
+
+    }
+
+    populateFilterValues() {
+        $("#adult_number").html(this._activityFilter.num_adults);
+        $("#adults_number_input").val(this._activityFilter.num_adults);
+
+
+        $("#child_number").html(this._activityFilter.num_childs);
+        $("#children_number_input").val(this._activityFilter.num_childs);
+
+
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var startDate = new Date(this._activityFilter.date_starts);
+        var endDate = new Date(this._activityFilter.date_ends);
+        var getLowerMonthOne = monthsArray[startDate.getMonth()];
+        document.getElementById("month_one").innerHTML = getLowerMonthOne;
+        $('#month-one').val(getLowerMonthOne);
+        document.getElementById('calendar_dates_month_display_one').innerHTML = getLowerMonthOne;
+
+        var getLowerMonthTwo = monthsArray[endDate.getMonth()];
+        document.getElementById("month_two").innerHTML = getLowerMonthOne;
+        $('#month-two').val(getLowerMonthOne);
+        document.getElementById('calendar_dates_month_display_two').innerHTML = getLowerMonthOne;
+
+
+        $('#date_one').val(startDate.getDate());
+        $('#date_two').val(endDate.getDate());
+        var budgetType = "low";
+
+        if (this._activityFilter.budget_type == 2)
+            budgetType = "medium";
+        else if (this._activityFilter.budget_type == 3)
+            budgetType = "high";
+
+        $("#" + budgetType + "-budget-radio").click();
+        this.budgetSelection(budgetType);
+
+
     }
 
     ngOnInit() {
 
+        this.populateFilterValues();
+        this.getMacroCategories();
         this.getActivities(this._activityFilter);
         TweenLite.to("#heading", 2, {rotation: 360});
         $('#day_one').html($('#date_one').val());
@@ -83,6 +133,7 @@ export class WishlistComponent implements OnInit {
         if ($(window).width() <= 480) {
             TweenLite.to('.budget_icons_container', 0.4, {float: 'none'});
         }
+
 
     }
 
@@ -171,6 +222,9 @@ export class WishlistComponent implements OnInit {
                 $('.budget_icons_container').css('float', 'none');
             }
         }
+
+        this._router.navigate(['/wishlist'], {queryParams: this._activityFilter});
+        this.getActivities(this._activityFilter);
     }
 
     addAdults() {
@@ -178,6 +232,7 @@ export class WishlistComponent implements OnInit {
         $adultCount++;
         $("#adult_number").html($adultCount);
         $("#adults_number_input").val($adultCount);
+        this._activityFilter.num_adults = $adultCount;
     }
 
     removeAdults() {
@@ -187,6 +242,7 @@ export class WishlistComponent implements OnInit {
             $("#adult_number").html($adultCount);
             $("#adults_number_input").val($adultCount);
         }
+        this._activityFilter.num_adults = $adultCount;
     }
 
     addChild(id) {
@@ -195,6 +251,7 @@ export class WishlistComponent implements OnInit {
         $childCount++;
         $("#child_number").html($childCount);
         $("#children_number_input").val($childCount);
+        this._activityFilter.num_childs = $childCount;
     }
 
     removeChild() {
@@ -204,6 +261,7 @@ export class WishlistComponent implements OnInit {
             $("#child_number").html($childCount);
             $("#children_number_input").val($childCount);
         }
+        this._activityFilter.num_childs = $childCount;
     }
 
     minusMonth(monthId) {
@@ -227,6 +285,13 @@ export class WishlistComponent implements OnInit {
                     document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
                     $('#month-' + monthId).val(getLowerMonth);
                     document.getElementById('calendar_dates_month_display_two').innerHTML = getLowerMonth;
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth - 1;
+                    date.setMonth(monthNumber);
+
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                 } else {
                 }
             }
@@ -236,8 +301,17 @@ export class WishlistComponent implements OnInit {
                 document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
                 $('#month-' + monthId).val(getLowerMonth);
                 document.getElementById('calendar_dates_month_display_one').innerHTML = getLowerMonth;
+
+
+                var date = new Date(this._activityFilter.date_starts);
+                var monthNumber = indexOfMonth - 1;
+                date.setMonth(monthNumber);
+
+                this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                // console.log(date);
             }
         }
+        console.log(this._activityFilter);
     }
 
     plusMonth(monthId) {
@@ -266,6 +340,21 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_one').innerHTML = '1';
                     $('#date_one').val(1);
                     $('#calendar_dates_day_display_one').val(1);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+
+                    var dateEnd = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    dateEnd.setMonth(monthNumber);
+                    dateEnd.setDate(1);
+
+                    this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
+
+
                 }
                 if (indexOfMonthOne >= indexOfMonthTwo) {
                     document.getElementById("month_one").innerHTML = getNextMonth;
@@ -277,18 +366,45 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_one').innerHTML = '1';
                     $('#date_one').val(1);
                     $('#calendar_dates_day_display_one').val(1);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+
+                    var dateEnd = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    dateEnd.setMonth(monthNumber);
+                    dateEnd.setDate(1);
+
+                    this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
                 } else {
                     document.getElementById("month_" + monthId).innerHTML = getNextMonth;
                     document.getElementById("calendar_dates_month_display_" + monthId).innerHTML = getNextMonth;
                     $('#month-' + monthId).val(getNextMonth);
+
+                    var date = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                 }
             }
             if (monthId == 'two') {
                 document.getElementById("month_" + monthId).innerHTML = getNextMonth;
                 document.getElementById("calendar_dates_month_display_" + monthId).innerHTML = getNextMonth;
                 $('#month-' + monthId).val(getNextMonth);
+
+                var date = new Date(this._activityFilter.date_ends);
+                var monthNumber = indexOfMonth + 1;
+                date.setMonth(monthNumber);
+
+
+                this._activityFilter.date_ends = date.toISOString().substring(0, 10);
             }
         }
+        console.log(this._activityFilter);
     }
 
     minusDay(dayId) {
@@ -314,6 +430,13 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_two').innerHTML = getLowerDay;
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getLowerDay;
                     $('#date_two').val(getLowerDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay;
+                    console.log(dayNumber);
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                 }
                 if (indexOfMonthTwo == indexOfMonthOne) {
                     if (dayTwoValue > dayOneValue) {
@@ -321,6 +444,13 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('day_two').innerHTML = getLowerDay;
                         document.getElementById('calendar_dates_day_display_two').innerHTML = getLowerDay;
                         $('#date_two').val(getLowerDay);
+
+                        var date = new Date(this._activityFilter.date_ends);
+                        var dayNumber = indexOfDay;
+                        console.log(dayNumber);
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                     }
                 } else {
                 }
@@ -330,8 +460,16 @@ export class WishlistComponent implements OnInit {
                 document.getElementById('day_one').innerHTML = getLowerDay;
                 document.getElementById('calendar_dates_day_display_one').innerHTML = getLowerDay;
                 $('#date_one').val(getLowerDay);
+
+                var date = new Date(this._activityFilter.date_starts);
+                var dayNumber = indexOfDay;
+                console.log(dayNumber);
+                date.setDate(dayNumber);
+
+                this._activityFilter.date_starts = date.toISOString().substring(0, 10);
             }
         }
+        console.log(this._activityFilter);
 
     }
 
@@ -361,6 +499,12 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_two').innerHTML = getHigherDay;
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                 }
             }
             if (thirtyDayMonths.indexOf(monthTwo) > -1) {
@@ -369,6 +513,12 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_two').innerHTML = getHigherDay;
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                 }
             }
             if (frbruaryMonth.indexOf(monthTwo) > -1) {
@@ -377,6 +527,12 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('day_two').innerHTML = getHigherDay;
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
                 }
             }
         }
@@ -389,6 +545,12 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('day_one').innerHTML = getHigherDay;
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                         }
                     }
                     if (thirtyDayMonths.indexOf(monthTwo) > -1) {
@@ -397,6 +559,12 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('day_one').innerHTML = getHigherDay;
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                         }
                     }
                     if (frbruaryMonth.indexOf(monthTwo) > -1) {
@@ -405,6 +573,12 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('day_one').innerHTML = getHigherDay;
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                         }
                     }
                 }
@@ -416,6 +590,12 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('day_one').innerHTML = getHigherDay;
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                     }
                 }
                 if (thirtyDayMonths.indexOf(monthTwo) > -1) {
@@ -424,6 +604,12 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('day_one').innerHTML = getHigherDay;
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                     }
                 }
                 if (frbruaryMonth.indexOf(monthTwo) > -1) {
@@ -432,10 +618,19 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('day_one').innerHTML = getHigherDay;
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                     }
                 }
             }
         }
+
+
+        console.log(this._activityFilter);
     }
 
     budgetSelection(budgetType) {
@@ -443,16 +638,19 @@ export class WishlistComponent implements OnInit {
             $('.low_budget_icon').attr('src', 'assets/img/low-budget-selected.svg');
             $('.mid_budget_icon').attr('src', 'assets/img/middle-range-budget.svg');
             $('.high_budget_icon').attr('src', 'assets/img/high-range-budget.svg');
+            this._activityFilter.budget_type = 1;
         }
         if (budgetType == 'medium') {
             $('.low_budget_icon').attr('src', 'assets/img/low-budget.svg');
             $('.mid_budget_icon').attr('src', 'assets/img/middle-range-budget-selected.svg');
             $('.high_budget_icon').attr('src', 'assets/img/high-range-budget.svg');
+            this._activityFilter.budget_type = 2;
         }
         if (budgetType == 'high') {
             $('.low_budget_icon').attr('src', 'assets/img/low-budget.svg');
             $('.mid_budget_icon').attr('src', 'assets/img/middle-range-budget.svg');
             $('.high_budget_icon').attr('src', 'assets/img/high-budget-selected.svg');
+            this._activityFilter.budget_type = 3;
         }
     }
 
@@ -512,5 +710,25 @@ export class WishlistComponent implements OnInit {
         }
     }
 
+    private getMacroCategories() {
+        this._staticDataService.getMacroCategories()
+            .subscribe(
+                result => {
+                    // console.log(result);
+                    var requiredFormat = [];
+                    result.forEach(each => {
+                        requiredFormat.push({id: each.id, name: each.label});
+                    });
+                    this.macroCategories = requiredFormat;
+                },
+                error => {
+
+                }
+            );
+    }
+
+    toggleMacroCategory(id) {
+
+    }
 
 }

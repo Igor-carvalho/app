@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'frontendURL'   => 'http://localhost:4201/',
-    'supportEmail'  =>  'admin@example.com',
-    'adminEmail'    => 'admin@example.com',
+    'frontendURL'   => 'http://dobedoo.acorn-labs.com/frontend/',
+    'supportEmail'  =>  'support@dobedoo.it',
+    'adminEmail'    => 'admin@dobedoo.it',
     'jwtSecretCode' =>  'someSecretKey',
     'user.passwordResetTokenExpire' => 3600,
 ];

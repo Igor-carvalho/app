@@ -12,6 +12,8 @@ import {
     CSSPlugin,
     EasePack
 } from "gsap";
+import {UserService} from "../model/user.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-tutorial-one',
@@ -19,9 +21,12 @@ import {
 })
 export class TutorialOneComponent implements OnInit {
 
-    constructor() {
+    constructor(private _router: Router,
+                private _userService: UserService) {
 
-
+        if (!this._userService.isLoggedIn()) {
+            this._router.navigate(['/login']);
+        }
     }
 
     ngOnInit() {

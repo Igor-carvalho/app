@@ -24,11 +24,6 @@ export class SignupComponent implements OnInit {
         let passwordConfirm = new FormControl('', Validators.compose([Validators.required, CustomValidators.equalTo(password)]));
 
         this._signupForm = _formBuilder.group({
-            username: ['', Validators.compose([
-                Validators.required,
-                CustomValidators.rangeLength([3, 25]),
-                Validators.pattern('^[A-Za-z0-9_-]{3,25}$'),
-            ])],
             email: ['', Validators.compose([
                 Validators.required,
                 CustomValidators.email,
@@ -55,7 +50,6 @@ export class SignupComponent implements OnInit {
 
     private _resetFormErrors():void{
         this._formErrors = {
-            username: {valid: true, message: ''},
             email: {valid: true, message: ''},
             password: {valid: true, message: ''},
             password_confirm: {valid: true, message: ''},
@@ -96,6 +90,7 @@ export class SignupComponent implements OnInit {
 
     public onSubmit(elementValues: any) {
         this._submitted = true;
+        elementValues['username'] = elementValues.email;
         this._userService.signup(elementValues.username, elementValues.email, elementValues.password)
             .subscribe(
                 result => {
@@ -118,6 +113,8 @@ export class SignupComponent implements OnInit {
                     } else {
                         this._errorMessage = error.data;
                     }
+
+                    console.log(this._errorMessage);
                 }
             );
     }

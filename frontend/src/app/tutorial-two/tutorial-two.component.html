@@ -6,8 +6,8 @@
             <div class="slider_icons">
                 <input type="hidden" name="childNumberCount" id="childNumberCountInput" value="0">
                 <input type="hidden" name="personNumberCount" id="personNumberCountInput" value="1">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-4 col-sm-6 col-md-4 margins_top_bottom">
+                <div class="col-lg-2 col-md-1"></div>
+                <div class="col-lg-4 col-sm-6 col-md-5 margins_top_bottom">
                     <div id="adult_number">
                         <img src="assets/img/Icon_Filter_Plus.svg" class="add_person_icon" alt="person" (click)="addPerson('adult')">
                         <div class="adult_wrapper">
@@ -20,9 +20,9 @@
                         <img class="remove_person_icon" src="assets/img/Icon_Filter_Minus.svg" alt="remove person" (click)="removePerson('adult')">
                     </div>
                 </div>
-                <div class="col-lg-4 col-sm-6 col-md-4 children_column margins_top_bottom">
+                <div class="col-lg-4 col-sm-6 col-md-5 children_column margins_top_bottom">
                     <div id="child_number">
-                        <img src="assets/img/Icon_Filter_Plus.svg" alt="add child" class="add_person_icon" (click)="addPerson('child')">
+                        <img src="assets/img/Icon_Filter_Plus.svg" alt="add child" class="add_person_icon child_icons" (click)="addPerson('child')">
                         <div class="child_wrapper">
                             <div class="child_text">Children</div>
                             <div class="image_wrapper">
@@ -30,20 +30,20 @@
                             </div>
                             <div class="child_number_display"></div>
                         </div>
-                        <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child" class="remove_person_icon" (click)="removePerson('child')">
+                        <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child" class="remove_person_icon child_icons" (click)="removePerson('child')">
                     </div>
                 </div>
-                <div class="col-lg-2"></div>
+                <div class="col-lg-2 col-md-1"></div>
             </div>
         </div>
         <div class="slider_section">
             <h1 class="slider_section_heading heading-one">When?</h1>
-            <input type="hidden" name="date_one" id="date_one" value="21">
+            <input type="hidden" name="date_one" id="date_one" value="17">
             <input type="hidden" name="date_two" id="date_two" value="21">
             <input type="hidden" name="month-one" id="month-one" value="december">
             <input type="hidden" name="month-two" id="month-two" value="december">
             <div class="slider_icons">
-                <div class="calendar_row">
+                <div class="calendar_row calendar_top_row">
                     <div class="from_container">
                         <div class="from">from</div>
                     </div>

@@ -319,18 +319,84 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     to {top: 0px; opacity: 1}
   }
 
+  /* Large Devices, Wide Screens */
+  @media only screen and (min-width : 993px) and (max-width : 1200px) {
+    .events_container .events {
+      width: 33.333333333334% !important;
+      margin-bottom: 25px !important;
+    }
+    .events_wrapper {
+      height: 175px !important;
+    }
+  }
   /* Medium Devices, Desktops */
-  @media only screen and (min-width : 769px) and (max-width : 992px) {
-    
+  @media only screen and (min-width : 769px) and (max-width : 992px) {   
+    .top_timimg_bar {
+      visibility: hidden !important;
+    }
+    .events {
+      width: 44% !important;
+      margin-left: 3% !important;
+      margin-right: 3% !important;
+    }
+    .itinerary_images {
+      height: 130% !important;
+    }
+    .edit_itinerary_container {
+      margin: 30px 0px 60px 0px !important;
+    }
+    .title {
+      max-width: 190px !important
+    }
   }
 
   /* Small Devices, Tablets */
-  @media only screen and (min-width : 481px) and (max-width : 768px) {
-    
+  @media only screen and (min-width : 481px) and (max-width : 768px) { 
+    .top_timimg_bar {
+      visibility: hidden !important;
+    } 
+    .events {
+      width: 80% !important;
+      margin-left: 10% !important;
+      margin-right: 10% !important;
+      margin-bottom: 30px !important;
+    }
+    .events_wrapper {
+      height: 200px !important;
+    } 
+    .itinerary_images {
+      height: 150% !important;
+    }
+    .title {
+      max-width: 190px !important
+    }    
+    .edit_itinerary_container {
+      margin: 30px 0px 60px 0px !important;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
-    
+    .top_timimg_bar {
+      visibility: hidden !important;
+    } 
+    .events {
+      width: 80% !important;
+      margin-left: 10% !important;
+      margin-right: 10% !important;
+      margin-bottom: 30px !important;
+    }
+    .events_wrapper {
+      height: 200px !important;
+    } 
+    .itinerary_images {
+      height: 150% !important;
+    }
+    .title {
+      max-width: 190px !important
+    }    
+    .edit_itinerary_container {
+      margin: 30px 0px 60px 0px !important;
+    }
   }
 }

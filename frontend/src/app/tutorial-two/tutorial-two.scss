@@ -1,5 +1,106 @@
 app-tutorial-two {
-
+  #adult_number, #child_number {
+    display: inline-block;
+  }
+  .add_person_icon, .remove_person_icon {
+    display: inline-block;
+    width: 40px;
+    height: 350px;
+    position: relative;
+    margin: 0px;
+    float: left;
+  }
+  .add_person_icon {
+    margin-right: 10px;
+  }
+  .remove_person_icon {
+    margin-left: 10px;
+  }
+  .adult_wrapper, .child_wrapper {
+    display: inline-block;
+    width: 120px;
+    height: 350px;
+    float: left;
+  }
+  .adult_text, .child_text {
+    display: block;
+    font-size: 24px;
+  }
+  .image_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 20px;
+    height: 235px;
+    display: block;
+  }
+  #adult {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 5px;
+  }
+  .child_icons {
+    //top: 28px;
+  }
+  .margins_top_bottom {
+    margin-top: 50px;
+  }
+  .adult_number_display, .child_number_display {
+    font-size: 28px;
+    height: 60px;
+    padding-top: 20px;
+    display: block;
+  }
+  .calendar_row {
+    font-size: 20px;
+    display: block;
+    margin: 30px 0px;
+  }
+  .calendar_top_row {
+    margin-top: 50px;
+  }
+  .from_container, .from, .left_icon_calendar, .right_icon_calendar, .month_container, .month, .day_container, .day {
+    display: inline-block;
+  }
+  .from_container {
+    display: inline-block;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+  }
+  .from {
+    border-bottom: 4px solid #fff;
+    display: inline;
+    padding-bottom: 4px;
+    padding-right: 12px;
+  }
+  .left_icon_calendar {
+    width: 40px;
+    height: 42px;
+    float: left;
+  }
+  .right_icon_calendar {
+    width: 40px;
+    height: 42px;
+    float: right;
+    transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+  .month_container {
+    width: 250px;
+    margin-right: 10px;
+    text-transform: uppercase;
+  }
+  .month {
+    width: calc(100% -86px);
+  }
+  .day_container {
+    width: 130px;
+  }
+  .day {
+    width: calc(100% - 86px);
+  }
   .slider_container {
     width: 100%;
     height: auto;
@@ -49,7 +150,7 @@ app-tutorial-two {
     padding:0px;
     text-align: center;
     height: 70px;
-    margin-top: 15px;
+    margin-top: 50px;
   }
   .slider_dot {
     width: 14px;
@@ -92,27 +193,6 @@ app-tutorial-two {
   .arrow_imgs {
     width: 40px;
     height: 53px;
-  }
-  #remove_child {
-    display: none;
-  }
-  #remove_adult {
-    display: none;
-  }
-  #person_number, #child_number {
-    display: inline;
-  }
-  .child_number_display, .person_number_display {
-    display: none;
-    vertical-align: middle;
-    line-height: 80px;
-  }
-  .child_number_count, .person_number_count {
-    font-size: 50px;
-  }
-  .multiplication_sign {
-    font-size: 30px;
-    margin: 0px 10px;
   }
   .low_budget_image {
     width: 147px;
@@ -205,5 +285,182 @@ app-tutorial-two {
     float: right;
     right: 40px;
     padding-top: 30px;
+  }
+  /* Large Devices, Wide Screens */
+  
+  /* Large Devices, Wide Screens */
+  @media only screen and (min-width : 993px) and (max-width : 1200px) {
+    
+  }
+
+  /* Medium Devices, Desktops */
+  @media only screen and (min-width : 769px) and (max-width : 992px) {
+    .low_budget_image {
+      width: 125px;
+    }
+    .middle_range_budget_image {
+      width: 155px;
+      margin: 0px 40px;
+    }
+    .high_range_budget_image {
+      width: 190px;
+    }
+  }
+
+  /* Small Devices, Tablets */
+  @media only screen and (min-width : 481px) and (max-width : 768px) {
+    .slider_left_arrow {
+      margin-right: 20px;
+    }
+    .slider_right_arrow {
+      margin-left: 20px;
+    }
+    .arrow_imgs {
+      width: 30px;
+      height: 40px;
+    }
+    .slider_section_heading {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 26px;
+    }
+    .margins_top_bottom {
+      margin-top: 0px;
+      margin-bottom: 20px;
+    }
+    .adult_wrapper, .child_wrapper {
+      width: 93px;
+      height: 250px;
+    }
+    .adult_text, .child_text {
+      font-size: 20px;
+    }
+    .image_wrapper {
+      padding-top: 7px;
+      height: 176px;
+    }
+    .adult_number_display, .child_number_display {
+      font-size: 24px;
+      height: 36px;
+      padding-top: 0px;
+    }
+    .add_person_icon, .remove_person_icon {
+      width: 36px;
+      height: 250px;
+    }
+    .child_image {
+      top: 20px;
+      width: 70px;
+    }
+    .from_container {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .from {
+      padding: 0px 10px;
+    }
+    .budget_icons_group {
+      margin: 40px 0px;
+    }
+    .low_budget_image {
+      width: 90px;
+    }
+    .middle_range_budget_image {
+      width: 115px;
+      margin: 0px 22px;
+    }
+    .high_range_budget_image {
+      width: 126px;
+    }
+    .slider_navigation {
+      margin-top: 0px;
+    }
+  }
+
+  /* Extra Small Devices, Phones */ 
+  @media only screen and (min-width : 320px) and (max-width : 480px) {
+    .slider_left_arrow {
+      margin-right: 20px;
+    }
+    .slider_right_arrow {
+      margin-left: 20px;
+    }
+    .arrow_imgs {
+      width: 30px;
+      height: 40px;
+    }
+    .slider_section_heading {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 26px;
+    }
+    .margins_top_bottom {
+      margin-top: 0px;
+      margin-bottom: 20px;
+    }
+    .adult_wrapper, .child_wrapper {
+      width: 93px;
+      height: 250px;
+    }
+    .adult_text, .child_text {
+      font-size: 20px;
+    }
+    .image_wrapper {
+      padding-top: 7px;
+      height: 176px;
+    }
+    .adult_number_display, .child_number_display {
+      font-size: 24px;
+      height: 36px;
+      padding-top: 0px;
+    }
+    .add_person_icon, .remove_person_icon {
+      width: 36px;
+      height: 250px;
+    }
+    .child_image {
+      top: 20px;
+      width: 70px;
+    }
+    .calendar_row {
+      margin: 45px 0px;
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      text-align: center;
+    }
+    .from_container {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .from {
+      padding: 0px 10px;
+    }
+    .month_container {
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+    .budget_icons_group {
+      margin: 40px 0px;
+    }
+    .low_budget_image {
+      width: 150px;
+      padding: 0px 20px !important;
+    }
+    .middle_range_budget_image {
+      width: 159px;
+      margin: 20px 50px;
+    }
+    .high_range_budget_image {
+      width: 180px;
+    }
+    .slider_navigation {
+      margin-top: 0px;
+    }
   }
 }

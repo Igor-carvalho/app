@@ -50,10 +50,6 @@ export class TutorialTwoComponent implements OnInit {
         var nextButton = document.getElementById('nextButton');
         var previousButton = document.getElementById('previousButton');
         var clickCount = 0;
-        var addChild = document.getElementById('add_child');
-        var removeChild = document.getElementById('remove_child');
-        var addAdult = document.getElementById('add_adult');
-        var removeAdult = document.getElementById('remove_adult');
         var personNumberContainer = document.getElementById('person_number');
         var childNumberContainer = document.getElementById('child_number');
         var lowBudget = document.getElementById('low_budget_image');
@@ -64,8 +60,7 @@ export class TutorialTwoComponent implements OnInit {
         var highRangeBudgetChecked = document.getElementById('high_range_budget_image_checked');
         var sliderDots = document.getElementsByClassName('slider_dot');
         var $headingOne = $('.heading-one');
-        var $addChild = $('#add_child'), $removeChild = $('#remove_child'), $addPerson = $('#add_adult'),
-            $removePerson = $('#remove_adult'), $sliderDot = $('.slider_dot'), $nextButton = $('#nextButton'),
+        var $sliderDot = $('.slider_dot'), $nextButton = $('#nextButton'),
             $previousButton = $('#previousButton'), $addChildClickCount = 0, $addPersonClickCount = 1;
 
         nextButton.onclick = function () {
@@ -97,6 +92,7 @@ export class TutorialTwoComponent implements OnInit {
             }
             sliderDots[clickCount].classList.add("active_dot");
         };
+        /*
         addChild.onclick = function () {
             $addChildClickCount += 1;
             $("#childNumberCountInput").val($addChildClickCount);
@@ -180,6 +176,7 @@ export class TutorialTwoComponent implements OnInit {
                 $removePerson.hide(400);
             }
         }.bind(this);
+        */
         lowBudget.onclick = function () {
             lowBudget.style.display = "none";
             lowBudgetChecked.style.display = "inline-block";
@@ -222,30 +219,14 @@ export class TutorialTwoComponent implements OnInit {
         };
         //TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
         TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
-        //TweenLite.from($headingOne, 0.5, {scale: 0, rotation:-70, ease: Back.easeOut});
-        TweenLite.from($headingOne, 0.5, {scale: 0, rotation: -30, ease: Back.easeOut});
-        //TweenLite.from($addChild, 1, {left: -500, delay: 0.8, opacity: 0});
-        TweenLite.from($addChild, 0.5, {scale: 0, delay: 0.8, rotation: -70, ease: Back.easeOut});
-        //TweenLite.from($removeChild, 1, {left: -500, delay: 0.5, opacity: 0});
-        TweenLite.from($removeChild, 0.5, {scale: 0, delay: 0.5, rotation: -70, ease: Back.easeOut});
-        //TweenLite.from($addPerson, 1, {left: 500, delay: 0.8, opacity: 0});
-        TweenLite.from($addPerson, 0.5, {scale: 0, delay: 0.8, rotation: -70, ease: Back.easeOut});
-        //TweenLite.from($removePerson, 1, {left: 500, delay: 0.5, opacity: 0});
-        TweenLite.from($removePerson, 0.5, {scale: 0, delay: 0.5, rotation: -70, ease: Back.easeOut});
         //TweenLite.from($nextButton, 1, {left: 1000, delay: 1, ease: Bounce.easeOut});
         TweenLite.from($nextButton, 0.5, {scale: 0, delay: 1, ease: Back.easeOut});
         TweenMax.staggerFrom($sliderDot, 0.4, {delay: 0.9, scale: 0, ease: Elastic.easeOut.config(1.75, 0.4)}, 0.1);
         $nextButton.click(function () {
             if (clickCount == 1) {
-                TweenLite.from($headingOne, 0.5, {scale: 0, delay: 0.4, rotation: -10, ease: Back.easeOut});
+
             }
             if (clickCount == 2) {
-                TweenLite.from($('.heading-one:nth-child(' + (clickCount - 1) + ')'), 0.5, {
-                    scale: 0,
-                    delay: 0.4,
-                    rotation: -10,
-                    ease: Back.easeOut
-                });
                 //console.log($('.heading-one:nth-child(1)');
                 //TweenLite.from($headingOne, 0.5, {scale: 0, delay: 0.4, rotation:-10, ease: Back.easeOut});
                 TweenLite.from("#low_budget_image", 0.5, {scale: 0, delay: 1, rotation: -70, ease: Back.easeOut});
@@ -263,7 +244,6 @@ export class TutorialTwoComponent implements OnInit {
                 });
             }
             if (clickCount == 3) {
-                TweenLite.from($headingOne, 0.5, {scale: 0, delay: 0.4, rotation: -10, ease: Back.easeOut});
                 //TweenMax.staggerFrom($(".checkbox"), 0.8, {delay: 0.5, left: 1000, ease: Bounce.easeOut}, 0.3);
                 TweenMax.staggerFrom($(".checkbox"), 0.4, {scale: 0, delay: 1, rotation: -10, ease: Back.easeOut}, 0.3);
             }
@@ -273,6 +253,13 @@ export class TutorialTwoComponent implements OnInit {
                 console.log("click count is one.");
             }
         });
+
+        $('.adult_number_display').html($('#personNumberCountInput').val());
+        $('.child_number_display').html($('#childNumberCountInput').val());
+        $('#day_one').html($('#date_one').val());
+        $('#day_two').html($('#date_two').val());
+        $('#month_one').html($('#month-one').val());
+        $('#month_two').html($('#month-two').val());
     }
 
     private getMacroCategories() {
@@ -316,4 +303,382 @@ export class TutorialTwoComponent implements OnInit {
         }
     }
 
+    addPerson(personId) {       
+        var childCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("childNumberCountInput")).value);
+        var personCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("personNumberCountInput")).value);
+        if (personId == 'adult') {
+            personCountInputVal++;
+            $('#personNumberCountInput').val(personCountInputVal);
+            $('.adult_number_display').html(personCountInputVal);
+        }
+        if(personId == 'child') {
+            childCountInputVal++;
+            $('#childNumberCountInput').val(childCountInputVal);
+            $('.child_number_display').html(childCountInputVal);
+        }
+    }
+
+    removePerson(personId) {       
+        var childCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("childNumberCountInput")).value);
+        var personCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("personNumberCountInput")).value);
+        if (personId == 'adult' && personCountInputVal > 1) {
+            personCountInputVal--;
+            $('#personNumberCountInput').val(personCountInputVal);
+            $('.adult_number_display').html(personCountInputVal);
+        }
+        if(personId == 'child' && childCountInputVal > 0) {
+            childCountInputVal--;
+            $('#childNumberCountInput').val(childCountInputVal);
+            $('.child_number_display').html(childCountInputVal);
+        }
+    }
+
+    minusMonth(monthId) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-one")).value);
+        var monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-two")).value);
+        var monthOne = document.getElementById("month_one").innerHTML;
+        monthOne = monthOne.toLowerCase();
+        var indexOfMonthOne = monthsArray.indexOf(monthOne);
+        var monthTwo = document.getElementById("month_two").innerHTML;
+        monthTwo = monthTwo.toLowerCase();
+        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        var monthDisplay = document.getElementById("month_" + monthId).innerHTML;
+        monthDisplay = monthDisplay.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(monthDisplay);
+        if ((indexOfMonth - 1) >= 0) {
+            if (monthId == 'two') {
+                if (indexOfMonthTwo > indexOfMonthOne) {
+                    var getLowerMonth = monthsArray[indexOfMonth - 1];
+                    console.log(getLowerMonth);
+                    document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
+                    $('#month-' + monthId).val(getLowerMonth);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth - 1;
+                    date.setMonth(monthNumber);
+
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                } else {
+                }
+            }
+            if (monthId == 'one') {
+                var getLowerMonth = monthsArray[indexOfMonth - 1];
+                console.log(getLowerMonth);
+                document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
+                $('#month-' + monthId).val(getLowerMonth);
+
+
+                var date = new Date(this._activityFilter.date_starts);
+                var monthNumber = indexOfMonth - 1;
+                date.setMonth(monthNumber);
+
+                this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                // console.log(date);
+            }
+        }
+        console.log(this._activityFilter);
+    }
+
+    plusMonth(monthId) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-one")).value);
+        var monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-two")).value);
+        var monthOne = document.getElementById("month_one").innerHTML;
+        monthOne = monthOne.toLowerCase();
+        var indexOfMonthOne = monthsArray.indexOf(monthOne);
+        var monthTwo = document.getElementById("month_two").innerHTML;
+        monthTwo = monthTwo.toLowerCase();
+        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        var monthDisplay = document.getElementById("month_" + monthId).innerHTML;
+        monthDisplay = monthDisplay.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(monthDisplay);
+        var getNextMonth = monthsArray[indexOfMonth + 1];
+        if ((indexOfMonth + 1) <= 11) {
+            if (monthId == 'one') {
+                if (indexOfMonthOne == (indexOfMonthTwo - 1)) {
+                    document.getElementById("month_one").innerHTML = getNextMonth;
+                    document.getElementById("month_two").innerHTML = getNextMonth;
+                    $('#month-one').val(getNextMonth);
+                    $('#month-two').val(getNextMonth);
+                    document.getElementById('day_one').innerHTML = '1';
+                    $('#date_one').val(1);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+
+                    var dateEnd = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    dateEnd.setMonth(monthNumber);
+                    dateEnd.setDate(1);
+
+                    this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
+
+
+                }
+                if (indexOfMonthOne >= indexOfMonthTwo) {
+                    document.getElementById("month_one").innerHTML = getNextMonth;
+                    document.getElementById("month_two").innerHTML = getNextMonth;
+                    $('#month-one').val(getNextMonth);
+                    $('#month-two').val(getNextMonth);
+                    document.getElementById('day_one').innerHTML = '1';
+                    $('#date_one').val(1);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+
+                    var dateEnd = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    dateEnd.setMonth(monthNumber);
+                    dateEnd.setDate(1);
+
+                    this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
+                } else {
+                    document.getElementById("month_" + monthId).innerHTML = getNextMonth;
+                    $('#month-' + monthId).val(getNextMonth);
+
+                    var date = new Date(this._activityFilter.date_starts);
+                    var monthNumber = indexOfMonth + 1;
+                    date.setMonth(monthNumber);
+
+                    this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                }
+            }
+            if (monthId == 'two') {
+                document.getElementById("month_" + monthId).innerHTML = getNextMonth;
+                $('#month-' + monthId).val(getNextMonth);
+
+                var date = new Date(this._activityFilter.date_ends);
+                var monthNumber = indexOfMonth + 1;
+                date.setMonth(monthNumber);
+
+
+                this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+            }
+        }
+        console.log(this._activityFilter);
+    }
+
+    minusDay(dayId) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var monthOne = document.getElementById("month_one").innerHTML;
+        monthOne = monthOne.toLowerCase();
+        var indexOfMonthOne = monthsArray.indexOf(monthOne);
+        var monthTwo = document.getElementById("month_two").innerHTML;
+        monthTwo = monthTwo.toLowerCase();
+        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var dayValue = parseFloat((<HTMLInputElement>document.getElementById("date_" + dayId)).value);
+        var indexOfDay = daysArray.indexOf(dayValue);
+        var getLowerDay;
+        var dayOneString = document.getElementById('day_one').innerHTML;
+        var dayOneValue = +dayOneString;
+        var dayTwoString = document.getElementById('day_two').innerHTML;
+        var dayTwoValue = +dayTwoString;
+        if (indexOfDay > 0) {
+            if (dayId == 'two') {
+                if (indexOfMonthTwo > indexOfMonthOne) {
+                    getLowerDay = daysArray.indexOf(indexOfDay + 1);
+                    document.getElementById('day_two').innerHTML = getLowerDay;
+                    $('#date_two').val(getLowerDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay;
+                    console.log(dayNumber);
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                }
+                if (indexOfMonthTwo == indexOfMonthOne) {
+                    if (dayTwoValue > dayOneValue) {
+                        getLowerDay = daysArray.indexOf(indexOfDay + 1);
+                        document.getElementById('day_two').innerHTML = getLowerDay;
+                        $('#date_two').val(getLowerDay);
+
+                        var date = new Date(this._activityFilter.date_ends);
+                        var dayNumber = indexOfDay;
+                        console.log(dayNumber);
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                    }
+                } else {
+                }
+            }
+            if (dayId == 'one') {
+                getLowerDay = daysArray.indexOf(indexOfDay + 1);
+                document.getElementById('day_one').innerHTML = getLowerDay;
+                $('#date_one').val(getLowerDay);
+
+                var date = new Date(this._activityFilter.date_starts);
+                var dayNumber = indexOfDay;
+                console.log(dayNumber);
+                date.setDate(dayNumber);
+
+                this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            }
+        }
+        console.log(this._activityFilter);
+
+    }
+
+    plusDay(dayId) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
+        var thirtyDayMonths = ['april', 'june', 'september', 'november'];
+        var frbruaryMonth = ['february'];
+        var monthOne = document.getElementById("month_one").innerHTML;
+        monthOne = monthOne.toLowerCase();
+        var indexOfMonthOne = monthsArray.indexOf(monthOne);
+        var monthTwo = document.getElementById("month_two").innerHTML;
+        monthTwo = monthTwo.toLowerCase();
+        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var dayValue = parseFloat((<HTMLInputElement>document.getElementById("date_" + dayId)).value);
+        var indexOfDay = daysArray.indexOf(dayValue);
+        var getHigherDay;
+        var dayOneString = document.getElementById('day_one').innerHTML;
+        var dayOneValue = +dayOneString;
+        var dayTwoString = document.getElementById('day_two').innerHTML;
+        var dayTwoValue = +dayTwoString;
+        if (dayId == 'two') {
+            if (thirtyOneDayMonths.indexOf(monthTwo) > -1) {
+                if (indexOfDay < 30) {
+                    getHigherDay = indexOfDay + 2;
+                    document.getElementById('day_two').innerHTML = getHigherDay;
+                    $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                }
+            }
+            if (thirtyDayMonths.indexOf(monthTwo) > -1) {
+                if (indexOfDay < 29) {
+                    getHigherDay = indexOfDay + 2;
+                    document.getElementById('day_two').innerHTML = getHigherDay;
+                    $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                }
+            }
+            if (frbruaryMonth.indexOf(monthTwo) > -1) {
+                if (indexOfDay < 27) {
+                    getHigherDay = indexOfDay + 2;
+                    document.getElementById('day_two').innerHTML = getHigherDay;
+                    $('#date_two').val(getHigherDay);
+
+                    var date = new Date(this._activityFilter.date_ends);
+                    var dayNumber = indexOfDay + 2;
+                    date.setDate(dayNumber);
+
+                    this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+                }
+            }
+        }
+        if (dayId == 'one') {
+            if (indexOfMonthOne == indexOfMonthTwo) {
+                if (dayOneValue < dayTwoValue) {
+                    if (thirtyOneDayMonths.indexOf(monthTwo) > -1) {
+                        if (indexOfDay < 30) {
+                            getHigherDay = indexOfDay + 2;
+                            document.getElementById('day_one').innerHTML = getHigherDay;
+                            $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                        }
+                    }
+                    if (thirtyDayMonths.indexOf(monthTwo) > -1) {
+                        if (indexOfDay < 29) {
+                            getHigherDay = indexOfDay + 2;
+                            document.getElementById('day_one').innerHTML = getHigherDay;
+                            $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                        }
+                    }
+                    if (frbruaryMonth.indexOf(monthTwo) > -1) {
+                        if (indexOfDay < 27) {
+                            getHigherDay = indexOfDay + 2;
+                            document.getElementById('day_one').innerHTML = getHigherDay;
+                            $('#date_one').val(getHigherDay);
+
+                            var date = new Date(this._activityFilter.date_starts);
+                            var dayNumber = indexOfDay + 2;
+                            date.setDate(dayNumber);
+
+                            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                        }
+                    }
+                }
+            }
+            if (indexOfMonthOne < indexOfMonthTwo) {
+                console.log('index of day: ' + indexOfDay);
+                if (thirtyOneDayMonths.indexOf(monthTwo) > -1) {
+                    if (indexOfDay < 30) {
+                        getHigherDay = indexOfDay + 2;
+                        document.getElementById('day_one').innerHTML = getHigherDay;
+                        $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                    }
+                }
+                if (thirtyDayMonths.indexOf(monthTwo) > -1) {
+                    if (indexOfDay < 29) {
+                        getHigherDay = indexOfDay + 2;
+                        document.getElementById('day_one').innerHTML = getHigherDay;
+                        $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                    }
+                }
+                if (frbruaryMonth.indexOf(monthTwo) > -1) {
+                    if (indexOfDay < 27) {
+                        console.log('index of the day is: ' + indexOfDay);
+                        getHigherDay = indexOfDay + 2;
+                        document.getElementById('day_one').innerHTML = getHigherDay;
+                        $('#date_one').val(getHigherDay);
+
+                        var date = new Date(this._activityFilter.date_starts);
+                        var dayNumber = indexOfDay + 2;
+                        date.setDate(dayNumber);
+
+                        this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+                    }
+                }
+            }
+        }
+
+
+        console.log(this._activityFilter);
+    }
 }

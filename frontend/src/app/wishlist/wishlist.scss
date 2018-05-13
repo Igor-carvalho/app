@@ -1,4 +1,7 @@
 app-wishlist { //these are selector, defined in component.ts, which make sure css is specific to this component, so do write css inside of this body
+  .calendar_image {
+    width: 65px;
+  }
   .sidebar_section {
     position: fixed;
     left: 0px;

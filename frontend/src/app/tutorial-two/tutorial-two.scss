@@ -56,7 +56,7 @@ app-tutorial-two {
     margin: 30px 0px;
   }
   .calendar_top_row {
-    margin-top: 50px;
+    margin-top: 130px;
   }
   .from_container, .from, .left_icon_calendar, .right_icon_calendar, .month_container, .month, .day_container, .day {
     display: inline-block;
@@ -217,7 +217,7 @@ app-tutorial-two {
     font-size: 22px;
     font-weight: 600;
     text-align: left;
-    margin-top: 50px;
+    margin-top: 130px;
     .checkbox {
       width: 50%;
       float: left;
@@ -286,11 +286,22 @@ app-tutorial-two {
     right: 40px;
     padding-top: 30px;
   }
+  .budget_icons_group {
+    padding-top: 130px;
+  }
   /* Large Devices, Wide Screens */
   
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
-    
+    .budget_icons_group {
+      padding-top: 120px;
+    }
+    .checkboxes_wrapper {
+      margin-top: 120px;
+    }
+    .calendar_top_row {
+      margin-top: 120px;
+    }
   }
 
   /* Medium Devices, Desktops */
@@ -304,6 +315,15 @@ app-tutorial-two {
     }
     .high_range_budget_image {
       width: 190px;
+    }
+    .budget_icons_group {
+      padding-top: 120px;
+    }
+    .checkboxes_wrapper {
+      margin-top: 120px;
+    }
+    .calendar_top_row {
+      margin-top: 120px;
     }
   }
 
@@ -363,6 +383,7 @@ app-tutorial-two {
     }
     .budget_icons_group {
       margin: 40px 0px;
+      padding-top: 80px;
     }
     .low_budget_image {
       width: 90px;
@@ -377,10 +398,38 @@ app-tutorial-two {
     .slider_navigation {
       margin-top: 0px;
     }
+    .checkboxes_wrapper {
+      margin-top: 40px;
+    }
+    .checkbox {
+      width: 100% !important;
+      box-sizing: border-box;
+      padding-left: 20%;
+    }
+    .checkboxRound {
+      width: 36px;
+      height: 36px;
+      top: 10px;
+    }
+    .checkboxRound label {
+      width: 26px;
+      height: 25px;
+      top: 4px;
+      left: 3px;
+    }
+    .calendar_top_row {
+      margin-top: 30px;
+    }    
+    .persons_column, .children_column {
+      margin-top: 40px;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
+    .slider_container {
+      background-color: peru;
+    }
     .slider_left_arrow {
       margin-right: 20px;
     }
@@ -449,18 +498,37 @@ app-tutorial-two {
       margin: 40px 0px;
     }
     .low_budget_image {
-      width: 150px;
-      padding: 0px 20px !important;
+      width: 90px;
     }
     .middle_range_budget_image {
-      width: 159px;
-      margin: 20px 50px;
+      width: 115px;
+      margin: 0px 22px;
     }
     .high_range_budget_image {
-      width: 180px;
+      width: 126px;
     }
     .slider_navigation {
       margin-top: 0px;
+    }
+    
+    .checkboxes_wrapper {
+      margin-top: 100px;
+    }
+    .checkbox {
+      width: 100% !important;
+      box-sizing: border-box;
+      padding-left: 20%;
+    }
+    .checkboxRound {
+      width: 36px;
+      height: 36px;
+      top: 10px;
+    }
+    .checkboxRound label {
+      width: 26px;
+      height: 25px;
+      top: 4px;
+      left: 3px;
     }
   }
 }

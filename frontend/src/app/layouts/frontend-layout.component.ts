@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../model/user.service";
-import {TweenMax, Power2, Back, Power0, Elastic, Bounce, SplitText, TimelineLite, TweenLite, CSSPlugin, EasePack} from "gsap";
+import {TweenMax, Power2, Back, Power0, Elastic, Bounce, SplitText, TimelineLite, TimelineMax, TweenLite, CSSPlugin, EasePack} from "gsap";
 import * as $ from 'jquery';
 
 @Component({
@@ -22,6 +22,16 @@ export class FrontendLayoutComponent implements OnInit {
         if (jwtValue != null) {
             this.userData = jwtValue.data;
         }
+
+        var tl = new TimelineMax;
+        var tlm = new TimelineMax;
+        //tl.to('#bone_container', 2, {rotation: 360, repeatDelay:0, repeat: -1, yoyo:true});
+        //tl.to('.eye_level_three_container', 2, {rotation: 360, repeatDelay:0, delay: 2, repeat: -1, yoyo:true});
+        //tl.play();
+        tl.to('#bone_container', 2, {rotation: 360, repeatDelay:0, delay: 0, repeat: -1, ease:  Power0.easeNone});
+        tlm.to('.eye_level_three_container', 2, {rotation: 360, repeatDelay:0, delay: 0, repeat: -1, ease:  Power0.easeNone});
+        tlm.play();
+        tl.play();
     }
 
     public toggled(open: boolean): void {

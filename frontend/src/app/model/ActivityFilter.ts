@@ -13,8 +13,9 @@ export class ActivityFilter {
         this.macro_categories = [];
         this.num_adults = 1;
         this.num_childs = 0;
-        this.date_starts = "2018-05-10";
-        this.date_ends = "2018-05-15";
+
+        this.date_starts = new Date().toISOString().substring(0, 10);
+        this.date_ends = new Date().toISOString().substring(0, 10);
         Object.assign(this, values);
     }
 

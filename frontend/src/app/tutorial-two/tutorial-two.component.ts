@@ -256,6 +256,22 @@ export class TutorialTwoComponent implements OnInit {
 
         $('.adult_number_display').html($('#personNumberCountInput').val());
         $('.child_number_display').html($('#childNumberCountInput').val());
+
+        var day = new Date(this._activityFilter.date_starts).getDate();
+        var month  = new Date(this._activityFilter.date_starts).getMonth();
+
+
+        var day = new Date(this._activityFilter.date_starts).getDate();
+        var month  = new Date(this._activityFilter.date_starts).getMonth();
+
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+        $('#date_one').val(day);
+        $('#date_two').val(day);
+        $('#month-one').val(monthsArray[month]);
+        $('#month-two').val(monthsArray[month]);
+
+
         $('#day_one').html($('#date_one').val());
         $('#day_two').html($('#date_two').val());
         $('#month_one').html($('#month-one').val());
@@ -310,11 +326,14 @@ export class TutorialTwoComponent implements OnInit {
             personCountInputVal++;
             $('#personNumberCountInput').val(personCountInputVal);
             $('.adult_number_display').html(personCountInputVal);
+
+            this._activityFilter.num_adults = personCountInputVal;
         }
         if(personId == 'child') {
             childCountInputVal++;
             $('#childNumberCountInput').val(childCountInputVal);
             $('.child_number_display').html(childCountInputVal);
+            this._activityFilter.num_childs = childCountInputVal;
         }
     }
 
@@ -325,11 +344,13 @@ export class TutorialTwoComponent implements OnInit {
             personCountInputVal--;
             $('#personNumberCountInput').val(personCountInputVal);
             $('.adult_number_display').html(personCountInputVal);
+            this._activityFilter.num_adults = personCountInputVal;
         }
         if(personId == 'child' && childCountInputVal > 0) {
             childCountInputVal--;
             $('#childNumberCountInput').val(childCountInputVal);
             $('.child_number_display').html(childCountInputVal);
+            this._activityFilter.num_childs = childCountInputVal;
         }
     }
 

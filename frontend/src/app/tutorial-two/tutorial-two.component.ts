@@ -219,6 +219,8 @@ export class TutorialTwoComponent implements OnInit {
         };
         //TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
         TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
+        TweenLite.from(".add_person_icon", 0.8, {scale: 0, delay: 0.8, ease: Back.easeOut});
+        TweenLite.from(".remove_person_icon", 0.8, {scale: 0, delay: 0.8, ease: Back.easeOut});
         //TweenLite.from($nextButton, 1, {left: 1000, delay: 1, ease: Bounce.easeOut});
         TweenLite.from($nextButton, 0.5, {scale: 0, delay: 1, ease: Back.easeOut});
         TweenMax.staggerFrom($sliderDot, 0.4, {delay: 0.9, scale: 0, ease: Elastic.easeOut.config(1.75, 0.4)}, 0.1);

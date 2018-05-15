@@ -427,14 +427,11 @@ app-tutorial-two {
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
-    .slider_container {
-      background-color: peru;
-    }
     .slider_left_arrow {
-      margin-right: 20px;
+      margin-right: 5px;
     }
     .slider_right_arrow {
-      margin-left: 20px;
+      margin-left: 5px;
     }
     .arrow_imgs {
       width: 30px;
@@ -496,16 +493,22 @@ app-tutorial-two {
     }
     .budget_icons_group {
       margin: 40px 0px;
+      padding-top: 60px;
+      text-align: center;
     }
     .low_budget_image {
       width: 90px;
+      display: block;
+      margin: 15px auto;
     }
     .middle_range_budget_image {
       width: 115px;
-      margin: 0px 22px;
+      margin: 15px auto;
     }
     .high_range_budget_image {
       width: 126px;
+      display: block;
+      margin: 15px auto;
     }
     .slider_navigation {
       margin-top: 0px;
@@ -517,7 +520,8 @@ app-tutorial-two {
     .checkbox {
       width: 100% !important;
       box-sizing: border-box;
-      padding-left: 20%;
+      padding-left: 5%;
+      font-size: 19px;
     }
     .checkboxRound {
       width: 36px;

@@ -33,6 +33,8 @@ import {SettingDataService} from './model/setting-data.service';
 import {ActivitiesDataService} from "./services/activities-data.service";
 import {StaticDataService} from "./services/static-data.service";
 import {ItineraryDataService} from "./services/itinerary-data.service";
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     imports: [
@@ -43,6 +45,7 @@ import {ItineraryDataService} from "./services/itinerary-data.service";
         ChartsModule,
         HttpModule,
         SharedModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,

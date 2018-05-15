@@ -1,5 +1,5 @@
 <header class="app-header navbar">
-    <div class="loader_container">
+    <div id="global-page-loader" class="loader_container">
         <div class="loader">
             <div id="bone_container" class="bone_container">
                 <img src="assets/img/Icon_bone_White.svg" alt="loading icon">
@@ -25,8 +25,8 @@
     <a class="navbar-brand" href="#"></a>
     <div class="main_top_menu">
         <div class="edit_filters_icon">
-            <img src="assets/img/Icon_Filter.svg" alt="filters">
-            <img id="menu_back_icon" src="assets/img/Icon_Arrow_Left_Back.svg" alt="go back">
+            <img id="edit-filter" style="display: none;" src="assets/img/Icon_Filter.svg" alt="filters">
+            <img id="menu_back_icon" (click)="goBack()" src="assets/img/Icon_Arrow_Left_Back.svg" alt="go back">
         </div>
         <div class="dobedoo_heading">Dobedoo</div>
         <div class="hamburger_menu_icon">
@@ -38,18 +38,19 @@
     </div>
     <div class="side_menu">
         <div class="close_side_menu">
-                <img src="assets/img/Icon_Close.svg" alt="close" (click)="openSideMenu()">
+            <img src="assets/img/Icon_Close.svg" alt="close" (click)="openSideMenu()">
         </div>
         <ul class="nav navbar-nav d-md-down-none nav_pages">
             <li class="nav-item px-3">
-                <a class="nav-link" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact:true}">Home</a>
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/']"
+                   [routerLinkActiveOptions]="{exact:true}">Home</a>
             </li>
             <li class="nav-item px-3 dropdown" dropdown (onToggle)="toggled($event)">
                 <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
                     <span class="hidden-md-down">Sample Page</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-    
+
                     <div class="dropdown-header text-center"><strong>Sample Pages</strong></div>
                     <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/sample-page/1']"><i
                             class="fa fa-star-o"></i> Page1</a>
@@ -80,9 +81,10 @@
                    [routerLinkActiveOptions]="{exact:true}">Activity Details</a>
             </li>
         </ul>
-    
-    
-        <ul class="nav navbar-nav ml-auto mr-4 nav_pages nav_registration" *ngIf="this._userService.isLoggedIn() == false">
+
+
+        <ul class="nav navbar-nav ml-auto mr-4 nav_pages nav_registration"
+            *ngIf="this._userService.isLoggedIn() == false">
             <li class="nav-item px-3 d-md-down-none">
                 <a class="nav-link" routerLinkActive="active" [routerLink]="['/login']">Login</a>
             </li>
@@ -100,9 +102,9 @@
             <li class="nav-item px-3 d-md-down-none">
                 <a class="nav-link" routerLinkActive="active" [routerLink]="['/logout']">Logout</a>
             </li>
-        </ul>    
+        </ul>
     </div>
-    
+
 </header>
 
 
@@ -123,10 +125,10 @@
 
 <footer class="app-footer">
     <div class="footer_left">
-        <span class="footer_left_span_one">Get all the</span><br />
+        <span class="footer_left_span_one">Get all the</span><br/>
         <span class="footer_left_span_two">Best Promotions</span>
     </div>
-    
+
     <div class="float-right footer_right">
         <img src="assets/img/Dobedoo_card.png" alt="Dobedoo card">
         <span>with just one card!</span>

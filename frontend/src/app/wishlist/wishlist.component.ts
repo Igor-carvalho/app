@@ -21,6 +21,7 @@ import {ArrayUtils} from "../utilities/ArrayUtils";
 import {ItineraryDataService} from "../services/itinerary-data.service";
 import {Itinerary} from "../model/itinerary/Itinerary";
 import {StaticDataService} from "../services/static-data.service";
+import {FrontendLayoutComponent} from "../layouts/frontend-layout.component";
 
 @Component({
     selector: 'app-wishlist',
@@ -35,6 +36,7 @@ export class WishlistComponent implements OnInit {
     public _arrayUtils: ArrayUtils;
 
     public _itinerary: Itinerary;
+    public loading: boolean;
 
     constructor(private _router: Router,
                 private _userService: UserService,
@@ -42,6 +44,8 @@ export class WishlistComponent implements OnInit {
                 private _itineraryDataService: ItineraryDataService,
                 private _activitesDataService: ActivitiesDataService) {
         this._selectedActivities = [];
+        this.loading = true;
+        this._activities = [];
 
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             // this._activityFilter = <ActivityFilter> params;
@@ -92,7 +96,9 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log("ngInit");
 
+        $("#edit-filter").show();
         this.populateFilterValues();
         this.getMacroCategories();
         this.getActivities(this._activityFilter);
@@ -127,7 +133,7 @@ export class WishlistComponent implements OnInit {
             $('.budget_range_text_display').html('high range');
         }
 
-        $('.edit_filters_icon').click(function () {
+        $('#edit-filter').click(function () {
             $(".sidebar_section").toggle(400);
         });
         if ($(window).width() <= 480) {
@@ -222,7 +228,7 @@ export class WishlistComponent implements OnInit {
                 $('.budget_icons_container').css('float', 'none');
             }
         }
-
+        $("#edit-filter").click();
         this._router.navigate(['/wishlist'], {queryParams: this._activityFilter});
         this.getActivities(this._activityFilter);
     }
@@ -655,13 +661,16 @@ export class WishlistComponent implements OnInit {
     }
 
     getActivities(activity: ActivityFilter) {
+        this.loading = true;
         this._activitesDataService
             .filterActivites(activity.num_adults, activity.budget_type, activity.macro_categories, activity.date_starts, activity.date_ends)
             .subscribe(
                 activities => {
                     this._activities = activities;
+                    this.loading = false;
                 },
                 error => {
+                    this.loading = false;
                     // unauthorized access
                     if (error.status == 401 || error.status == 403) {
                         this._userService.unauthorizedAccess(error);
@@ -689,10 +698,12 @@ export class WishlistComponent implements OnInit {
         if (this._selectedActivities.length == 0) {
             alert("Wishlist is empty, Please select one or more items. ");
         } else {
+            this.loading = true;
             this._itineraryDataService
                 .cookItinerary(this._selectedActivities, this._activityFilter)
                 .subscribe(
                     itinerary => {
+                        this.loading = false;
                         this._itinerary = itinerary;
                         this._router.navigate(['/itinerary'], {queryParams: {id: this._itinerary.id}});
                     },
@@ -729,6 +740,25 @@ export class WishlistComponent implements OnInit {
 
     toggleMacroCategory(id) {
 
+    }
+
+    ngOnDestroy() {
+        console.log("ngOnDestroy");
+
+        $("#edit-filter").hide();
+        $("#edit-filter").unbind('click');
+        $("#global-page-loader").hide('');
+
+    }
+
+    ngDoCheck() {
+        // console.log("ngDoCheck");
+        var globalLoader = document.getElementById("global-page-loader").style.display;
+        if ($("#global-page-loader").css('display') == 'none' && this.loading) {
+            $("#global-page-loader").show();
+        } else if ($("#global-page-loader").css('display') == 'block' && !this.loading) {
+            $("#global-page-loader").hide('slow');
+        }
     }
 
 }

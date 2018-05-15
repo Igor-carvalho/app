@@ -153,23 +153,22 @@
     <div class="row">
         <div class="col-lg-1 left_container"></div>
         <div class="col-lg-9 middle_container">
-            <div class="not_found_container">
+            <div *ngIf="!loading && _activities.length == 0" class="not_found_container">
                 <div class="not_found_image_container">
                     <img src="assets/img/Icon_Not_Found.svg" alt="Search results not forund">
                 </div>
                 <div class="not_found_text_container">
                     <span class="sorry_text">sorry!</span>
-                    <span class="not_found_text">there are no results for</span>
-                    <blockquote id="search_result_quote">Bla bla</blockquote>
+                    <!--<span class="not_found_text">there are no results for</span>-->
+                    <!--<blockquote id="search_result_quote">Bla bla</blockquote>-->
                     <span class="not_found_text">try to change your filters</span>
-                    <span class="not_found_text">or to check the spelling</span>
+                    <!--<span class="not_found_text">or to check the spelling</span>-->
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
                      *ngFor="let activity of _activities">
-                    <div class="element_container selected-activity"
-                         [class.selected-activity]="check_activity_selected(activity.id)"
+                    <div class="element_container"
                          (click)="toggle_selected_acctivity(activity.id)">
                         <div class="image_container">
                             <div class="image">
@@ -178,7 +177,9 @@
                             <div class="icon">
                                 <img [src]="'assets/img/'+activity.micro_icon" alt="Museum category">
                             </div>
-                            <div class="gradient_div"></div>
+                            <div class="gradient_div gradient_class"
+                                 [class.gradient_class]="check_activity_selected(activity.id)"
+                            ></div>
                         </div>
                         <div class="place_name_container">
                             <div class="place_name">{{ activity.name }}</div>

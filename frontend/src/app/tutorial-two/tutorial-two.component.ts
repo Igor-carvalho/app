@@ -177,46 +177,89 @@ export class TutorialTwoComponent implements OnInit {
             }
         }.bind(this);
         */
-        lowBudget.onclick = function () {
-            lowBudget.style.display = "none";
-            lowBudgetChecked.style.display = "inline-block";
-            middleRangeBudgetChecked.style.display = "none";
-            middleRangeBudget.style.display = "inline-block";
-            highRangeBudgetChecked.style.display = "none";
-            highRangeBudget.style.display = "inline-block";
-            this._activityFilter.budget_type = 1;
-        }.bind(this);
-        lowBudgetChecked.onclick = function () {
-            lowBudgetChecked.style.display = "none";
-            lowBudget.style.display = "inline-block";
-        };
-        middleRangeBudget.onclick = function () {
-            middleRangeBudget.style.display = "none";
-            middleRangeBudgetChecked.style.display = "inline-block";
-            lowBudgetChecked.style.display = "none";
-            lowBudget.style.display = "inline-block";
-            highRangeBudgetChecked.style.display = "none";
-            highRangeBudget.style.display = "inline-block";
-            this._activityFilter.budget_type = 2;
-        }.bind(this);
-        ;
-        middleRangeBudgetChecked.onclick = function () {
-            middleRangeBudgetChecked.style.display = "none";
-            middleRangeBudget.style.display = "inline-block";
-        };
-        highRangeBudget.onclick = function () {
-            highRangeBudget.style.display = "none";
-            highRangeBudgetChecked.style.display = "inline-block";
-            lowBudgetChecked.style.display = "none";
-            lowBudget.style.display = "inline-block";
-            middleRangeBudgetChecked.style.display = "none";
-            middleRangeBudget.style.display = "inline-block";
-            this._activityFilter.budget_type = 3;
-        }.bind(this);
-        highRangeBudgetChecked.onclick = function () {
-            highRangeBudgetChecked.style.display = "none";
-            highRangeBudget.style.display = "inline-block";
-        };
+        if($(window).width() < 480) {
+            lowBudget.onclick = function () {
+                lowBudget.style.display = "none";
+                lowBudgetChecked.style.display = "block";
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "block";
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "block";
+                this._activityFilter.budget_type = 1;
+            }.bind(this);
+            lowBudgetChecked.onclick = function () {
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "block";
+            };
+            middleRangeBudget.onclick = function () {
+                middleRangeBudget.style.display = "none";
+                middleRangeBudgetChecked.style.display = "block";
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "block";
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "block";
+                this._activityFilter.budget_type = 2;
+            }.bind(this);
+            ;
+            middleRangeBudgetChecked.onclick = function () {
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "block";
+            };
+            highRangeBudget.onclick = function () {
+                highRangeBudget.style.display = "none";
+                highRangeBudgetChecked.style.display = "block";
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "block";
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "block";
+                this._activityFilter.budget_type = 3;
+            }.bind(this);
+            highRangeBudgetChecked.onclick = function () {
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "block";
+            };
+        } else {
+            lowBudget.onclick = function () {
+                lowBudget.style.display = "none";
+                lowBudgetChecked.style.display = "inline-block";
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "inline-block";
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "inline-block";
+                this._activityFilter.budget_type = 1;
+            }.bind(this);
+            lowBudgetChecked.onclick = function () {
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "inline-block";
+            };
+            middleRangeBudget.onclick = function () {
+                middleRangeBudget.style.display = "none";
+                middleRangeBudgetChecked.style.display = "inline-block";
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "inline-block";
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "inline-block";
+                this._activityFilter.budget_type = 2;
+            }.bind(this);
+            ;
+            middleRangeBudgetChecked.onclick = function () {
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "inline-block";
+            };
+            highRangeBudget.onclick = function () {
+                highRangeBudget.style.display = "none";
+                highRangeBudgetChecked.style.display = "inline-block";
+                lowBudgetChecked.style.display = "none";
+                lowBudget.style.display = "inline-block";
+                middleRangeBudgetChecked.style.display = "none";
+                middleRangeBudget.style.display = "inline-block";
+                this._activityFilter.budget_type = 3;
+            }.bind(this);
+            highRangeBudgetChecked.onclick = function () {
+                highRangeBudgetChecked.style.display = "none";
+                highRangeBudget.style.display = "inline-block";
+            };
+        }
         //TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
         TweenLite.from(".adult_person", 0.8, {scale: 0, rotation: -50, ease: Back.easeOut});
         TweenLite.from(".add_person_icon", 0.8, {scale: 0, delay: 0.8, ease: Back.easeOut});

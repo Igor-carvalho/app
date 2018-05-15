@@ -110,6 +110,9 @@ body {
         img {
             width: 40px;
         }
+        #menu_back_icon {
+            display: none;
+        }
     }
     .dobedoo_heading {
         position: relative;
@@ -381,7 +384,7 @@ body {
         padding-top: 0px !important;
     }
     .edit_filters_icon {
-        width: 114px !important;
+        width: 66px !important;
     }
     .cart_icon_main_menu {
         display: none;

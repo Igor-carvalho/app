@@ -548,6 +548,9 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .add_person {
       margin: 0px 10px 0px 0px;
     }*/
+    .filters {
+      margin-bottom: 40px;
+    }
     .filters_one {
       text-align: center !important;
       padding: 10px 0px !important;
@@ -592,6 +595,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       float: none !important;
       text-align: left !important;
       margin: 0px auto !important;
+      font-size: 15px !important;
     }
     .budget_icons_container {
       width: 100px !important;

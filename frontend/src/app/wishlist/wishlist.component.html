@@ -166,7 +166,6 @@
                 </div>
             </div>
             <div class="row">
-
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
                      *ngFor="let activity of _activities">
                     <div class="element_container selected-activity"
@@ -179,6 +178,7 @@
                             <div class="icon">
                                 <img [src]="'assets/img/'+activity.micro_icon" alt="Museum category">
                             </div>
+                            <div class="gradient_div"></div>
                         </div>
                         <div class="place_name_container">
                             <div class="place_name">{{ activity.name }}</div>

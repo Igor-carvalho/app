@@ -30,7 +30,10 @@ export class ItineraryComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        if(window.location.href.indexOf("itinerary") > -1) {
+            console.log('this is working');
+            $('.app').css('background-color', "#f0f0f0");
+         }
         this.getItinerary();
         //TweenLite.to("#heading", 2, {rotation:360});
         var $weekDay = $(".date-weekday"), $dateSpan = $(".date-span"), $temperature = $(".temperature"), $weatherIcon = $(".weather-icon"), $redBar = $(".red-line"), $circleOne = $(".circle_one"), $circleTwo = $(".circle_two"), $timeOne = $(".time_one"), $timeTwo = $(".time_two"), $events = $(".events");

@@ -11,10 +11,10 @@ app-tutorial-two {
     float: left;
   }
   .add_person_icon {
-    margin-right: 10px;
+    margin-left: 10px;
   }
   .remove_person_icon {
-    margin-left: 10px;
+    margin-right: 10px;
   }
   .adult_wrapper, .child_wrapper {
     display: inline-block;
@@ -56,7 +56,7 @@ app-tutorial-two {
     margin: 30px 0px;
   }
   .calendar_top_row {
-    margin-top: 130px;
+    margin-top: 120px;
   }
   .from_container, .from, .left_icon_calendar, .right_icon_calendar, .month_container, .month, .day_container, .day {
     display: inline-block;
@@ -69,10 +69,14 @@ app-tutorial-two {
     text-align: left;
   }
   .from {
-    border-bottom: 4px solid #fff;
-    display: inline;
-    padding-bottom: 4px;
-    padding-right: 12px;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+  .from_underline, .next_button_underline {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 2px;
   }
   .left_icon_calendar {
     width: 40px;
@@ -122,7 +126,7 @@ app-tutorial-two {
     float: left;
   }
   .slider_section_heading {
-    margin-top: 80px;
+    margin-top: 70px;
     text-align: center;
   }
   .slider_icons {
@@ -149,8 +153,8 @@ app-tutorial-two {
     margin: 0px;
     padding:0px;
     text-align: center;
-    height: 70px;
-    margin-top: 50px;
+    height: 55px;
+    margin-top: 30px;
   }
   .slider_dot {
     width: 14px;
@@ -217,7 +221,7 @@ app-tutorial-two {
     font-size: 22px;
     font-weight: 600;
     text-align: left;
-    margin-top: 130px;
+    margin-top: 120px;
     .checkbox {
       width: 50%;
       float: left;
@@ -277,17 +281,16 @@ app-tutorial-two {
     color: #fff;
     background-color: #e52050;
     border: 0px;
-    border-bottom: 4px solid #fff;
     font-size: 22px;
     text-align: left;
-    padding: 0pc 15px 0px 0px;
+    padding: 0px 15px 0px 0px;
     position: relative;
     float: right;
     right: 40px;
     padding-top: 0px;
   }
   .budget_icons_group {
-    padding-top: 130px;
+    padding-top: 120px;
   }
   /* Large Devices, Wide Screens */
   

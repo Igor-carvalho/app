@@ -9,7 +9,7 @@
                 <div class="col-lg-2 col-md-1"></div>
                 <div class="col-lg-4 col-sm-6 col-md-5 margins_top_bottom persons_column">
                     <div id="adult_number">
-                        <img src="assets/img/Icon_Filter_Plus.svg" class="add_person_icon" alt="person" (click)="addPerson('adult')">
+                        <img class="remove_person_icon" src="assets/img/Icon_Filter_Minus.svg" alt="remove person" (click)="removePerson('adult')">
                         <div class="adult_wrapper">
                             <div class="adult_text">Adults</div>
                             <div class="image_wrapper">
@@ -17,12 +17,12 @@
                             </div>
                             <div class="adult_number_display"></div>
                         </div>
-                        <img class="remove_person_icon" src="assets/img/Icon_Filter_Minus.svg" alt="remove person" (click)="removePerson('adult')">
+                        <img src="assets/img/Icon_Filter_Plus.svg" class="add_person_icon" alt="person" (click)="addPerson('adult')">
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-md-5 children_column margins_top_bottom">
                     <div id="child_number">
-                        <img src="assets/img/Icon_Filter_Plus.svg" alt="add child" class="add_person_icon child_icons" (click)="addPerson('child')">
+                        <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child" class="remove_person_icon child_icons" (click)="removePerson('child')">
                         <div class="child_wrapper">
                             <div class="child_text">Children</div>
                             <div class="image_wrapper">
@@ -30,7 +30,7 @@
                             </div>
                             <div class="child_number_display"></div>
                         </div>
-                        <img src="assets/img/Icon_Filter_Minus.svg" alt="remove child" class="remove_person_icon child_icons" (click)="removePerson('child')">
+                        <img src="assets/img/Icon_Filter_Plus.svg" alt="add child" class="add_person_icon child_icons" (click)="addPerson('child')">
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-1"></div>
@@ -45,7 +45,7 @@
             <div class="slider_icons">
                 <div class="calendar_row calendar_top_row">
                     <div class="from_container">
-                        <div class="from">from</div>
+                        <div class="from">from<div class="from_underline"></div></div>
                     </div>
                     <div class="month_container">
                         <div class="left_icon_calendar">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="calendar_row">
                     <div class="from_container">
-                        <div class="from">to</div>
+                        <div class="from">to<div class="from_underline"></div></div>
                     </div>
                     <div class="month_container">
                         <div class="left_icon_calendar">
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div class="slider_section">
-            <h1 class="slider_section_heading heading-one">What's the budget</h1>
+            <h1 class="slider_section_heading heading-one">What's the budget?</h1>
             <div class="slider_icons budget_icons_group">
                 <img id="low_budget_image" src="assets/img/low-budget.svg" alt="low budget" class="low_budget_image">
                 <img id="low_budget_image_checked" src="assets/img/low-budget-selected.svg" alt="low budget"
@@ -156,5 +156,5 @@
             <img src="assets/img/arrow_right.svg" alt="slide right arrow" class="arrow_imgs">
         </div>
     </div>
-    <button class="next_button" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!</button>
+    <button class="next_button" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!<div class="next_button_underline"></div></button>
 </div>

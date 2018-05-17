@@ -96,6 +96,10 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(window.location.href.indexOf("wishlist") > -1) {
+            console.log('this is working');
+            $('.app').css('background-color', "#f0f0f0");
+         }
         console.log("ngInit");
 
         $("#edit-filter").show();

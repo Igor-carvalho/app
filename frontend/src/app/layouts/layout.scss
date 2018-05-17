@@ -6,6 +6,9 @@ body {
     color: #fff;
     font-family: 'Montserrat', sans-serif;
 }
+.cart {
+    display: none;
+}
 .navbar-brand {
     display: none !important;
 }
@@ -130,6 +133,7 @@ body {
         float: right;
         width: 70px;
         line-height: 60px;
+        display: none;
         cursor: pointer;
         img {
             width: 35px;

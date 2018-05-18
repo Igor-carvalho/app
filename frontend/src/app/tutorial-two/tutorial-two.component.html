@@ -142,6 +142,7 @@
                     </div>
                 </div>
             </div>
+            <button class="next_button nb_before_pagination" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!<div class="next_button_underline"></div></button>
         </div>
     </div>
     <div class="slider_navigation">
@@ -156,5 +157,5 @@
             <img src="assets/img/arrow_right.svg" alt="slide right arrow" class="arrow_imgs">
         </div>
     </div>
-    <button class="next_button" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!<div class="next_button_underline"></div></button>
+    <button class="next_button nb_after_pagination" *ngIf="showGetStarted()" (click)="getStarted()">Next Step!<div class="next_button_underline"></div></button>
 </div>

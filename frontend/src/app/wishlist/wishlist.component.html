@@ -166,6 +166,12 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
+                   <div class="element_container wishlist_description_container">
+                       <h2>This is your<br>Wishlist!</h2>
+                       <p>Select one or more Activities you want to do while you're in <span id="wishlist_description_city">Neaples</span></p>
+                   </div>
+                </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
                      *ngFor="let activity of _activities">
                     <div class="element_container"
@@ -189,7 +195,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-lg-2 right_container">
@@ -200,6 +205,10 @@
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
                     <div class="edit_itinerary" (click)="backToItinerary()">Hide my<br>Itinerary</div>
                 </div>
+            </div>
+            <div class="select_activity_container">
+                <img src="assets/img/triangle.svg" alt="empty wishlist arrow">
+                <div class="select_activity_description">Select atleast one Activity for your Wishlist!</div>
             </div>
         </div>
     </div>

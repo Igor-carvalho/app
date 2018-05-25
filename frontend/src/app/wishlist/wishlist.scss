@@ -396,6 +396,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       display: block;
       box-sizing: border-box;
       padding: 0px 0px 0px 15px;
+      min-height: 78px;
       .place_name {
         width: calc(100% - 30px);
         display: inline-block;
@@ -414,7 +415,22 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         top: 5px;
       }
     }
-
+  }  
+  .wishlist_description_container {
+    box-shadow: 0px 0px 0px 7px #FFD7E2;
+    border: 5px solid #FFA9BC;
+    background-color: $themeColor;
+    color: #fff;
+    padding: 15px;
+    h2 {
+      font-size: 25px;
+      margin-bottom: 25%;
+    }
+    p {
+      font-size: 20px;
+      line-height: 25px;
+      margin-bottom: 10%;
+    }
   }
   .edit_itinerary_container {
     width: 100%;
@@ -438,6 +454,32 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         cursor: pointer;
       }
     }
+  }  
+  .select_activity_container {
+    width: 100%;
+    position: relative;
+    display: block;
+    display: none;
+    img {
+      max-width: 60px;
+      position: relative;
+      display: block;
+      right: 40px;
+      float: right;
+      top: 5px;
+      z-index: 2;
+    }
+    .select_activity_description {
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      background-color: $themeColor;
+      border: 5px solid #FFA9BC;
+      border-radius: 10px;
+      padding: 15px 10px;
+      font-size: 20px;
+    }
   }
   /* Large Devices, Wide Screens */
   
@@ -447,6 +489,14 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       flex: 0 0 33.333333334%;
       max-width: 33.333333334%;
     }
+    .select_activity_container {
+      img {
+        right: 30px;
+      }
+      .select_activity_description {
+        font-size: 15px;
+      }
+    }
   }
 
   /* Medium Devices, Desktops */
@@ -454,6 +504,16 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .wishlist_container {
       padding-left: 20px !important;
       padding-right: 20px !important;
+    }    
+    .select_activity_container {
+      margin-bottom: 50px;
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      img {
+        right: 50%;
+      }
     }
   }
 
@@ -527,6 +587,16 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .checkboxes_wrapper {
       font-size: 15px !important;
+    }      
+    .select_activity_container {
+      margin-bottom: 20px;
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      img {
+        right: 50%;
+      }
     }
   }
 
@@ -597,6 +667,16 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .budget_icons_container {
       width: 100px !important;
+    }  
+    .select_activity_container {
+      margin-bottom: 10px;
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      img {
+        right: 50%;
+      }
     }
   }
 }

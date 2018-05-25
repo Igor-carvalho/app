@@ -31,8 +31,10 @@ export class FrontendLayoutComponent implements OnInit {
     public userData: any = {};
 
     constructor(private _userService: UserService,
-                private _location: Location) {
+                private _location: Location,
+                private _router: Router) {
         FrontendLayoutComponent.loading = false;
+        console.log(this._router);
     }
 
     ngOnInit(): void {

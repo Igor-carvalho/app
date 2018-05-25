@@ -29,7 +29,7 @@
                         </div>
                         <div class="events_container">
                             <div class="events" *ngFor="let hour of day.hours">
-                                <div class="events_wrapper">
+                                <div class="events_wrapper" (click)="showActivityDetails(hour.activity.id)">
                                     <img class="itinerary_images" src="{{hour.activity.images[0]}}"
                                          alt="image">
                                     <div class="events_transparent_layer" id="modalClickButton">
@@ -38,7 +38,7 @@
                                         <span class="cart">
                                         <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
                                     </span>
-                                        <span class="cross">
+                                        <span class="cross" (click)="deleteItinerary(hour.activity.id)">
                                         <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
                                     </span>
                                         <span class="double_arrow">
@@ -46,87 +46,70 @@
                                     </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="myModal" class="modal_popup">
-                                <div class="modal_content_wrapper">
-                                <span class="toggle_close_modal">
+
+                                <div id="modal-activity-details-{{hour.activity.id}}" class="modal_popup">
+                                    <div class="modal_content_wrapper">
+                                <span (click)="closeActivityDetails(hour.activity.id)" class="toggle_close_modal">
                                     <img src="assets/img/Icon_Close.svg" alt="close modal">
                                 </span>
-                                    <span class="modal_category_icon">
-                                    <img src="assets/img/Icon_Museum.svg" alt="category name here">
+                                        <span class="modal_category_icon">
+                                    <img [src]="'assets/img/'+hour.activity.micro_icon" alt="category name here">
                                 </span>
-                                    <div class="modal_content">
-                                        <div class="modal_content_left_section">
-                                            <div class="modal_left_section_image">
-                                                <img src="assets/img/leon_d'oro_resturan.jpg"
-                                                     alt="description image here">
-                                            </div>
-                                            <div class="info">info</div>
-                                            <div class="modal_description_address">Via Francesco De Sanctis, 19/21,
-                                                80134
-                                                Naples
-                                            </div>
-                                            <div class="modal_pricing_container">
-                                                <span class="price">Price:</span>
-                                                <div class="ordinary_ticket">Ordinary ticket: <span
-                                                        id="ordinary_ticket_price">&euro; 7.00</span></div>
-                                                <span class="price">Children</span>
-                                                <div class="ordinary_ticket">from 10 to 25 years: <span
-                                                        id="activity_children_range_price">&euro; 5.00</span></div>
-                                                <div class="ordinary_ticket">FAI members: <span id="activity_fai_price">&euro; 5.00</span>
+                                        <div class="modal_content">
+                                            <div class="modal_content_left_section">
+                                                <div class="modal_left_section_image">
+                                                    <img [src]="hour.activity.images"
+                                                         alt="description image here">
                                                 </div>
-                                                <div class="ordinary_ticket">Schools: <span id="activity_schools_price">&euro; 3.00</span>
+                                                <div class="info">info</div>
+                                                <div class="modal_description_address">
+                                                    {{hour.activity.address}}
                                                 </div>
-                                                <div class="ordinary_ticket">Children up to 9 years: <span
-                                                        id="activity_children_upto_nine_price">free</span></div>
-                                                <div class="ordinary_ticket">Audio guide: <span
-                                                        id="activity_audio_guide">&euro; 3.50</span>
+                                                <div class="modal_pricing_container">
+                                                    <span class="price">Price:</span>
+                                                    <div class="ordinary_ticket">Ordinary ticket: <span
+                                                            id="ordinary_ticket_price">&euro; 7.00</span></div>
+                                                    <span class="price">Children</span>
+                                                    <div class="ordinary_ticket">from 10 to 25 years: <span
+                                                            id="activity_children_range_price">&euro; 5.00</span></div>
+                                                    <div class="ordinary_ticket">FAI members: <span
+                                                            id="activity_fai_price">&euro; 5.00</span>
+                                                    </div>
+                                                    <div class="ordinary_ticket">Schools: <span
+                                                            id="activity_schools_price">&euro; 3.00</span>
+                                                    </div>
+                                                    <div class="ordinary_ticket">Children up to 9 years: <span
+                                                            id="activity_children_upto_nine_price">free</span></div>
+                                                    <div class="ordinary_ticket">Audio guide: <span
+                                                            id="activity_audio_guide">&euro; 3.50</span>
+                                                    </div>
+                                                    <br/>
                                                 </div>
-                                                <br/>
+                                                <div class="modal_schedule_container">
+                                                    <span class="price">Schedule:</span>
+                                                    <div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>
+                                                    </div>
+                                                    <div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>
+                                                    </div>
+                                                    <div class="closing_day">Closed on <span
+                                                            id="activity_closing_day">Tuesday</span></div>
+                                                </div>
                                             </div>
-                                            <div class="modal_schedule_container">
-                                                <span class="price">Schedule:</span>
-                                                <div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>
+                                            <div class="modal_content_right_section">
+                                                <div class="modal_right_heading">
+                                                    <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">{{ hour.activity.name}}</span>
+                                                    </h2>
                                                 </div>
-                                                <div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>
+                                                <div class="modal_right_description">
+                                                    <p>{{hour.activity.description}}</p>
+
                                                 </div>
-                                                <div class="closing_day">Closed on <span
-                                                        id="activity_closing_day">Tuesday</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="modal_content_right_section">
-                                            <div class="modal_right_heading">
-                                                <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">Chapel of San Severo</span>
-                                                </h2>
-                                            </div>
-                                            <div class="modal_right_description">
-                                                <p>Located in the heart of Naples, behind the church of San Domenico
-                                                    Maggiore, there is one of the most striking chapels in the city,
-                                                    which
-                                                    contains one of the most fascinating secrets in the history of
-                                                    Partenope: Chapel of San Severo.</p>
-                                                <p>The chapel of San Severo belonged to the family of the same name and
-                                                    was
-                                                    conceived not only as a place of worship but, above all, as a
-                                                    testimony
-                                                    rich in symbolism that wants to tell, through the centuries, the
-                                                    greatness of the family and the artistic inspiration of Raimondo di
-                                                    Sangro. seventh Prince of San Severo, creator and commissioner of
-                                                    the
-                                                    main works that we find today inside the chapel.</p>
-                                                <p>It stands out above all that of the famous “Veiled Christ“, created
-                                                    by
-                                                    Giuseppe Sanmartino in 1753, capable of transferring unique emotions
-                                                    and
-                                                    recognized as one of the great sculptural masterpieces in the world
-                                                    such
-                                                    that at that time possessed great admirers such as Antonio
-                                                    Canova.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -139,7 +122,7 @@
                     <div class="edit_itinerary" (click)="editItinerary()">Edit<br>Itinerary</div>
                 </div>
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
-                    <div class="edit_itinerary" (click)="backToItinerary()">Back to<br>Itinerary</div>
+                    <div class="edit_itinerary" (click)="reCookItinerary()">Back to<br>Itinerary</div>
                 </div>
             </div>
         </div>

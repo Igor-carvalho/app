@@ -14,6 +14,7 @@ import {Activities} from "../model/Activities";
 import {HttpUtils} from "../utilities/http-utils";
 import {Itinerary} from "../model/itinerary/Itinerary";
 import {ActivityFilter} from "../model/ActivityFilter";
+import {ItineraryActivities} from "../model/ItineraryActivities";
 
 @Injectable()
 export class ItineraryDataService {
@@ -77,6 +78,43 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
+    getPublic(id: number): Observable<Itinerary> {
+        let headers = this.getHeaders();
+
+        return this._authHttp.get(
+            this._globalService.apiHost + '/itinerary/public/' + id,
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Activities>response.data;
+            })
+            .catch(this.handleError);
+    }
+
+    updatePublic(id: number, itineraries: ItineraryActivities[]): Observable<any> {
+        let headers = this.getHeaders();
+
+        let param = {
+            itinerary_activities: itineraries
+        };
+
+        return this._authHttp.post(
+            this._globalService.apiHost + '/itinerary/public-update/' + id,
+            JSON.stringify(param),
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return response;
+            })
+            .catch(this.handleError);
+    }
+
 
     private handleError(error: Response | any) {
         let errorMessage: any = {};
@@ -90,6 +128,7 @@ export class ItineraryDataService {
             };
         }
         else {
+            console.log(error);
             errorMessage = error.json();
         }
         return Observable.throw(errorMessage);

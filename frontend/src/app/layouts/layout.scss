@@ -351,6 +351,8 @@ body {
     }
     .app-footer {
         position: relative !important;
+        height: auto;
+        overflow: auto;
     }
     .footer_left {
         width: 100% !important;
@@ -395,6 +397,8 @@ body {
     }
     .app-footer {
         position: relative !important;
+        height: auto;
+        overflow: auto;
     }
     .footer_left {
         width: 100% !important;

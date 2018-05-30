@@ -91,4 +91,27 @@ class Itineraries extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Activities::className(), ['id' => 'activities_id'])->viaTable('itineraries_activities', ['itineraries_id' => 'id', 'itineraries_user_id' => 'user_id']);
     }
+
+    public function export($itinerary, $user_email)
+    {
+        $itineraryLink = \Yii::$app->params['frontendURL'] . "/itinerary?id={$itinerary->id}";
+        $itineraryCook = $itinerary->itinerary_cook_raw;
+
+        Yii::$app->mailer->htmlLayout = "itinerary/itinerary_layout";
+        $email = \Yii::$app->mailer
+            ->compose(
+                ['html' => 'itinerary/itinerary_content'],
+                [
+                    'appName' => \Yii::$app->name,
+                    'itineraryLink' => $itineraryLink,
+                    'itineraryCook' => $itineraryCook
+                ]
+            )
+            ->setTo($user_email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setSubject('Your Itinerary Is Ready!')
+            ->send();
+
+        return $email;
+    }
 }

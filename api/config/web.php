@@ -141,6 +141,14 @@ $config = [
                     'extraPatterns' => [
                         'OPTIONS cooking' => 'options',
                         'GET cooking' => 'cooking',
+                        'OPTIONS public-update/{id}' => 'options',
+                        'POST public-update/{id}' => 'public-update',
+                        'OPTIONS public-delete/{id}' => 'options',
+                        'GET public-delete/{id}' => 'public-delete',
+                        'OPTIONS public/{id}' => 'options',
+                        'GET public/{id}' => 'public',
+                        'OPTIONS export/{id}' => 'options',
+                        'GET export/{id}' => 'export',
                     ]
                 ],
                 [

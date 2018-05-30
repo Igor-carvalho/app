@@ -91,7 +91,7 @@ class ActivitiesController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'filter'];
+        $behaviors['authenticator']['except'] = ['options'];
 
 
         // setup access

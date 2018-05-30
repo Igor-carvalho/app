@@ -115,6 +115,23 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
+    exportItinerary(id: number) {
+        let headers = this.getHeaders();
+
+
+        return this._authHttp.get(
+            this._globalService.apiHost + '/itinerary/export/' + id,
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return response;
+            })
+            .catch(this.handleError);
+    }
+
 
     private handleError(error: Response | any) {
         let errorMessage: any = {};

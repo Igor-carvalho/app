@@ -6,6 +6,9 @@ use app\componenets\DistanceHelper;
 use app\componenets\HelperFunction;
 use app\componenets\ItineraryCooker;
 use app\filters\auth\HttpBearerAuth;
+use app\models\custom\itinerary\Day;
+use app\models\custom\itinerary\Hour;
+use app\models\custom\itinerary\Itinerary;
 use app\models\database\Activities;
 use app\models\database\ActivitiesMacroCategories;
 use app\models\database\ActivitiesMicroCategories;
@@ -95,7 +98,7 @@ class ItineraryController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'cooking', 'view'];
+        $behaviors['authenticator']['except'] = ['options', 'view', 'public', 'public-delete'];
 
 
         // setup access
@@ -257,8 +260,8 @@ class ItineraryController extends ActiveController
     {
 
         $activities = explode(",", $activities);
-//        $user_id = Yii::$app->user->id;
-        $user_id = 1;   // TODO: change with logged in user
+        $user_id = Yii::$app->user->id;
+//        $user_id = 1;   // TODO: change with logged in user
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
@@ -328,6 +331,178 @@ class ItineraryController extends ActiveController
         $itinerary->itinerary_cook_raw = "";
         return $itinerary;
 
+    }
+
+    public function actionPublic($id)
+    {
+        $itineraryDb = Itineraries::findOne(['id' => $id]);
+        $itineraryActivities = ItinerariesActivities::find()
+            ->where(['itineraries_id' => $id])
+            ->with(['activities'])
+            ->all();
+
+        if ($itineraryDb == null)
+            throw new NotFoundHttpException("Object not found: $id");
+
+        $activityIds = array_map(function ($activity) {
+            return $activity->activities_id;
+        }, $itineraryActivities);
+        $activitiesIdComma = implode(",", $activityIds);
+
+        $activities_macro_table = ActivitiesMacroCategories::tableName();
+        $activities_micro_table = ActivitiesMicroCategories::tableName();
+        $system_micro_table = SystemMicroCategories::tableName();
+
+        $activitesMicroCategories = SystemMicroCategories::find()
+            ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
+            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($activitiesIdComma) )")
+            ->leftJoin($activities_micro_table, "{$activities_micro_table}.system_micro_categories_id = {$system_micro_table}.id")
+            ->groupBy("{$activities_micro_table}.activities_id")
+            ->asArray()
+            ->all();
+        $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
+
+        $dayWiseBreakDown = [];
+        $itineraryResponse = new Itinerary();
+        $itineraryResponse->days = [];
+
+        foreach ($itineraryActivities as $itinerary) {
+
+            $startDate = new \DateTime($itinerary->start_time);
+            $dateFormatted = $startDate->format("Y-m-d");
+
+            if (!isset($dayWiseBreakDown[$dateFormatted])) {
+                $dayWiseBreakDown[$dateFormatted] = [];
+            }
+
+            $hour = new Hour();
+
+            $hour->scheduled_hour_from = $itinerary->start_time;
+            $hour->scheduled_hour_to = $itinerary->end_time;
+            $hour->activity = json_decode(json_encode($itinerary->activities->toArray()));
+            $hour->activity->micro_icon = $activityMicroIcon[$itinerary->activities->id];
+
+            $dayWiseBreakDown[$dateFormatted][] = $hour;
+        }
+
+
+        foreach ($dayWiseBreakDown as $day => $hours) {
+            $dayObj = new Day();
+            $dayObj->day = $day;
+            $dayObj->hours = $hours;
+
+            $itineraryResponse->days[] = $dayObj;
+
+        }
+
+
+        $itineraryDb->itinerary_cook_raw = $itineraryResponse;
+
+        return $itineraryDb;
+
+
+    }
+
+    public function actionPublicUpdate($id)
+    {
+        $user_id = Yii::$app->user->id;
+        $itineraryDb = Itineraries::findOne(['id' => $id, 'user_id' => $user_id]);
+
+        if ($itineraryDb == null)
+            throw new NotFoundHttpException("Object not found: $id");
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        $post = \Yii::$app->getRequest()->getBodyParams();
+
+        $post = json_decode(json_encode($post));
+
+//        return $post['itinerary_activities'];
+
+        try {
+            ItinerariesActivities::deleteAll([
+                'itineraries_id' => $id
+            ]);
+            foreach ($post->itinerary_activities as $itineraryactivity) {
+                $storeItinerayActivity = new ItinerariesActivities();
+                $storeItinerayActivity->user_id = $user_id;
+                $storeItinerayActivity->activities_id = $itineraryactivity->activities_id;
+                $storeItinerayActivity->start_time = $itineraryactivity->start_time;
+                $storeItinerayActivity->end_time = $itineraryactivity->end_time;
+                $storeItinerayActivity->itineraries_id = $id;
+                if (!$storeItinerayActivity->save()) {
+                    $transaction->rollBack();
+                    throw new HttpException(500, json_encode("unable to save Itinerary Activites."));
+                }
+
+            }
+
+            $transaction->commit();
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            throw  $exception;
+        }
+
+
+        return true;
+
+    }
+
+    public function actionExport($id)
+    {
+        $user_id = Yii::$app->user->id;
+//        $user_id = 6;
+//        $email = "abdullahmateen87@gmail.com";
+        $email = Yii::$app->user->identity->email;
+        $itineraryDb = Itineraries::findOne(['id' => $id, 'user_id' => $user_id]);
+
+        if ($itineraryDb == null)
+            throw new NotFoundHttpException("Object not found: $id");
+
+        $itineraryActivities = ItinerariesActivities::find()
+            ->where(['itineraries_id' => $id])
+            ->with(['activities'])
+            ->all();
+
+        $dayWiseBreakDown = [];
+        $itineraryResponse = new Itinerary();
+        $itineraryResponse->days = [];
+
+        foreach ($itineraryActivities as $itinerary) {
+
+            $startDate = new \DateTime($itinerary->start_time);
+            $dateFormatted = $startDate->format("Y-m-d");
+
+            if (!isset($dayWiseBreakDown[$dateFormatted])) {
+                $dayWiseBreakDown[$dateFormatted] = [];
+            }
+
+            $hour = new Hour();
+
+            $hour->scheduled_hour_from = $itinerary->start_time;
+            $hour->scheduled_hour_to = $itinerary->end_time;
+            $hour->activity = json_decode(json_encode($itinerary->activities->toArray()));
+
+            $dayWiseBreakDown[$dateFormatted][] = $hour;
+        }
+
+
+        foreach ($dayWiseBreakDown as $day => $hours) {
+            $dayObj = new Day();
+            $dayObj->day = $day;
+            $dayObj->hours = $hours;
+
+            $itineraryResponse->days[] = $dayObj;
+
+        }
+
+
+        $itineraryDb->itinerary_cook_raw = $itineraryResponse;
+
+
+        return $itineraryDb->export($itineraryDb, $email);
     }
 
     private function toFrontDateObject($date)

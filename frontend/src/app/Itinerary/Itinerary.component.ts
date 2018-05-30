@@ -34,6 +34,8 @@ export class ItineraryComponent implements OnInit {
     private dateUtils: DateUtils;
     private deletedActivities: number[];
 
+    private enableEditMode: boolean;
+
     constructor(private _router: Router,
                 private _userService: UserService,
                 private _itineraryDataService: ItineraryDataService,) {
@@ -42,6 +44,8 @@ export class ItineraryComponent implements OnInit {
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             this._itineraryId = params.id;
         });
+
+        this.enableEditMode = false;
     }
 
     ngOnInit() {
@@ -88,6 +92,7 @@ export class ItineraryComponent implements OnInit {
     }
 
     editItinerary() {
+        this.enableEditMode = true;
         var $itineraryImages = $(".itinerary_images"), $timings = $(".time"), $cart = $(".cart"),
             $deleteAvtivity = $(".cross"), $addActivity = $(".double_arrow"),
             $backgroundLayer = $(".events_transparent_layer"), $itineraryWrapperOne = $("#edit_itinerary_wrapper_one"),
@@ -105,7 +110,8 @@ export class ItineraryComponent implements OnInit {
     }
 
     showActivityDetails(activity_id) {
-        $("#modal-activity-details-" + activity_id).show();
+        if (!this.enableEditMode)
+            $("#modal-activity-details-" + activity_id).show();
     }
 
     closeActivityDetails(activity_id) {
@@ -157,6 +163,7 @@ export class ItineraryComponent implements OnInit {
                     }
                 }
             );
+        this.enableEditMode = false;
         this.backToItinerary();
     }
 
@@ -192,6 +199,28 @@ export class ItineraryComponent implements OnInit {
                     }
                 }
             );
+    }
+
+    exportItinerary() {
+        var message = "Are you sure?";
+
+        if (confirm(message)) {
+            this._itineraryDataService
+                .exportItinerary(this._itineraryId)
+                .subscribe(
+                    itinerary => {
+                        alert("Itinerary have been successfully exported. ");
+                    },
+                    error => {
+                        // unauthorized access
+                        if (error.status == 401 || error.status == 403) {
+                            this._userService.unauthorizedAccess(error);
+                        } else {
+                            //this._errorMessage = error.data.message; // TODO: uncomment later
+                        }
+                    }
+                );
+        }
     }
 
     ngOnDestroy() {

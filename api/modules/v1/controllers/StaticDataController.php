@@ -89,7 +89,7 @@ class StaticDataController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'weather-types', 'micro-categories', 'macro-categories', 'budget-types'];
+        $behaviors['authenticator']['except'] = ['options'];
 
 
         // setup access

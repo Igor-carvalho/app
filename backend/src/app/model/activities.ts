@@ -24,6 +24,7 @@ export class Activities {
     time_start_mm: string;
     time_end_hh: string;
     time_end_mm: string;
+    duration: number;
 
 
     constructor(values: Object = {}) {

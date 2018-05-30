@@ -1,4 +1,205 @@
 app-itinerary { //these are selector, defined in component.ts, which make sure css is specific to this component, so do write css inside of this body
+  .addEventModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000000; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .addEventModalContent {
+      position: relative;
+      background-color: #FFA9BC;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      box-shadow: -5px 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      -webkit-animation-name: addEventModalAnimatetop;
+      -webkit-animation-duration: 0.4s;
+      animation-name: addEventModalAnimatetop;
+      animation-duration: 0.4s;
+      margin-bottom: 20px;
+  }
+  .modalHeader {
+    width: 100%;
+    height: 60px;
+    padding: 0px;
+    margin-bottom: 15px;
+    display: block;
+    position: relative;
+    .modalHeaderIcon {
+      width: 55px;
+      height: 55px;
+      display: block;
+      position: relative;
+      float: left;
+      margin-right: 10px;
+    }
+    .modalHeading {
+      display: block;
+      position: relative;
+      float: left;
+      width: calc(100% - 70px);
+      text-transform: uppercase;
+      h2 {
+        font-size: 24px;
+      }
+    }
+  }
+  .modalBody {
+    width: 100%;
+    position: relative;
+    height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  .modalBody::-webkit-scrollbar {
+    width: 14px;
+  } 
+  .modalBody::-webkit-scrollbar-track {
+    background-color: #C11E4C;
+    border-radius: 7px;
+  } 
+  .modalBody::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    outline: 1px solid #fff;
+    border-radius: 7px;
+  }
+  /* Add Animation */
+  @-webkit-keyframes addEventModalAnimatetop {
+      from {top:-300px; opacity:0} 
+      to {top:0; opacity:1}
+  }
+
+  @keyframes addEventModalAnimatetop {
+      from {top:-300px; opacity:0}
+      to {top:0; opacity:1}
+  }
+
+  /* The Close Button */
+  .addEventModalCloseBtn {
+    display: inline-block;
+    width: 40px;
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .addEventModalCloseBtn:hover,
+  .addEventModalCloseBtn:focus {
+      cursor: pointer;
+  }
+  .addEventModalRow {
+    margin: 0px;
+  }
+  .activity_container {
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+  .element_container {
+    background-color: #fff;
+    width: 100%;
+    color: #E52251;
+    overflow: visible;
+    padding: 0px 0px 0px 5px;
+    display: block;
+    box-shadow: -5px 5px #E52251;
+    border-radius: 10px;
+    position: relative;
+    padding-bottom: 5px;
+    .image_container {
+      width: 100%;
+      display: block;
+      -ms-transform: translate(10px,-10px);
+      -webkit-transform: translate(10px,-10px);
+      transform: translate(6px,-10px);
+      border-radius: 10px;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
+      height: 204px;
+      .image {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 4;
+        border-radius: 12px;
+        img {
+          position: relative;
+          max-height: 130%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      .icon {
+        width: 90px;
+        height: 90px;
+        display: block;
+        position: absolute;
+        top:0px;
+        left: 0px;
+        z-index: 6;
+      }
+      .gradient_div {
+        display: block;
+        width: 100%;
+        height: 100%;position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 5;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+      .gradient_class {        
+        background: linear-gradient(to bottom right, $themeColor 20%, transparent 100%);
+        border: 5px solid $themeColor;
+      }
+    }
+    .place_name_container {
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      padding: 0px 0px 0px 15px;
+      min-height: 78px;
+      .place_name {
+        width: calc(100% - 30px);
+        display: inline-block;
+        text-transform: uppercase;
+        height: auto;
+        overflow: auto;
+        padding-top: 4px;
+      }
+      .arrow {
+        display: inline-block;
+        position: relative;
+        float: right;
+        width: 20px;
+        height: 24px;
+        margin-right: 10px;
+        top: 5px;
+      }
+    }
+  }
+
   .itinerary-container {
     padding-top: 30px !important;
     display: block;
@@ -353,7 +554,11 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
   @media only screen and (min-width : 481px) and (max-width : 768px) { 
     .top_timimg_bar {
       visibility: hidden !important;
-    } 
+    }
+    .modalHeading h2 {
+      font-size: 17px !important;
+      margin-top: 9px;
+    }
     .events {
       width: 80% !important;
       margin-left: 10% !important;
@@ -379,6 +584,23 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     .top_timimg_bar {
       visibility: hidden !important;
     } 
+    .modalHeaderIcon {
+      width: 100% !important;
+      height: 65px !important;
+      text-align: center;
+    }
+    .modalHeaderIcon img {
+      width: 65px;
+    }
+    .modalHeading {
+      width: 100% !important;
+      margin: 10px 0px;
+      text-align: center;
+    }
+    .modalHeading h2 {
+      font-size: 15px !important;
+      font-weight: bold;
+    }
     .events {
       width: 80% !important;
       margin-left: 10% !important;

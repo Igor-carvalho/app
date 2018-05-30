@@ -113,6 +113,14 @@ export class ItineraryComponent implements OnInit {
         $("#modal-activity-details-" + activity_id).hide('slow');
     }
 
+    showAddEventModal() {
+        $("#addEventModal").show();
+    }
+
+    closeAddEventModal() {
+        $("#addEventModal").hide('slow');
+    }
+
     reCookItinerary() {
         console.log("reCookItinerary()");
         let itineraryActivities = [];

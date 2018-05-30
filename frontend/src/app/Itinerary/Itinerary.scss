@@ -1,4 +1,33 @@
 app-itinerary { //these are selector, defined in component.ts, which make sure css is specific to this component, so do write css inside of this body
+  .not_found_container {
+    padding-bottom: 70px;
+  }
+  .not_found_image_container {
+    max-width: 230px;
+    margin: 40px auto 0px;
+  }
+  .sorry_text {
+    color: #fff;
+    font-size: 30px;
+    padding: 0px 15px 0px 15px;
+    border-bottom: 5px solid #fff;
+    position: relative;
+    display: inline-block;
+    margin: 0px 0px 15px 0px;
+  }
+  .not_found_text_container {
+    display: block;
+    position: relative;
+    text-align: center;
+    color: #696969;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 28px;
+    font-weight: lighter;
+  }
+  .not_found_text {
+    display: block;
+  }
   .addEventModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */

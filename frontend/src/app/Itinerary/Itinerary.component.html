@@ -240,21 +240,109 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
-            <div class="edit_itinerary_container">
-                <div class="edit_itinerary_wrapper" id="export_itinerary_wrapper_three">
-                    <div class="edit_itinerary" (click)="exportItinerary()">Export<br>Itinerary</div>
+        <div class="col-lg-2 edit_export_buttons_column">
+            <!--<div class="edit_itinerary" (click)="exportItinerary()">Export<br>Itinerary</div>-->
+            <div class="export_itinerary" (click)="showExportItineraryModal()">
+                <div class="export_itinerary_inner_container">
+                    <img src="assets/img/Icon_Export_Pink.svg" alt="export itinerary">
                 </div>
             </div>
-            <br>
-            <div class="edit_itinerary_container">
+            <div class="export_itinerary edit_itinerary_image">
+                <div class="export_itinerary_inner_container">
+                    <img (click)="editItinerary()" id="edit_itinerary_image" src="assets/img/Icon_Edit_Itinerary.svg" alt="edit itinerary">
+                    <img (click)="reCookItinerary()" id="close_itinerary_image" src="assets/img/Icon_Edit_Itinerary_Check.svg" alt="edit itinerary">
+                </div>
+            </div>
+            <div class="edit_itinerary_container edit_itinerary_text">
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
-                    <div class="edit_itinerary" (click)="editItinerary()">Edit<br>Itinerary</div>
+                    <div class="edit_itinerary" (click)="editItinerary()">Edit<br>Itinerary<span></span></div>
                 </div>
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
-                    <div class="edit_itinerary" (click)="reCookItinerary()">Back to<br>Itinerary</div>
+                    <div class="edit_itinerary" (click)="reCookItinerary()">Back to<br>Itinerary<span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Add/Replace Event Modal -->
+        <div id="exportItineraryModal" class="addEventModal">
+            <!-- Modal content -->
+            <div class="addEventModalContent exportItineraryModalContent">
+                <span (click)="closeExportItineraryModal()" class="addEventModalCloseBtn">
+                    <img src="assets/img/Icon_Delete_Activity.svg" alt="close modal">
+                </span>
+                <div class="exportItineraryModalHeader">
+                    <div class="esportItineraryModalHeaderIcon">
+                        <img src="assets/img/Icon_email_white.svg" alt="Change Activity">
+                    </div>
+                    <div class="exportItineraryModalHeading">
+                        <h2>We will send you the<br>informations about:</h2>
+                    </div>
+                </div>
+                <div class="exportitineraryModalBody">
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Catacombs of San Gennaro</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Kayak Tour</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Pizzeria Vesi</div>
+                    </div>
+                    <div class="export_itinerary_half_width_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                        </div>
+                        <div class="export_itinerary_activity_name">Trattoria Pop</div>
+                    </div>
+
+                    <div class="export_itinerary_or_div">or</div>
+                    <div class="export_itinerary_full_width_column checkbox_column">
+                        <div class="export_itinerary_delete_activity_icon">
+                            <label class="checkbox_container">
+                                <input type="checkbox">
+                                <span class="checkbox_checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
+                    </div>
+                    <div class="export_itinerary_full_width_column send_column">
+                        <div class="send_button">
+                            <div class="send_icon">
+                                <img src="assets/img/Icon_two_lines.svg" alt="send icon">
+                            </div>
+                            <span>Send</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

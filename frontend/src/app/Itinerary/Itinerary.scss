@@ -411,8 +411,16 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
         display: block;
         margin: 0px auto;
         color: $themeColor;
-        border-bottom: 5px solid $themeColor;
         cursor: pointer;
+        span {
+          display: block;
+          width: 100%;
+          height: 5px;
+          background-color: #e52050;
+          margin: 0px;
+          padding: 0px;
+          border-radius: 5px;
+        }
       }
     }
   }
@@ -547,6 +555,207 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     from {top: -300px; opacity: 0}
     to {top: 0px; opacity: 1}
   }
+  .export_itinerary {
+    text-align: center;
+    display: block;
+    position: relative;
+    width: 100%;
+    .export_itinerary_inner_container {
+      max-width: 75px;
+      text-align: left;
+      margin: 0px auto;
+      img {
+        width: 60px;
+        cursor: pointer;
+      }
+    }
+  }
+  .exportItineraryModalContent {
+    background-color: $themeColor;
+  }
+  .exportItineraryModalHeader {
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    height: 60px;
+  }
+  .esportItineraryModalHeaderIcon {
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    height: 100%;
+    float: left;
+    img {
+      width: 40px;
+      position: relative;
+      top: 10px;
+      left: 20px;
+    }
+  }
+  .exportItineraryModalHeading {
+    display: inline-block;
+    position: relative;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    h2 {
+      font-size: 22px;
+      font-weight: normal;
+      opacity: 0.7;
+      text-transform: uppercase;
+      margin-top: 7px;
+    }
+  }
+  .exportitineraryModalBody {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 20px 0px 0px 100px;
+    overflow: auto;
+  }
+  .export_itinerary_half_width_column {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    margin: 6px 0px;
+  }
+  .export_itinerary_delete_activity_icon {
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 50px;
+    cursor: pointer;
+    img {
+      width: 35px;
+    }
+  }
+  .export_itinerary_activity_name {
+    display: block;
+    position: relative;
+    float: left;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 22px;
+    width: calc(100% - 50px);
+    box-sizing: border-box;
+    padding-right: 10px;
+    padding-top: 5px;
+  }
+  .export_itinerary_or_div {
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    margin: 15px 0px;
+    text-transform: uppercase;
+    font-size: 22px;
+    opacity: 0.6;
+  }
+  .export_itinerary_full_width_column {
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    padding-bottom: 10px;
+  }
+  /* The container */
+  .checkbox_container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    height: 35px;
+  }
+
+  /* Hide the browser's default checkbox */
+  .checkbox_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Create a custom checkbox */
+  .checkbox_checkmark {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #e52050;
+    border: 2px solid #fff;
+    border-radius: 4px;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .checkbox_container:hover input ~ .checkbox_checkmark {
+    background-color: #ef7694;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .checkbox_container input:checked ~ .checkbox_checkmark {
+    background-color: #e52050;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkbox_checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .checkbox_container input:checked ~ .checkbox_checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .checkbox_container .checkbox_checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .send_column {
+    margin: 35px 0px 10px 0px;
+    box-sizing: border-box;
+    padding-right: 20px;
+  }
+  .send_button {
+    display: inline;
+    position: relative;
+    float: right;
+    border: 4px solid #fff;
+    padding: 7px 22px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .send_icon {
+    display: inline;
+    padding: 0px;
+    img {
+      width: 36px;
+    }
+  }
+  .edit_itinerary_image {
+    display: none;
+  }
+  #close_itinerary_image {
+    display: none;
+  }
 
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
@@ -577,6 +786,27 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     .title {
       max-width: 190px !important
     }
+    .esportItineraryModalHeaderIcon {
+      width: 80px !important;
+    }
+    .esportItineraryModalHeaderIcon img {
+      left: 10px !important;
+    }
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 80px !important;
+    }
+    .edit_export_buttons_column {
+      position: fixed !important;
+      max-width: 110px !important;
+      right: 0px !important;
+      z-index: 10000 !important;
+    }
+    .edit_itinerary_text {
+      display: none !important;
+    }
+    .edit_itinerary_image {
+      display: block !important;
+    }
   }
 
   /* Small Devices, Tablets */
@@ -605,6 +835,54 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     }    
     .edit_itinerary_container {
       margin: 30px 0px 60px 0px !important;
+    } 
+    .esportItineraryModalHeaderIcon {
+      width: 76px !important;
+    }
+    .esportItineraryModalHeaderIcon img {
+      left: 8px !important;
+    }
+    .exportItineraryModalHeading h2 {
+      font-size: 19px !important;
+    }
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 0px !important;
+    }
+    .export_itinerary_delete_activity_icon {
+      width: 40px !important;
+    }
+    .export_itinerary_delete_activity_icon img {
+      width: 30px !important;
+    }
+    .export_itinerary_activity_name {
+      font-size: 16px !important;
+      padding-top: 4px !important;
+    }
+    .export_itinerary_or_div {
+      text-align: center !important;
+    }
+    .checkbox_column {
+      padding-left: 8px !important;
+    }
+    .checkbox_checkmark {
+      height: 23px !important;
+      width: 23px !important;
+    }
+    .checkbox_text {
+      line-height: 26px !important;
+    }
+    .edit_export_buttons_column {
+      position: fixed !important;
+      max-width: 65px !important;
+      right: 0px !important;
+      z-index: 10000 !important;
+      padding: 0px !important;
+    }
+    .edit_itinerary_text {
+      display: none !important;
+    }
+    .edit_itinerary_image {
+      display: block !important;
     }
   }
 
@@ -647,6 +925,77 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     }    
     .edit_itinerary_container {
       margin: 30px 0px 60px 0px !important;
+    }  
+    .exportItineraryModalContent {
+      padding: 10px !important;
+    }
+    .esportItineraryModalHeaderIcon {
+      width: 100% !important;
+      text-align: center;
+    }
+    .esportItineraryModalHeaderIcon img {
+      left: 0px !important;
+    }
+    .exportItineraryModalHeading {
+      width: 100%;
+      text-align: center;
+    }
+    .exportItineraryModalHeading h2 {
+      font-size: 16px !important;
+    }
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 0px !important;
+    }
+    .export_itinerary_half_width_column {
+      width: 100% !important;
+    }
+    .export_itinerary_delete_activity_icon {
+      width: 40px !important;
+    }
+    .export_itinerary_delete_activity_icon img {
+      width: 30px !important;
+    }
+    .export_itinerary_activity_name {
+      font-size: 16px !important;
+      padding-top: 4px !important;
+    }
+    .export_itinerary_or_div {
+      text-align: center !important;
+      font-size: 20px !important;
+    }
+    .checkbox_column {
+      padding-left: 8px !important;
+    }
+    .checkbox_checkmark {
+      height: 23px !important;
+      width: 23px !important;
+    }
+    .checkbox_text {
+      font-size: 17px !important;
+      line-height: 23px !important;
+      top: 3px;
+    }
+    .send_column {
+      text-align: center;
+    }
+    .send_button {
+      float: none !important;
+    }
+    .edit_export_buttons_column {
+      position: fixed !important;
+      max-width: 55px !important;
+      right: 0px !important;
+      z-index: 10000 !important;
+      padding: 0px !important;
+    }
+    .edit_itinerary_text {
+      display: none !important;
+    }
+    .edit_itinerary_image {
+      display: block !important;
+    }
+    .export_itinerary_inner_container img {
+      width: 50px !important;
     }
   }
 }

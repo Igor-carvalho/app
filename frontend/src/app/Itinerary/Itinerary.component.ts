@@ -96,7 +96,7 @@ export class ItineraryComponent implements OnInit {
         var $itineraryImages = $(".itinerary_images"), $timings = $(".time"), $cart = $(".cart"),
             $deleteAvtivity = $(".cross"), $addActivity = $(".double_arrow"),
             $backgroundLayer = $(".events_transparent_layer"), $itineraryWrapperOne = $("#edit_itinerary_wrapper_one"),
-            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two");
+            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"), $closeItineraryImage = $("#close_itinerary_image");
         TweenLite.to($itineraryImages, 0.4, {top: -160});
         TweenLite.to($backgroundLayer, 0.4, {backgroundColor: "rgba(229, 32, 80, 1)", delay: 0.2});
         TweenLite.to($timings, 0.4, {bottom: 60, delay: 0.2});
@@ -105,6 +105,9 @@ export class ItineraryComponent implements OnInit {
         TweenLite.to($addActivity, 0.4, {bottom: 6, delay: 0.4});
         TweenLite.to($itineraryWrapperOne, 0.4, {top: -50});
         TweenLite.to($itineraryWrapperTwo, 0.4, {top: -50});
+        TweenLite.to($editItineraryImage, 0.2, {display: "none"});
+        TweenLite.to($closeItineraryImage, 0.4, {display: "block", delay: 0.4});
+        TweenLite.from($closeItineraryImage, 0.4, {scale: 0, delay: 0.4});
 
 
     }
@@ -125,6 +128,14 @@ export class ItineraryComponent implements OnInit {
 
     closeAddEventModal() {
         $("#addEventModal").hide('slow');
+    }
+
+    showExportItineraryModal() {
+        $("#exportItineraryModal").show();
+    }
+
+    closeExportItineraryModal() {
+        $("#exportItineraryModal").hide('slow');
     }
 
     reCookItinerary() {
@@ -171,7 +182,7 @@ export class ItineraryComponent implements OnInit {
         var $itineraryImages = $(".itinerary_images"), $timings = $(".time"), $cart = $(".cart"),
             $deleteAvtivity = $(".cross"), $addActivity = $(".double_arrow"),
             $backgroundLayer = $(".events_transparent_layer"), $itineraryWrapperOne = $("#edit_itinerary_wrapper_one"),
-            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two");
+            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"), $closeItineraryImage = $("#close_itinerary_image");
         TweenLite.to($itineraryImages, 0.4, {top: 0, delay: 0.4});
         TweenLite.to($backgroundLayer, 0.4, {backgroundColor: "rgba(229, 34, 81, 0.5)", delay: 0.2});
         TweenLite.to($timings, 0.4, {bottom: 6, delay: 0.2});
@@ -180,6 +191,9 @@ export class ItineraryComponent implements OnInit {
         TweenLite.to($addActivity, 0.4, {bottom: -44});
         TweenLite.to($itineraryWrapperOne, 0.4, {top: 0});
         TweenLite.to($itineraryWrapperTwo, 0.4, {top: 0});
+        TweenLite.to($closeItineraryImage, 0.2, {display: "none"});
+        TweenLite.to($editItineraryImage, 0.4, {display: "block", delay: 0.4});
+        TweenLite.from($editItineraryImage, 0.4, {scale: 0, delay: 0.4});
     }
 
     getItinerary() {

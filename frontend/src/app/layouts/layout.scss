@@ -334,6 +334,9 @@ body {
  }
  /* Medium Devices, Desktops */
 @media only screen and (min-width : 769px) and (max-width : 992px) {
+    .app {
+        overflow: auto;
+    }
     .container-fluid {
         padding: 0px 10px !important;
     }
@@ -343,6 +346,9 @@ body {
 }
 /* Small Devices, Tablets */
 @media only screen and (min-width : 481px) and (max-width : 768px) {
+    .app {
+        overflow: auto;
+    }
     .container-fluid {
         padding: 0px !important;
     }
@@ -383,6 +389,9 @@ body {
 }
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 320px) and (max-width : 480px) {
+    .app {
+        overflow: auto;
+    }
     .container-fluid {
         padding: 0px !important;
     }

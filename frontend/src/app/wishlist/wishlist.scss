@@ -22,7 +22,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     display: block;
     position: relative;
     text-align: center;
-    color: #9C9B9B;
+    color: #5A5858;
     text-transform: uppercase;
     font-size: 15px;
     font-weight: lighter;
@@ -390,6 +390,10 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         background: linear-gradient(to bottom right, $themeColor 20%, transparent 100%);
         border: 5px solid $themeColor;
       }
+      .gradient_class_blue {
+        background: linear-gradient(to bottom right, #92D7F6 20%, transparent 100%);
+        border: 5px solid #92D7F6;
+      }
     }
     .place_name_container {
       width: 100%;
@@ -481,6 +485,249 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       font-size: 20px;
     }
   }
+  .addEventModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000000; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .addEventModalContent {
+      position: relative;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      box-shadow: -5px 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      -webkit-animation-name: addEventModalAnimatetop;
+      -webkit-animation-duration: 0.4s;
+      animation-name: addEventModalAnimatetop;
+      animation-duration: 0.4s;
+      margin-bottom: 20px;
+  }
+  /* The Close Button */
+  .addEventModalCloseBtn {
+    display: inline-block;
+    width: 40px;
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .addEventModalCloseBtn:hover,
+  .addEventModalCloseBtn:focus {
+      cursor: pointer;
+  }
+  .exportItineraryModalContent {
+    background-color: #92D7F6;
+    border: 5px solid $themeColor;
+  }
+  .exportItineraryModalHeader {
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    height: 60px;
+  }
+  .exportItineraryModalHeaderIcon {
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    height: 100%;
+    float: left;
+    img {
+      width: 40px;
+      position: relative;
+      top: 10px;
+      left: 20px;
+    }
+  }
+  .exportItineraryModalHeading {
+    display: inline-block;
+    position: relative;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    h2 {
+      font-size: 22px;
+      font-weight: normal;
+      opacity: 0.7;
+      text-transform: uppercase;
+      margin-top: 7px;
+      color: #545B8E;
+    }
+  }
+  .exportitineraryModalBody {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 20px 0px 0px 100px;
+    overflow: auto;
+  }
+  .export_itinerary_half_width_column {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    margin: 6px 0px;
+  }
+  .export_itinerary_delete_activity_icon {
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 50px;
+    cursor: pointer;
+    img {
+      width: 35px;
+    }
+  }
+  .export_itinerary_activity_name {
+    display: block;
+    position: relative;
+    float: left;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 22px;
+    width: calc(100% - 50px);
+    box-sizing: border-box;
+    padding-right: 10px;
+    padding-top: 5px;
+  }
+  .export_itinerary_or_div {
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    margin: 15px 0px;
+    text-transform: uppercase;
+    font-size: 22px;
+    color: #545B8E;
+  }
+  .export_itinerary_full_width_column {
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    padding-bottom: 10px;
+  }
+  /* The container */
+  .checkbox_container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    height: 35px;
+  }
+
+  /* Hide the browser's default checkbox */
+  .checkbox_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Create a custom checkbox */
+  .checkbox_checkmark {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #92D7F6;
+    border: 2px solid #fff;
+    border-radius: 4px;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .checkbox_container:hover input ~ .checkbox_checkmark {
+    background-color: #42b9f0;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .checkbox_container input:checked ~ .checkbox_checkmark {
+    background-color: #1197d4;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkbox_checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .checkbox_container input:checked ~ .checkbox_checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .checkbox_container .checkbox_checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .send_column {
+    margin: 35px 0px 10px 0px;
+    box-sizing: border-box;
+    padding-right: 20px;
+  }
+  .send_button {
+    display: inline;
+    position: relative;
+    float: right;
+    border: 4px solid #fff;
+    padding: 7px 22px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .send_icon {
+    display: inline;
+    padding: 0px;
+    img {
+      width: 36px;
+    }
+  }
+  .export_itinerary {
+    text-align: center;
+    display: block;
+    position: relative;
+    width: 100%;
+    .export_itinerary_inner_container {
+      max-width: 75px;
+      text-align: left;
+      margin: 0px auto;
+      img {
+        width: 60px;
+        cursor: pointer;
+      }
+    }
+  }
   /* Large Devices, Wide Screens */
   
   /* Large Devices, Wide Screens */
@@ -514,6 +761,15 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       img {
         right: 50%;
       }
+    }
+    .exportItineraryModalHeaderIcon {
+      width: 80px !important;
+    }
+    .exportItineraryModalHeaderIcon img {
+      left: 10px !important;
+    }  
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 80px !important;
     }
   }
 
@@ -598,6 +854,48 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         right: 50%;
       }
     }
+    .exportItineraryModalHeaderIcon {
+      width: 76px !important;
+    }
+    .exportItineraryModalHeaderIcon img {
+      left: 8px !important;
+    }
+    .exportItineraryModalHeading h2 {
+      font-size: 19px !important;
+    }
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 0px !important;
+    }
+    .export_itinerary_delete_activity_icon {
+      width: 40px !important;
+    }
+    .export_itinerary_delete_activity_icon img {
+      width: 30px !important;
+    }
+    .export_itinerary_activity_name {
+      font-size: 16px !important;
+      padding-top: 4px !important;
+    }
+    .export_itinerary_or_div {
+      text-align: center !important;
+    }
+    .checkbox_column {
+      padding-left: 8px !important;
+    }
+    .checkbox_checkmark {
+      height: 23px !important;
+      width: 23px !important;
+    }
+    .checkbox_text {
+      line-height: 26px !important;
+    }
+    .edit_export_buttons_column {
+      position: fixed !important;
+      max-width: 65px !important;
+      right: 0px !important;
+      z-index: 10000 !important;
+      padding: 0px !important;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
@@ -677,6 +975,61 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       img {
         right: 50%;
       }
+    }
+    .exportItineraryModalContent {
+      padding: 10px !important;
+    }
+    .exportItineraryModalHeaderIcon {
+      width: 100% !important;
+      text-align: center;
+    }
+    .exportItineraryModalHeaderIcon img {
+      left: 0px !important;
+    }
+    .exportItineraryModalHeading {
+      width: 100%;
+      text-align: center;
+    }
+    .exportItineraryModalHeading h2 {
+      font-size: 16px !important;
+    }
+    .exportitineraryModalBody {
+      padding: 20px 0px 0px 0px !important;
+    }
+    .export_itinerary_half_width_column {
+      width: 100% !important;
+    }
+    .export_itinerary_delete_activity_icon {
+      width: 40px !important;
+    }
+    .export_itinerary_delete_activity_icon img {
+      width: 30px !important;
+    }
+    .export_itinerary_activity_name {
+      font-size: 16px !important;
+      padding-top: 4px !important;
+    }
+    .export_itinerary_or_div {
+      text-align: center !important;
+      font-size: 20px !important;
+    }
+    .checkbox_column {
+      padding-left: 8px !important;
+    }
+    .checkbox_checkmark {
+      height: 23px !important;
+      width: 23px !important;
+    }
+    .checkbox_text {
+      font-size: 17px !important;
+      line-height: 23px !important;
+      top: 3px;
+    }
+    .send_column {
+      text-align: center;
+    }
+    .send_button {
+      float: none !important;
     }
   }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#92D7F6;}
+	.st1{opacity:0.5;}
+	.st2{fill:#1D1D1B;stroke:#1D1D1B;stroke-width:8.2067;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#1D1D1B;stroke-width:8.2067;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st4{fill:#FFFFFF;stroke:#FFFFFF;stroke-width:8.2067;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#FFFFFF;stroke-width:8.2067;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M0,200V21.6C0,9.7,9.7,0,21.6,0H200"/>
+	<g>
+		<g class="st1">
+			<polyline class="st2" points="72.5,30.8 72.5,51.3 72.5,114.8 			"/>
+			<path class="st2" d="M72.5,29c7.8,2.2,13.7,11.7,13.7,23.2c0,11.1-5.6,20.3-13,22.9"/>
+			<polyline class="st3" points="38.1,29 38.1,49.5 38.1,113 			"/>
+			<path class="st3" d="M35.7,63c-6.3,0-11.4-5.1-11.4-11.4v-4.8V29"/>
+			<path class="st3" d="M40.5,63c6.3,0,11.4-5.1,11.4-11.4v-4.8V29"/>
+		</g>
+		<g>
+			<g>
+				<g>
+					<polyline class="st4" points="78.3,24.9 78.3,45.4 78.3,109 					"/>
+					<path class="st4" d="M78.3,23.2c7.9,2.2,13.8,11.7,13.8,23.2c0,11.1-5.6,20.3-13,22.9"/>
+				</g>
+				<polyline class="st5" points="44,23.2 44,43.7 44,107.3 				"/>
+				<path class="st5" d="M41.6,57.1c-6.3,0-11.4-5.1-11.4-11.4V41V23.2"/>
+				<path class="st5" d="M46.3,57.1c6.3,0,11.4-5.1,11.4-11.4V41V23.2"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

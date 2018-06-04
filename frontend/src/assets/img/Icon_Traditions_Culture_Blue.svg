@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#92D7F6;}
+	.st1{opacity:0.5;}
+	.st2{fill:none;stroke:#1D1D1B;stroke-width:8.2036;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#FFFFFF;stroke-width:8.2036;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M0.1,199.9V21.6C0.1,9.7,9.8,0,21.7,0H200"/>
+	<g>
+		<g class="st1">
+			<path class="st2" d="M132.2,61.9v-37H74.8v37c0,15.9,12.9,28.7,28.7,28.7S132.2,77.7,132.2,61.9z"/>
+			<path class="st2" d="M92.7,70.1c0-6,4.8-10.8,10.8-10.8s10.8,4.8,10.8,10.8"/>
+			<polyline class="st2" points="92.7,42 92.7,42.8 92.7,45.2 			"/>
+			<polyline class="st2" points="114.3,42 114.3,42.8 114.3,45.2 			"/>
+			<path class="st2" d="M74.5,82.5V45.7H17.1v36.8c0,15.9,12.9,28.7,28.7,28.7C61.6,111.4,74.5,98.5,74.5,82.5z"/>
+			<path class="st2" d="M56.1,83.9c0,6-4.8,10.8-10.8,10.8s-10.8-4.8-10.8-10.8"/>
+			<polyline class="st2" points="35,62.7 35,63.5 35,65.8 			"/>
+			<polyline class="st2" points="56.6,62.7 56.6,63.5 56.6,65.8 			"/>
+		</g>
+		<g>
+			<g>
+				<g>
+					<path class="st3" d="M138.1,56V19.2H80.7v37c0,15.9,12.9,28.7,28.7,28.7C125.3,84.9,138.1,72,138.1,56z"/>
+					<path class="st3" d="M98.6,64.4c0-6,4.8-10.8,10.8-10.8s10.8,4.8,10.8,10.8"/>
+					<polyline class="st3" points="98.6,36.2 98.6,37 98.6,39.4 					"/>
+					<polyline class="st3" points="120.2,36.2 120.2,37 120.2,39.4 					"/>
+				</g>
+				<g>
+					<path class="st3" d="M80.2,76.8v-37H22.8v37c0,15.9,12.9,28.7,28.7,28.7C67.4,105.5,80.2,92.7,80.2,76.8z"/>
+					<path class="st3" d="M62,78.1c0,6-4.8,10.8-10.8,10.8s-10.8-4.8-10.8-10.8"/>
+					<polyline class="st3" points="40.7,57 40.7,57.8 40.7,60 					"/>
+					<polyline class="st3" points="62.3,57 62.3,57.8 62.3,60 					"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

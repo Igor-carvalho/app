@@ -765,4 +765,12 @@ export class WishlistComponent implements OnInit {
         }
     }
 
+    showExportItineraryModalWishlist() {
+        $("#exportItineraryModalWishlist").show();
+    }
+
+    closeExportItineraryModalWishlist() {
+        $("#exportItineraryModalWishlist").hide('slow');
+    }
+
 }

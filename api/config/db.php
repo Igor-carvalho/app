@@ -1,7 +1,6 @@
 <?php
 
 if (YII_DEBUG) {
-
     return [
         'class' => 'yii\db\Connection',
         'dsn' => 'mysql:host=localhost;dbname=dobedoo',
@@ -10,13 +9,11 @@ if (YII_DEBUG) {
         'charset' => 'utf8',
     ];
 } else {
-
-
     return [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=esportami.cn1gigdrm4eb.us-west-2.rds.amazonaws.com;dbname=dobedoo_dev',
-        'username' => 'esportami_admin',
-        'password' => 'admin_esportami',
+        'dsn' => 'mysql:host=dobedoobackenddb.ctxihhg1dmhh.us-east-2.rds.amazonaws.com;dbname=dobedoo',
+        'username' => 'dobedoodbadmin',
+        'password' => 'admindobedoodb',
         'charset' => 'utf8',
     ];
 

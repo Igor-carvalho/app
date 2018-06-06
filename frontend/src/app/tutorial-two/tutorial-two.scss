@@ -295,6 +295,19 @@ app-tutorial-two {
   .budget_icons_group {
     padding-top: 120px;
   }
+  .from_day_flow {
+    text-transform: lowercase;
+  }
+  .one_day_flow_day_container {
+    width: 220px;
+  }
+  .from_day_flow {
+    width: 60px;
+    text-align: left;
+  }
+  .from_wrapper {
+    display: inline-block;
+  }
   /* Large Devices, Wide Screens */
   
   /* Large Devices, Wide Screens */
@@ -436,6 +449,9 @@ app-tutorial-two {
     .nb_after_pagination {
       display: none;
     }
+    .one_day_flow_month_container {
+      margin: 15px 0px;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
@@ -553,6 +569,9 @@ app-tutorial-two {
     }
     .nb_after_pagination {
       display: none;
+    }
+    .one_day_calendar_row {
+      margin: 10px 0px;
     }
   }
 }

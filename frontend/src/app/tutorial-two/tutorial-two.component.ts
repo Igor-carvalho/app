@@ -92,91 +92,6 @@ export class TutorialTwoComponent implements OnInit {
             }
             sliderDots[clickCount].classList.add("active_dot");
         };
-        /*
-        addChild.onclick = function () {
-            $addChildClickCount += 1;
-            $("#childNumberCountInput").val($addChildClickCount);
-            this._activityFilter.num_childs = $addChildClickCount;
-            if (($addChildClickCount + $addPersonClickCount) <= 6) {
-                childNumberContainer.innerHTML += "<img src='assets/img/child.svg' alt='child' class='child_image child_image_added'>";
-                var childElemCount = childNumberContainer.childElementCount;
-                for (var k = childElemCount; k > (childElemCount - 1); k--) {
-                    var $nthChild = $('.child_image_added:nth-child(' + (k) + ')');
-                    TweenLite.from($nthChild, 0.8, {scale: 0, ease: Back.easeOut});
-                }
-            }
-            if (($addChildClickCount + $addPersonClickCount) > 6) {
-                childNumberContainer.style.display = "none";
-                personNumberContainer.style.display = "none";
-                document.getElementById('person_number_display').style.display = "inline-block";
-                document.getElementById('child_number_display').style.display = "inline-block";
-                childNumberContainer.innerHTML += "<img src='assets/img/child.svg' alt='child' class='child_image child_image_added'>";
-            }
-            $('.child_number_count').html($addChildClickCount);
-            if (childNumberContainer.childElementCount > 0) {
-                $removeChild.css('display', 'inline-block');
-            }
-        }.bind(this);
-        removeChild.onclick = function () {
-            if ($addChildClickCount > 0) {
-                $addChildClickCount -= 1;
-                $("#childNumberCountInput").val($addChildClickCount);
-                this._activityFilter.num_childs = $addChildClickCount;
-                childNumberContainer.removeChild(childNumberContainer.lastChild);
-                if (($addChildClickCount + $addPersonClickCount) <= 6) {
-                    childNumberContainer.style.display = "inline";
-                    personNumberContainer.style.display = "inline-block";
-                    document.getElementById('person_number_display').style.display = "none";
-                    document.getElementById('child_number_display').style.display = "none";
-                }
-            }
-            $('.child_number_count').html($addChildClickCount);
-            if (childNumberContainer.childElementCount == 0) {
-                $removeChild.hide(400);
-            }
-        }.bind(this);
-        addAdult.onclick = function () {
-            $addPersonClickCount += 1;
-            $("#personNumberCountInput").val($addPersonClickCount);
-            this._activityFilter.num_adults = $addPersonClickCount;
-            personNumberContainer.innerHTML += "<img src='assets/img/person.svg' alt='person' class='person_image_added'>";
-            if (($addChildClickCount + $addPersonClickCount) <= 6) {
-                var personElemCount = personNumberContainer.childElementCount;
-                for (var k = personElemCount; k > (personElemCount - 1); k--) {
-                    var $nthPerson = $('.person_image_added:nth-child(' + (k) + ')');
-                    TweenLite.from($nthPerson, 0.8, {scale: 0, ease: Back.easeOut});
-                }
-            }
-            if (($addChildClickCount + $addPersonClickCount) > 6) {
-                childNumberContainer.style.display = "none";
-                personNumberContainer.style.display = "none";
-                document.getElementById('person_number_display').style.display = "inline-block";
-                document.getElementById('child_number_display').style.display = "inline-block";
-            }
-            $('.person_number_count').html($addPersonClickCount);
-            if (personNumberContainer.childElementCount > 1) {
-                $removePerson.css('display', 'inline-block');
-            }
-        }.bind(this);
-        removeAdult.onclick = function () {
-            if ($addPersonClickCount > 1) {
-                $addPersonClickCount -= 1;
-                $("#personNumberCountInput").val($addPersonClickCount);
-                this._activityFilter.num_adults = $addPersonClickCount;
-                personNumberContainer.removeChild(personNumberContainer.lastChild);
-                if (($addChildClickCount + $addPersonClickCount) <= 6) {
-                    document.getElementById('person_number_display').style.display = "none";
-                    document.getElementById('child_number_display').style.display = "none";
-                    childNumberContainer.style.display = "inline";
-                    personNumberContainer.style.display = "inline-block";
-                }
-            }
-            $('.person_number_count').html($addPersonClickCount);
-            if (personNumberContainer.childElementCount == 1) {
-                $removePerson.hide(400);
-            }
-        }.bind(this);
-        */
         if($(window).width() < 480) {
             lowBudget.onclick = function () {
                 lowBudget.style.display = "none";
@@ -321,6 +236,25 @@ export class TutorialTwoComponent implements OnInit {
         $('#day_two').html($('#date_two').val());
         $('#month_one').html($('#month-one').val());
         $('#month_two').html($('#month-two').val());
+        $('#month_of_day_flow').html($('#one-day-flow-month').val());
+        $('#day_of_one_day_flow').html($('#one-day-flow-day').val());
+        $('#time_of_arrival').html($('#one-day-flow-time-one').val());
+        $('#time_of_exit').html($('#one-day-flow-time-two').val());
+        
+        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
+        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
+        if (timeOneInputVal > 11) {
+            $('#AmPmOne').html('pm');
+        }
+        if (timeOneInputVal <= 11) {
+            $('#AmPmOne').html('am');
+        }
+        if (timeTwoInputVal > 11) {
+            $('#AmPmTwo').html('pm');
+        }
+        if (timeTwoInputVal <= 11) {
+            $('#AmPmTwo').html('am');
+        }
     }
 
     private getMacroCategories() {
@@ -532,6 +466,112 @@ export class TutorialTwoComponent implements OnInit {
         console.log(this._activityFilter);
     }
 
+    oneDayMonth(monthID) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var monthInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-month")).value);
+        var monthDisplayString = document.getElementById("month_of_day_flow").innerHTML;
+        monthDisplayString = monthDisplayString.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(monthDisplayString);
+        if(monthID == 'minus' && ((indexOfMonth - 1) >= 0)) {
+            var getLowerMonth = monthsArray[indexOfMonth - 1];
+            console.log(getLowerMonth);
+            document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
+            $('#one-day-flow-month').val(getLowerMonth);
+        }
+        if(monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
+            var getNextMonth = monthsArray[indexOfMonth + 1];
+            console.log(getNextMonth);
+            document.getElementById('month_of_day_flow').innerHTML = getNextMonth;
+            $('#one-day-flow-month').val(getNextMonth);
+        }
+    }
+
+    oneDayFlowDay(dayID) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
+        var thirtyDayMonths = ['april', 'june', 'september', 'november'];
+        var februaryMonth = ['february'];
+        var month = document.getElementById("month_of_day_flow").innerHTML;
+        month = month.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(month);
+        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
+        var dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
+        var indexOfDay = daysArray.indexOf(dayInputVal);
+        var getHigherDay;
+        if (dayID == 'minus' && indexOfDay > 0) {
+            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            $('#day_of_one_day_flow').html(getLowerDay);
+            $('#one-day-flow-day').val(getLowerDay);
+        }
+        if (dayID == 'plus' && (thirtyOneDayMonths.indexOf(month) > -1) && (dayInputVal < 31)) {
+            getHigherDay = dayInputVal+1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+        }
+        if (dayID == 'plus' && (thirtyDayMonths.indexOf(month) > -1) && (dayInputVal < 30)) {
+            getHigherDay = dayInputVal+1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+        }
+        if (dayID == 'plus' && (februaryMonth.indexOf(month) > -1) && (dayInputVal < 28)) {
+            getHigherDay = dayInputVal+1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+        }
+    }
+
+    oneDayTime(timeID) {
+        //var arrayTime = [0, 1, 2, 3, 4, 5, 6, 7, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
+        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
+        var timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
+        var timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
+        if (timeID == 'minus_one' && Number(timeOneInputVal) > 0) {
+            timeOneInputVal -= 1;
+        }
+        if (timeID == 'plus_one' && timeOneInputVal < 23) {
+            if (timeOneInputVal >= timeTwoInputVal) {
+                console.log('time one input value: ' + timeOneInputVal);
+                console.log('time two input value: ' + timeTwoInputVal);
+                timeOneInputVal += 1;
+                timeTwoInputVal += 1;
+            }
+            if (timeOneInputVal < timeTwoInputVal){
+                timeOneInputVal += 1;
+                console.log('time one input val: ' + timeOneInputVal);
+            }
+        }
+        if (timeID == 'minus_two' && timeTwoInputVal > 1){
+            if (timeTwoInputVal == timeOneInputVal) {
+                timeOneInputVal -= 1;
+                timeTwoInputVal -= 1;
+            }
+            if (timeTwoInputVal > timeOneInputVal) {
+                timeTwoInputVal -= 1;
+            }
+        }
+        if (timeID == 'plus_two' && timeTwoInputVal < 24) {
+            timeTwoInputVal += 1;
+        } 
+        $('#time_of_arrival').html(timeOneInputVal);
+        $('#time_of_exit').html(timeTwoInputVal);
+        $('#one-day-flow-time-one').val(timeOneInputVal);
+        $('#one-day-flow-time-two').val(timeTwoInputVal);
+        if (timeOneInputVal > 11) {
+            $('#AmPmOne').html('pm');
+        }
+        if (timeOneInputVal <= 11) {
+            $('#AmPmOne').html('am');
+        }
+        if (timeTwoInputVal > 11) {
+            $('#AmPmTwo').html('pm');
+        }
+        if (timeTwoInputVal <= 11) {
+            $('#AmPmTwo').html('am');
+        }
+    }
+
     minusDay(dayId) {
         var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
         var monthOne = document.getElementById("month_one").innerHTML;
@@ -594,7 +634,6 @@ export class TutorialTwoComponent implements OnInit {
         console.log(this._activityFilter);
 
     }
-
     plusDay(dayId) {
         var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
         var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];

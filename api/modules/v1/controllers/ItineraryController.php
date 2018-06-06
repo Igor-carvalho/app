@@ -339,6 +339,7 @@ class ItineraryController extends ActiveController
         $itineraryActivities = ItinerariesActivities::find()
             ->where(['itineraries_id' => $id])
             ->with(['activities'])
+            ->orderBy(['start_time' => SORT_ASC])
             ->all();
 
         if ($itineraryDb == null)
@@ -450,11 +451,13 @@ class ItineraryController extends ActiveController
 
     }
 
-    public function actionExport($id)
+
+    public function actionExport($id, $skip_activities)
     {
         $user_id = Yii::$app->user->id;
 //        $user_id = 6;
 //        $email = "abdullahmateen87@gmail.com";
+        $skip_activities = explode(",", $skip_activities);
         $email = Yii::$app->user->identity->email;
         $itineraryDb = Itineraries::findOne(['id' => $id, 'user_id' => $user_id]);
 
@@ -463,8 +466,12 @@ class ItineraryController extends ActiveController
 
         $itineraryActivities = ItinerariesActivities::find()
             ->where(['itineraries_id' => $id])
-            ->with(['activities'])
-            ->all();
+            ->with(['activities']);
+
+        if (sizeof($skip_activities) > 0)
+            $itineraryActivities->andWhere(['NOT IN', 'activities_id', $skip_activities]);
+
+        $itineraryActivities = $itineraryActivities->all();
 
         $dayWiseBreakDown = [];
         $itineraryResponse = new Itinerary();

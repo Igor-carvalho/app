@@ -2,12 +2,15 @@
 
 namespace app\modules\v1\controllers;
 
+use app\componenets\DateTimeHelper;
 use app\componenets\HelperFunction;
 use app\filters\auth\HttpBearerAuth;
 use app\models\database\Activities;
 use app\models\database\ActivitiesMacroCategories;
 use app\models\database\ActivitiesMicroCategories;
 use app\models\database\ActivitiesWeathers;
+use app\models\database\Itineraries;
+use app\models\database\ItinerariesActivities;
 use app\models\database\SystemMicroCategories;
 use app\models\database\WeatherTypes;
 use app\models\UserEditForm;
@@ -309,6 +312,146 @@ class ActivitiesController extends ActiveController
 
         return $return;
     }
+
+    public function actionReplaceFilter($id, $activity_id, $current_activities)
+    {
+        $user_id = Yii::$app->user->id;
+//        $user_id = 10;
+
+//        $current_activities = explode(",", $current_activities);
+        $itinerary = Itineraries::findOne(['id' => $id, 'user_id' => $user_id]);
+        if ($itinerary == null)
+            throw new NotFoundHttpException("Object not found: $id");
+
+        $replaceItineraryActivity = ItinerariesActivities::findOne(['itineraries_id' => $id, 'activities_id' => $activity_id]);
+        if ($replaceItineraryActivity == null)
+            throw new NotFoundHttpException("Object not found: $id");
+
+
+        $budget = $itinerary->budget_type;
+        $date_start = $itinerary->date_starts;
+        $date_end = $itinerary->date_ends;
+        $people = $itinerary->adults;
+        $macros = $itinerary->macro_categories;
+
+
+        $activities_macro_table = ActivitiesMacroCategories::tableName();
+        $activities_micro_table = ActivitiesMicroCategories::tableName();
+        $itinerary_activities_table = ItinerariesActivities::tableName();
+
+        $system_micro_table = SystemMicroCategories::tableName();
+
+        $activities = Activities::find()
+            ->where([
+                'budget' => $budget,
+            ])
+//            ->andWhere(['>=', 'date_starts', $date_start])
+            ->andWhere("id NOT IN ($current_activities)")
+            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+            ->andWhere(['>=', 'max_people', $people])
+            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+            ->all();
+
+
+        if (sizeof($activities) == 0)
+            return [];
+
+        $filteredActivities = [];
+        $filterActivityIds = [];
+
+
+        $sourceActivityFromDateTime = new \DateTime($replaceItineraryActivity->start_time);
+        $sourceActivityToDateTime = new \DateTime($replaceItineraryActivity->end_time);
+
+//        HelperFunction::output($sourceActivityFromDateTime, false);
+//        echo "<br>";
+//        HelperFunction::output($sourceActivityToDateTime, false);
+//        echo "<br>";
+
+        foreach ($activities as $activity) {
+
+//            echo "Activity ID: {$activity->id} <br>";
+
+            $currentActivityRange = DateTimeHelper::getDatesFromRange($activity->date_starts, $activity->date_ends);
+
+            foreach ($currentActivityRange as $currentActivityDate) {
+
+                $currentActivityDate = new \DateTime($currentActivityDate);
+
+                $currentActivityFromDateTime = new \DateTime("{$currentActivityDate->format("Y-m-d")} {$activity->time_start_hh}:{$activity->time_start_mm}");
+                $currentActivityToDateTime = new \DateTime("{$currentActivityDate->format("Y-m-d")} {$activity->time_end_hh}:{$activity->time_end_mm}");
+
+
+//                $startRangeComparison = ($currentActivityFromDateTime >= $sourceActivityFromDateTime && $currentActivityFromDateTime <= $sourceActivityToDateTime);
+//                $endRangeComparison = ($currentActivityToDateTime >= $sourceActivityFromDateTime && $currentActivityToDateTime <= $sourceActivityToDateTime);
+
+                $startRangeComparison = DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityFromDateTime);
+                $endRangeComparison = DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityToDateTime);
+
+//                echo "{$currentActivityFromDateTime->format('Y-m-d H:i:s')} : {$currentActivityToDateTime->format('Y-m-d H:i:s')},";
+//                echo var_dump(DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityFromDateTime)) .
+//                    " : " . var_dump(DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityToDateTime));
+//                echo "<br>";
+
+                if ($startRangeComparison && $endRangeComparison) {
+//                    echo $activity->id . '<br>';
+                    if (!in_array($activity->id, $filterActivityIds)) {
+                        $filteredActivities[] = $activity;
+                        $filterActivityIds[] = $activity->id;
+                    }
+                }
+            }
+
+//            echo "<br>";
+
+        }
+
+
+//        /* TODO: remove this code. */
+//        $activityIds = array_map(function ($activity) {
+//            return $activity->id;
+//        }, $activities);
+//        $activitiesIdComma = implode(",", $activityIds);
+
+//        HelperFunction::output($activitiesIdComma, false);
+
+
+        $activities = $filteredActivities;
+
+//        HelperFunction::output($filterActivityIds);
+
+        if (sizeof($activities) == 0)
+            return [];
+
+        $activityIds = array_map(function ($activity) {
+            return $activity->id;
+        }, $activities);
+        $activitiesIdComma = implode(",", $activityIds);
+
+        $activitesMicroCategories = SystemMicroCategories::find()
+            ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
+            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($activitiesIdComma) )")
+            ->leftJoin($activities_micro_table, "{$activities_micro_table}.system_micro_categories_id = {$system_micro_table}.id")
+            ->groupBy("{$activities_micro_table}.activities_id")
+            ->asArray()
+            ->all();
+        $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
+
+
+//        HelperFunction::output($activityMicroIcon);
+        $return = [];
+
+        foreach ($activities as $activity) {
+            $object = json_decode(json_encode($activity->toArray()));
+            $object->micro_icon = $activityMicroIcon[$activity->id];
+
+            $return[] = $object;
+        }
+
+
+        return $return;
+    }
+
 
     private function toFrontDateObject($date)
     {

@@ -242,10 +242,20 @@ export class TutorialTwoComponent implements OnInit {
         $('#day_two').html($('#date_two').val());
         $('#month_one').html($('#month-one').val());
         $('#month_two').html($('#month-two').val());
-        $('#month_of_day_flow').html($('#one-day-flow-month').val());
-        $('#day_of_one_day_flow').html($('#one-day-flow-day').val());
-        $('#time_of_arrival').html($('#one-day-flow-time-one').val());
-        $('#time_of_exit').html($('#one-day-flow-time-two').val());
+
+        var dateFunction = new Date();
+        var todaysDate = dateFunction.getDate();
+        var currentMonth = dateFunction.getMonth();
+        var currentTime = dateFunction.getHours();
+
+        $('#month_of_day_flow').html(monthsArray[currentMonth]);
+        $('#one-day-flow-month').val(monthsArray[currentMonth]);
+        $('#day_of_one_day_flow').html(todaysDate);
+        $('#one-day-flow-day').val(todaysDate);
+        $('#time_of_arrival').html(currentTime);
+        $('#one-day-flow-time-one').val(currentTime);
+        $('#time_of_exit').html(currentTime+1);
+        $('#one-day-flow-time-two').val(currentTime+1);
         
         var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
         var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
@@ -478,7 +488,9 @@ export class TutorialTwoComponent implements OnInit {
         var monthDisplayString = document.getElementById("month_of_day_flow").innerHTML;
         monthDisplayString = monthDisplayString.toLowerCase();
         var indexOfMonth = monthsArray.indexOf(monthDisplayString);
-        if(monthID == 'minus' && ((indexOfMonth - 1) >= 0)) {
+        var dateFunction = new Date();
+        var thisMonth = dateFunction.getMonth();
+        if(monthID == 'minus' && ((indexOfMonth - 1) >= thisMonth)) {
             var getLowerMonth = monthsArray[indexOfMonth - 1];
             console.log(getLowerMonth);
             document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
@@ -517,11 +529,19 @@ export class TutorialTwoComponent implements OnInit {
         month = month.toLowerCase();
         var indexOfMonth = monthsArray.indexOf(month);
         var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var dateFunction = new Date();
+        var todaysDate = dateFunction.getDate();
+        var thisMonth = dateFunction.getMonth();
         var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
         var dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
         var indexOfDay = daysArray.indexOf(dayInputVal);
         var getHigherDay;
-        if (dayID == 'minus' && indexOfDay > 0) {
+        if (dayID == 'minus' && (monthsArray[thisMonth] == month) && indexOfDay >= todaysDate) {
+            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            $('#day_of_one_day_flow').html(getLowerDay);
+            $('#one-day-flow-day').val(getLowerDay);
+        }
+        if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
             var getLowerDay = daysArray.indexOf(indexOfDay + 1);
             $('#day_of_one_day_flow').html(getLowerDay);
             $('#one-day-flow-day').val(getLowerDay);
@@ -544,32 +564,30 @@ export class TutorialTwoComponent implements OnInit {
     }
 
     oneDayTime(timeID) {
-        //var arrayTime = [0, 1, 2, 3, 4, 5, 6, 7, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
         var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
         var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
         var timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
         var timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
-        if (timeID == 'minus_one' && Number(timeOneInputVal) > 0) {
+        var dateFunction = new Date();
+        var currentTime = dateFunction.getHours();
+        if (timeID == 'minus_one' && timeOneInputVal > 0 && timeOneInputVal > currentTime) {
             timeOneInputVal -= 1;
         }
         if (timeID == 'plus_one' && timeOneInputVal < 23) {
-            if (timeOneInputVal >= timeTwoInputVal) {
-                console.log('time one input value: ' + timeOneInputVal);
-                console.log('time two input value: ' + timeTwoInputVal);
+            if ((timeTwoInputVal - timeOneInputVal) == 1) {
                 timeOneInputVal += 1;
                 timeTwoInputVal += 1;
             }
-            if (timeOneInputVal < timeTwoInputVal){
+            if (timeOneInputVal < timeTwoInputVal && (timeTwoInputVal - timeOneInputVal) > 1){
                 timeOneInputVal += 1;
-                console.log('time one input val: ' + timeOneInputVal);
             }
         }
         if (timeID == 'minus_two' && timeTwoInputVal > 1){
-            if (timeTwoInputVal == timeOneInputVal) {
+            if ((timeTwoInputVal - timeOneInputVal) == 1) {
                 timeOneInputVal -= 1;
                 timeTwoInputVal -= 1;
             }
-            if (timeTwoInputVal > timeOneInputVal) {
+            if ((timeTwoInputVal - timeOneInputVal) > 1) {
                 timeTwoInputVal -= 1;
             }
         }

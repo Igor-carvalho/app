@@ -21,6 +21,9 @@ import {Itinerary} from "../model/itinerary/Itinerary";
 import {DateUtils} from "../utilities/date-utils";
 import * as moment from 'moment';
 import {ItineraryActivities} from "../model/ItineraryActivities";
+import {ActivitiesDataService} from "../services/activities-data.service";
+import {Activities} from "../model/Activities";
+import {ItineraryExport} from "../model/ItineraryExport";
 
 @Component({
     selector: 'app-itinerary',
@@ -30,22 +33,30 @@ export class ItineraryComponent implements OnInit {
 
     private _itineraryId: number;
     private _itinerary: Itinerary;
+    private _itineraryClone: Itinerary;
+    private _replaceActivities: Activities[];
+    private _selectedActivity: number;
 
     private dateUtils: DateUtils;
-    private deletedActivities: number[];
+    private itineraryExport: ItineraryExport;
 
     private enableEditMode: boolean;
+    private replaceActivityLoading: boolean;
 
     constructor(private _router: Router,
                 private _userService: UserService,
+                private _activityDataService: ActivitiesDataService,
                 private _itineraryDataService: ItineraryDataService,) {
         this.dateUtils = new DateUtils();
-        this.deletedActivities = [];
+        this.itineraryExport = new ItineraryExport();
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             this._itineraryId = params.id;
         });
 
         this.enableEditMode = false;
+        this.replaceActivityLoading = false;
+        this._replaceActivities = [];
+        this._selectedActivity = null;
     }
 
     ngOnInit() {
@@ -93,10 +104,12 @@ export class ItineraryComponent implements OnInit {
 
     editItinerary() {
         this.enableEditMode = true;
+        this._itineraryClone = new Itinerary(this._itinerary);
         var $itineraryImages = $(".itinerary_images"), $timings = $(".time"), $cart = $(".cart"),
             $deleteAvtivity = $(".cross"), $addActivity = $(".double_arrow"),
             $backgroundLayer = $(".events_transparent_layer"), $itineraryWrapperOne = $("#edit_itinerary_wrapper_one"),
-            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"), $closeItineraryImage = $("#close_itinerary_image");
+            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"),
+            $closeItineraryImage = $("#close_itinerary_image");
         TweenLite.to($itineraryImages, 0.4, {top: -160});
         TweenLite.to($backgroundLayer, 0.4, {backgroundColor: "rgba(229, 32, 80, 1)", delay: 0.2});
         TweenLite.to($timings, 0.4, {bottom: 60, delay: 0.2});
@@ -122,15 +135,18 @@ export class ItineraryComponent implements OnInit {
         $("#modal-activity-details-" + activity_id).hide('slow');
     }
 
-    showAddEventModal() {
+    showAddEventModal(activity_id) {
         $("#addEventModal").show();
+        this.getReplaceableActivity(activity_id);
     }
 
     closeAddEventModal() {
+        this._selectedActivity = null;
         $("#addEventModal").hide('slow');
     }
 
     showExportItineraryModal() {
+        this.itineraryExport.skip_export_activities = [];
         $("#exportItineraryModal").show();
     }
 
@@ -182,7 +198,8 @@ export class ItineraryComponent implements OnInit {
         var $itineraryImages = $(".itinerary_images"), $timings = $(".time"), $cart = $(".cart"),
             $deleteAvtivity = $(".cross"), $addActivity = $(".double_arrow"),
             $backgroundLayer = $(".events_transparent_layer"), $itineraryWrapperOne = $("#edit_itinerary_wrapper_one"),
-            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"), $closeItineraryImage = $("#close_itinerary_image");
+            $itineraryWrapperTwo = $("#edit_itinerary_wrapper_two"), $editItineraryImage = $("#edit_itinerary_image"),
+            $closeItineraryImage = $("#close_itinerary_image");
         TweenLite.to($itineraryImages, 0.4, {top: 0, delay: 0.4});
         TweenLite.to($backgroundLayer, 0.4, {backgroundColor: "rgba(229, 34, 81, 0.5)", delay: 0.2});
         TweenLite.to($timings, 0.4, {bottom: 6, delay: 0.2});
@@ -215,26 +232,68 @@ export class ItineraryComponent implements OnInit {
             );
     }
 
-    exportItinerary() {
-        var message = "Are you sure?";
+    getReplaceableActivity(activity_id) {
 
-        if (confirm(message)) {
-            this._itineraryDataService
-                .exportItinerary(this._itineraryId)
-                .subscribe(
-                    itinerary => {
-                        alert("Itinerary have been successfully exported. ");
-                    },
-                    error => {
-                        // unauthorized access
-                        if (error.status == 401 || error.status == 403) {
-                            this._userService.unauthorizedAccess(error);
-                        } else {
-                            //this._errorMessage = error.data.message; // TODO: uncomment later
-                        }
+        let currentActivities = this.getCurrentActivities().join(",");
+
+        this._replaceActivities = [];
+        this.replaceActivityLoading = true;
+        this._selectedActivity = activity_id;
+        this._activityDataService
+            .replaceFilter(this._itineraryId, activity_id, currentActivities)
+            .subscribe(
+                itinerary => {
+                    this.replaceActivityLoading = false;
+                    this._replaceActivities = itinerary;
+                    console.log(this._replaceActivities);
+                },
+                error => {
+                    this.replaceActivityLoading = false;
+                    // unauthorized access
+                    if (error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    } else {
+                        //this._errorMessage = error.data.message; // TODO: uncomment later
                     }
-                );
+                }
+            );
+    }
+
+    replaceActivity(activity) {
+        this._itinerary.itinerary_cook_raw.days.forEach((eachDay) => {
+            eachDay.hours.forEach((eachHour) => {
+                if (eachHour.activity.id == this._selectedActivity) {
+                    eachHour.activity = activity;
+                }
+            })
+        });
+        this.closeAddEventModal();
+        // this.reCookItinerary();
+    }
+
+    exportItinerary() {
+
+        let activityToSkip = "";
+        if (!this.itineraryExport.export_all) {
+            activityToSkip = this.itineraryExport.skip_export_activities.join(",");
         }
+
+        this._itineraryDataService
+            .exportItinerary(this._itineraryId, activityToSkip )
+            .subscribe(
+                itinerary => {
+                    this.closeExportItineraryModal();
+                    alert("Itinerary have been successfully exported. ");
+                },
+                error => {
+                    // unauthorized access
+                    if (error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    } else {
+                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                    }
+                }
+            );
     }
 
     ngOnDestroy() {
@@ -274,5 +333,27 @@ export class ItineraryComponent implements OnInit {
         let date = this.dateUtils.mysqlDateTimeToDate(datetime);
 
         return moment(date).format("mm");
+    }
+
+    getCurrentActivities() {
+        let activities = [];
+
+        this._itinerary.itinerary_cook_raw.days.forEach((eachDay) => {
+
+            eachDay.hours.forEach((eachHour) => {
+
+                activities.push(eachHour.activity.id);
+
+            });
+
+        });
+
+        return activities;
+    }
+
+    skipExportActivity(activity_id) {
+        if (!this.itineraryExport.skip_export_activities.includes(activity_id)) {
+            this.itineraryExport.skip_export_activities.push(activity_id);
+        }
     }
 }

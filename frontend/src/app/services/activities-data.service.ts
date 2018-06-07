@@ -55,6 +55,28 @@ export class ActivitiesDataService {
             .catch(this.handleError);
     }
 
+    replaceFilter(itinerary_id: number, activity_id: number, current_activities: string) {
+        let headers = this.getHeaders();
+
+        var parameters = {
+            activity_id: activity_id,
+            current_activities: current_activities
+        };
+
+
+        return this._authHttp.get(
+            this._globalService.apiHost + '/activities/replace-filter/' + itinerary_id + '?' + HttpUtils.ObjectToUriParams(parameters),
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Activities[]>response.data;
+            })
+            .catch(this.handleError);
+    }
+
 
     private handleError(error: Response | any) {
         let errorMessage: any = {};

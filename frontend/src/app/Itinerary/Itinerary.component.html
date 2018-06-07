@@ -28,7 +28,8 @@
                             </div>
                         </div>
                         <div class="events_container">
-                            <div class="events" *ngFor="let hour of day.hours" (click)="showActivityDetails(hour.activity.id)">
+                            <div class="events" *ngFor="let hour of day.hours"
+                                 (click)="showActivityDetails(hour.activity.id)">
                                 <div class="events_wrapper">
                                     <img class="itinerary_images" src="{{hour.activity.images[0]}}" alt="image">
                                     <div class="events_transparent_layer" id="modalClickButton">
@@ -40,7 +41,7 @@
                                         <span class="cross" (click)="deleteItinerary(hour.activity.id)">
                                         <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
                                     </span>
-                                        <span class="double_arrow" (click)="showAddEventModal()">
+                                        <span class="double_arrow" (click)="showAddEventModal(hour.activity.id)">
                                         <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
                                     </span>
                                     </div>
@@ -48,11 +49,13 @@
 
                                 <div id="modal-activity-details-{{hour.activity.id}}" class="modal_popup">
                                     <div class="modal_content_wrapper">
-                                        <span (click)="closeActivityDetails(hour.activity.id)" class="toggle_close_modal">
+                                        <span (click)="closeActivityDetails(hour.activity.id)"
+                                              class="toggle_close_modal">
                                             <img src="assets/img/Icon_Close.svg" alt="close modal">
                                         </span>
-                                                <span class="modal_category_icon">
-                                            <img [src]="'assets/img/'+hour.activity.micro_icon" alt="category name here">
+                                        <span class="modal_category_icon">
+                                            <img [src]="'assets/img/'+hour.activity.micro_icon"
+                                                 alt="category name here">
                                         </span>
                                         <div class="modal_content">
                                             <div class="modal_content_left_section">
@@ -123,9 +126,11 @@
                                             </div>
                                         </div>
                                         <div class="modalBody">
-                                            <div class="not_found_container">
+                                            <div *ngIf="!replaceActivityLoading && _replaceActivities.length == 0"
+                                                 class="not_found_container">
                                                 <div class="not_found_image_container">
-                                                    <img src="assets/img/Icon_Not_Found.svg" alt="Search results not forund">
+                                                    <img src="assets/img/Icon_Not_Found.svg"
+                                                         alt="Search results not forund">
                                                 </div>
                                                 <div class="not_found_text_container">
                                                     <span class="sorry_text">sorry!</span>
@@ -135,101 +140,31 @@
                                                 </div>
                                             </div>
                                             <div class="row addEventModalRow">
-                                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
-                                                    <div class="element_container">
+                                                <div *ngFor="let activity of _replaceActivities"
+                                                     class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
+                                                    <div (click)="replaceActivity(activity)" class="element_container">
                                                         <div class="image_container">
                                                             <div class="image">
-                                                                <img class="elem_image" src="assets/img/napolinvespa_tour.jpg" alt="image">
+                                                                <img class="elem_image"
+                                                                     src="{{activity.images[0]}}" alt="image">
                                                             </div>
                                                             <div class="icon">
-                                                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
+                                                                <img
+                                                                        [src]="'assets/img/'+activity.micro_icon"
+                                                                        alt="Museum category">
                                                             </div>
                                                             <div class="gradient_div gradient_class"></div>
                                                         </div>
                                                         <div class="place_name_container">
-                                                            <div class="place_name">Chapel of san severo</div>
+                                                            <div class="place_name">{{activity.name}}</div>
                                                             <div class="arrow">
-                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg"
+                                                                     alt="Museum category">
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
-                                                    <div class="element_container">
-                                                        <div class="image_container">
-                                                            <div class="image">
-                                                                <img class="elem_image" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                                            </div>
-                                                            <div class="icon">
-                                                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
-                                                            </div>
-                                                            <div class="gradient_div gradient_class"></div>
-                                                        </div>
-                                                        <div class="place_name_container">
-                                                            <div class="place_name">Chapel of san severo</div>
-                                                            <div class="arrow">
-                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
-                                                    <div class="element_container">
-                                                        <div class="image_container">
-                                                            <div class="image">
-                                                                <img class="elem_image" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                                            </div>
-                                                            <div class="icon">
-                                                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
-                                                            </div>
-                                                            <div class="gradient_div gradient_class"></div>
-                                                        </div>
-                                                        <div class="place_name_container">
-                                                            <div class="place_name">Chapel of san severo</div>
-                                                            <div class="arrow">
-                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
-                                                    <div class="element_container">
-                                                        <div class="image_container">
-                                                            <div class="image">
-                                                                <img class="elem_image" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                                            </div>
-                                                            <div class="icon">
-                                                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
-                                                            </div>
-                                                            <div class="gradient_div gradient_class"></div>
-                                                        </div>
-                                                        <div class="place_name_container">
-                                                            <div class="place_name">Chapel of san severo</div>
-                                                            <div class="arrow">
-                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 activity_container">
-                                                    <div class="element_container">
-                                                        <div class="image_container">
-                                                            <div class="image">
-                                                                <img class="elem_image" src="assets/img/napolinvespa_tour.jpg" alt="image">
-                                                            </div>
-                                                            <div class="icon">
-                                                                <img src="assets/img/Icon_Museum.svg" alt="Museum category">
-                                                            </div>
-                                                            <div class="gradient_div gradient_class"></div>
-                                                        </div>
-                                                        <div class="place_name_container">
-                                                            <div class="place_name">Chapel of san severo</div>
-                                                            <div class="arrow">
-                                                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -249,8 +184,10 @@
             </div>
             <div class="export_itinerary edit_itinerary_image">
                 <div class="export_itinerary_inner_container">
-                    <img (click)="editItinerary()" id="edit_itinerary_image" src="assets/img/Icon_Edit_Itinerary.svg" alt="edit itinerary">
-                    <img (click)="reCookItinerary()" id="close_itinerary_image" src="assets/img/Icon_Edit_Itinerary_Check.svg" alt="edit itinerary">
+                    <img (click)="editItinerary()" id="edit_itinerary_image" src="assets/img/Icon_Edit_Itinerary.svg"
+                         alt="edit itinerary">
+                    <img (click)="reCookItinerary()" id="close_itinerary_image"
+                         src="assets/img/Icon_Edit_Itinerary_Check.svg" alt="edit itinerary">
                 </div>
             </div>
             <div class="edit_itinerary_container edit_itinerary_text">
@@ -278,62 +215,33 @@
                         <h2>We will send you the<br>informations about:</h2>
                     </div>
                 </div>
-                <div class="exportitineraryModalBody">
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
+                <div class="exportitineraryModalBody"
+                     *ngIf="_itinerary != null && _itinerary.itinerary_cook_raw != null">
+                    <div *ngFor="let day of _itinerary.itinerary_cook_raw.days"
+                         class="export_itinerary_half_width_column">
+                        <div *ngFor="let hour of day.hours">
+                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id)">
+                                <div class="export_itinerary_delete_activity_icon">
+                                    <img src="assets/img/Icon_Close.svg" (click)="skipExportActivity(hour.activity.id)"
+                                         alt="Delete activity">
+                                </div>
+                                <div class="export_itinerary_activity_name">{{ hour.activity.name }}</div>
+                            </div>
                         </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Catacombs of San Gennaro</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Kayak Tour</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pizzeria Vesi</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Close.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Trattoria Pop</div>
                     </div>
 
                     <div class="export_itinerary_or_div">or</div>
                     <div class="export_itinerary_full_width_column checkbox_column">
                         <div class="export_itinerary_delete_activity_icon">
-                            <label class="checkbox_container">
-                                <input type="checkbox">
-                                <span class="checkbox_checkmark"></span>
+                            <label  class="checkbox_container">
+                                <input name="export_all" type="checkbox">
+                                <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
                             </label>
                         </div>
                         <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
                     </div>
                     <div class="export_itinerary_full_width_column send_column">
-                        <div class="send_button">
+                        <div class="send_button" (click)="exportItinerary()">
                             <div class="send_icon">
                                 <img src="assets/img/Icon_two_lines.svg" alt="send icon">
                             </div>

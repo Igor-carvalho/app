@@ -47,7 +47,7 @@
             <input type="hidden" name="one-day-flow-time-one" id="one-day-flow-time-one" value="3">
             <input type="hidden" name="one-day-flow-time-two" id="one-day-flow-time-two" value="12">
             <div class="slider_icons">
-                <div class="calendar_row calendar_top_row one_day_calendar_row one_day_calenday_top_row">
+                <div [hidden]="!appInitSettings.isSingleDay" class="calendar_row calendar_top_row one_day_calendar_row one_day_calenday_top_row">
                     <div class="month_container one_day_flow_month_container">
                         <div class="left_icon_calendar">
                             <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayMonth('minus')">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calendar_row one_day_calendar_row">
+                <div [hidden]="!appInitSettings.isSingleDay" class="calendar_row one_day_calendar_row">
                     <div class="month_container one_day_flow_month_container">
                         <div class="from from_day_flow">
                             <div class="from_wrapper">from<div class="from_underline"></div></div>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calendar_row one_day_calendar_row">
+                <div [hidden]="!appInitSettings.isSingleDay" class="calendar_row one_day_calendar_row">
                     <div class="month_container one_day_flow_month_container">
                         <div class="from from_day_flow">
                             <div class="from_wrapper">to<div class="from_underline"></div></div>
@@ -99,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calendar_row calendar_top_row">
+                <div [hidden]="appInitSettings.isSingleDay" class="calendar_row calendar_top_row">
                     <div class="from_container">
                         <div class="from">from<div class="from_underline"></div></div>
                     </div>
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calendar_row">
+                <div [hidden]="appInitSettings.isSingleDay" class="calendar_row">
                     <div class="from_container">
                         <div class="from">to<div class="from_underline"></div></div>
                     </div>

@@ -8,6 +8,9 @@ export class ActivityFilter {
     budget_type: number;
     macro_categories: number[];
 
+    time_from: number;
+    time_to: number;
+
 
     constructor(values: Object = {}) {
         this.macro_categories = [];
@@ -34,5 +37,6 @@ export class ActivityFilter {
 
         console.log(this.macro_categories);
     }
+
 
 }

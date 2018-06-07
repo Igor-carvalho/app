@@ -115,12 +115,15 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
-    exportItinerary(id: number) {
+    exportItinerary(id: number, skip_activities: string) {
         let headers = this.getHeaders();
 
+        let parameters = {
+            skip_activities: skip_activities
+        };
 
         return this._authHttp.get(
-            this._globalService.apiHost + '/itinerary/export/' + id,
+            this._globalService.apiHost + '/itinerary/export/' + id + "?" + HttpUtils.ObjectToUriParams(parameters),
             {
                 headers: headers
             }

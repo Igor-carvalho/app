@@ -13,7 +13,8 @@ import {
     EasePack
 } from "gsap";
 import {UserService} from "../model/user.service";
-import {Router} from "@angular/router";
+import {Params, Router} from "@angular/router";
+import {AppInitialSettings} from "../model/AppInitialSettings";
 
 @Component({
     selector: 'app-tutorial-one',
@@ -21,12 +22,31 @@ import {Router} from "@angular/router";
 })
 export class TutorialOneComponent implements OnInit {
 
+    private appInitSettings: AppInitialSettings;
+
     constructor(private _router: Router,
                 private _userService: UserService) {
 
-        if (!this._userService.isLoggedIn()) {
-            this._router.navigate(['/login']);
-        }
+        this.appInitSettings = new AppInitialSettings();
+
+        this._router.routerState.root.queryParams.subscribe((params: Params) => {
+
+            if (params.isSingleDay != null)
+                this.appInitSettings.isSingleDay = true;
+            else
+                this.appInitSettings.isSingleDay = false;
+
+            console.log(this.appInitSettings);
+            this.appInitSettings.store();
+
+
+            if (!this._userService.isLoggedIn()) {
+                this._router.navigate(['/login']);
+
+            }
+        });
+
+
     }
 
     ngOnInit() {

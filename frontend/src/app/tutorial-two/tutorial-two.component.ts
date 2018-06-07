@@ -18,6 +18,7 @@ import {StaticDataService} from "../services/static-data.service";
 import {ArrayUtils} from "../utilities/ArrayUtils";
 
 import {Router} from "@angular/router";
+import {AppInitialSettings} from "../model/AppInitialSettings";
 
 @Component({
     selector: 'app-tutorial-two',
@@ -28,6 +29,7 @@ export class TutorialTwoComponent implements OnInit {
 
     public _activityFilter: ActivityFilter;
     public _arrayUtils: ArrayUtils;
+    public appInitSettings: AppInitialSettings;
 
     public macroCategories: any;
 
@@ -36,6 +38,10 @@ export class TutorialTwoComponent implements OnInit {
         this._activityFilter = new ActivityFilter();
         this.macroCategories = [];
         this._arrayUtils = new ArrayUtils();
+        this.appInitSettings = new AppInitialSettings();
+
+
+        console.log(this.appInitSettings);
 
     }
 
@@ -477,13 +483,29 @@ export class TutorialTwoComponent implements OnInit {
             console.log(getLowerMonth);
             document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
             $('#one-day-flow-month').val(getLowerMonth);
+
+            var date = new Date(this._activityFilter.date_ends);
+            var monthNumber = indexOfMonth + 1;
+            date.setMonth(monthNumber);
+
+
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if(monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
             var getNextMonth = monthsArray[indexOfMonth + 1];
-            console.log(getNextMonth);
             document.getElementById('month_of_day_flow').innerHTML = getNextMonth;
             $('#one-day-flow-month').val(getNextMonth);
+
+
+            var date = new Date(this._activityFilter.date_ends);
+            var monthNumber = indexOfMonth + 1;
+            date.setMonth(monthNumber);
+
+
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+
         }
+        console.log(this._activityFilter);
     }
 
     oneDayFlowDay(dayID) {

@@ -50,4 +50,12 @@ class DateTimeHelper
         return false;
     }
 
+    public static function getDateOnly($date, $format = 'Y-m-d')
+    {
+        if (is_string($date)) {
+            $date = new DateTime($date);
+        }
+        return $date->format($format);
+    }
+
 }

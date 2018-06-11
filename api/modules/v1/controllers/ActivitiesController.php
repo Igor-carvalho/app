@@ -147,8 +147,8 @@ class ActivitiesController extends ActiveController
             $activityObj->micro_category = $activity->getMicroCategoryIds();
             $activityObj->weather_types = $activity->getMacroCategoryIds();
 
-            $activityObj->date_starts = $this->toFrontDateObject($activityObj->date_starts);
-            $activityObj->date_ends = $this->toFrontDateObject($activityObj->date_ends);
+            $activityObj->date_starts = $this->toFrontDateObject(DateTimeHelper::getDateOnly($activityObj->date_starts));
+            $activityObj->date_ends = $this->toFrontDateObject(DateTimeHelper::getDateOnly($activityObj->date_ends));
 
             return $activityObj;
         } else {

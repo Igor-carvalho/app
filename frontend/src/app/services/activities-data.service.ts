@@ -12,6 +12,7 @@ import {Setting} from './../model/setting';
 import {AuthHttp} from 'angular2-jwt';
 import {Activities} from "../model/Activities";
 import {HttpUtils} from "../utilities/http-utils";
+import {Itinerary} from "../model/itinerary/Itinerary";
 
 @Injectable()
 export class ActivitiesDataService {
@@ -51,6 +52,33 @@ export class ActivitiesDataService {
             .map(response => response.json())
             .map((response) => {
                 return <Activities[]>response.data;
+            })
+            .catch(this.handleError);
+    }
+
+    filterSingleDay(numberOfPeople, budgetType, macros, dateStart, dateEnd, time_from, time_to): Observable<Itinerary> {
+        let headers = this.getHeaders();
+
+        var parameters = {
+            people: numberOfPeople,
+            budget: budgetType,
+            macros: macros,
+            date_start: dateStart,
+            date_end: dateEnd,
+            time_from: time_from,
+            time_to: time_to
+        };
+
+
+        return this._authHttp.get(
+            this._globalService.apiHost + '/activities/filter-single-day?' + HttpUtils.ObjectToUriParams(parameters),
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Itinerary>response.data;
             })
             .catch(this.handleError);
     }

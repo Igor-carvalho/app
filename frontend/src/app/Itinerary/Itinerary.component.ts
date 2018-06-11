@@ -219,6 +219,8 @@ export class ItineraryComponent implements OnInit {
             .subscribe(
                 itinerary => {
                     this._itinerary = itinerary;
+
+                    this.itineraryExport.calculateTotalActivities(this._itinerary.itinerary_cook_raw);
                     console.log(this._itinerary.itinerary_cook_raw.days);
                 },
                 error => {
@@ -278,11 +280,11 @@ export class ItineraryComponent implements OnInit {
             activityToSkip = this.itineraryExport.skip_export_activities.join(",");
         }
 
+        this.closeExportItineraryModal();
         this._itineraryDataService
             .exportItinerary(this._itineraryId, activityToSkip )
             .subscribe(
                 itinerary => {
-                    this.closeExportItineraryModal();
                     alert("Itinerary have been successfully exported. ");
                 },
                 error => {

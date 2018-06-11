@@ -98,7 +98,7 @@ export class TutorialTwoComponent implements OnInit {
             }
             sliderDots[clickCount].classList.add("active_dot");
         };
-        if($(window).width() < 480) {
+        if ($(window).width() < 480) {
             lowBudget.onclick = function () {
                 lowBudget.style.display = "none";
                 lowBudgetChecked.style.display = "block";
@@ -224,11 +224,11 @@ export class TutorialTwoComponent implements OnInit {
         $('.child_number_display').html($('#childNumberCountInput').val());
 
         var day = new Date(this._activityFilter.date_starts).getDate();
-        var month  = new Date(this._activityFilter.date_starts).getMonth();
+        var month = new Date(this._activityFilter.date_starts).getMonth();
 
 
         var day = new Date(this._activityFilter.date_starts).getDate();
-        var month  = new Date(this._activityFilter.date_starts).getMonth();
+        var month = new Date(this._activityFilter.date_starts).getMonth();
 
         var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
@@ -246,7 +246,9 @@ export class TutorialTwoComponent implements OnInit {
         var dateFunction = new Date();
         var todaysDate = dateFunction.getDate();
         var currentMonth = dateFunction.getMonth();
-        var currentTime = dateFunction.getHours();
+        var currentTime = this._activityFilter.time_from;
+        var endTime = this._activityFilter.time_to;
+
 
         $('#month_of_day_flow').html(monthsArray[currentMonth]);
         $('#one-day-flow-month').val(monthsArray[currentMonth]);
@@ -254,9 +256,9 @@ export class TutorialTwoComponent implements OnInit {
         $('#one-day-flow-day').val(todaysDate);
         $('#time_of_arrival').html(currentTime);
         $('#one-day-flow-time-one').val(currentTime);
-        $('#time_of_exit').html(currentTime+1);
-        $('#one-day-flow-time-two').val(currentTime+1);
-        
+        $('#time_of_exit').html(endTime);
+        $('#one-day-flow-time-two').val(endTime);
+
         var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
         var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
         if (timeOneInputVal > 11) {
@@ -271,6 +273,9 @@ export class TutorialTwoComponent implements OnInit {
         if (timeTwoInputVal <= 11) {
             $('#AmPmTwo').html('am');
         }
+
+
+        console.log(this._activityFilter);
     }
 
     private getMacroCategories() {
@@ -314,7 +319,7 @@ export class TutorialTwoComponent implements OnInit {
         }
     }
 
-    addPerson(personId) {       
+    addPerson(personId) {
         var childCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("childNumberCountInput")).value);
         var personCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("personNumberCountInput")).value);
         if (personId == 'adult') {
@@ -324,7 +329,7 @@ export class TutorialTwoComponent implements OnInit {
 
             this._activityFilter.num_adults = personCountInputVal;
         }
-        if(personId == 'child') {
+        if (personId == 'child') {
             childCountInputVal++;
             $('#childNumberCountInput').val(childCountInputVal);
             $('.child_number_display').html(childCountInputVal);
@@ -332,7 +337,7 @@ export class TutorialTwoComponent implements OnInit {
         }
     }
 
-    removePerson(personId) {       
+    removePerson(personId) {
         var childCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("childNumberCountInput")).value);
         var personCountInputVal = parseFloat((<HTMLInputElement>document.getElementById("personNumberCountInput")).value);
         if (personId == 'adult' && personCountInputVal > 1) {
@@ -341,7 +346,7 @@ export class TutorialTwoComponent implements OnInit {
             $('.adult_number_display').html(personCountInputVal);
             this._activityFilter.num_adults = personCountInputVal;
         }
-        if(personId == 'child' && childCountInputVal > 0) {
+        if (personId == 'child' && childCountInputVal > 0) {
             childCountInputVal--;
             $('#childNumberCountInput').val(childCountInputVal);
             $('.child_number_display').html(childCountInputVal);
@@ -490,31 +495,31 @@ export class TutorialTwoComponent implements OnInit {
         var indexOfMonth = monthsArray.indexOf(monthDisplayString);
         var dateFunction = new Date();
         var thisMonth = dateFunction.getMonth();
-        if(monthID == 'minus' && ((indexOfMonth - 1) >= thisMonth)) {
+        if (monthID == 'minus' && ((indexOfMonth - 1) >= thisMonth)) {
             var getLowerMonth = monthsArray[indexOfMonth - 1];
             console.log(getLowerMonth);
             document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
             $('#one-day-flow-month').val(getLowerMonth);
 
-            var date = new Date(this._activityFilter.date_ends);
+            var date = new Date(this._activityFilter.date_starts);
             var monthNumber = indexOfMonth + 1;
             date.setMonth(monthNumber);
 
 
-            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
-        if(monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
+        if (monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
             var getNextMonth = monthsArray[indexOfMonth + 1];
             document.getElementById('month_of_day_flow').innerHTML = getNextMonth;
             $('#one-day-flow-month').val(getNextMonth);
 
 
-            var date = new Date(this._activityFilter.date_ends);
+            var date = new Date(this._activityFilter.date_starts);
             var monthNumber = indexOfMonth + 1;
             date.setMonth(monthNumber);
 
 
-            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
 
         }
         console.log(this._activityFilter);
@@ -535,32 +540,70 @@ export class TutorialTwoComponent implements OnInit {
         var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
         var dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
         var indexOfDay = daysArray.indexOf(dayInputVal);
+        console.log("dayInputVal", dayInputVal);
         var getHigherDay;
         if (dayID == 'minus' && (monthsArray[thisMonth] == month) && indexOfDay >= todaysDate) {
             var getLowerDay = daysArray.indexOf(indexOfDay + 1);
             $('#day_of_one_day_flow').html(getLowerDay);
             $('#one-day-flow-day').val(getLowerDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            var dayNumber = getLowerDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
         if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
             var getLowerDay = daysArray.indexOf(indexOfDay + 1);
             $('#day_of_one_day_flow').html(getLowerDay);
             $('#one-day-flow-day').val(getLowerDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            var dayNumber = getLowerDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyOneDayMonths.indexOf(month) > -1) && (dayInputVal < 31)) {
-            getHigherDay = dayInputVal+1;
+            getHigherDay = dayInputVal + 1;
             $('#day_of_one_day_flow').html(getHigherDay);
             $('#one-day-flow-day').val(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyDayMonths.indexOf(month) > -1) && (dayInputVal < 30)) {
-            getHigherDay = dayInputVal+1;
+            getHigherDay = dayInputVal + 1;
             $('#day_of_one_day_flow').html(getHigherDay);
             $('#one-day-flow-day').val(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (februaryMonth.indexOf(month) > -1) && (dayInputVal < 28)) {
-            getHigherDay = dayInputVal+1;
+            getHigherDay = dayInputVal + 1;
             $('#day_of_one_day_flow').html(getHigherDay);
             $('#one-day-flow-day').val(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
         }
+
+        console.log(this._activityFilter);
     }
 
     oneDayTime(timeID) {
@@ -578,11 +621,11 @@ export class TutorialTwoComponent implements OnInit {
                 timeOneInputVal += 1;
                 timeTwoInputVal += 1;
             }
-            if (timeOneInputVal < timeTwoInputVal && (timeTwoInputVal - timeOneInputVal) > 1){
+            if (timeOneInputVal < timeTwoInputVal && (timeTwoInputVal - timeOneInputVal) > 1) {
                 timeOneInputVal += 1;
             }
         }
-        if (timeID == 'minus_two' && timeTwoInputVal > 1){
+        if (timeID == 'minus_two' && timeTwoInputVal > 1) {
             if ((timeTwoInputVal - timeOneInputVal) == 1) {
                 timeOneInputVal -= 1;
                 timeTwoInputVal -= 1;
@@ -593,7 +636,7 @@ export class TutorialTwoComponent implements OnInit {
         }
         if (timeID == 'plus_two' && timeTwoInputVal < 24) {
             timeTwoInputVal += 1;
-        } 
+        }
         $('#time_of_arrival').html(timeOneInputVal);
         $('#time_of_exit').html(timeTwoInputVal);
         $('#one-day-flow-time-one').val(timeOneInputVal);
@@ -610,6 +653,11 @@ export class TutorialTwoComponent implements OnInit {
         if (timeTwoInputVal <= 11) {
             $('#AmPmTwo').html('am');
         }
+
+        this._activityFilter.time_from = timeOneInputVal;
+        this._activityFilter.time_to = timeTwoInputVal;
+
+        console.log(this._activityFilter);
     }
 
     minusDay(dayId) {
@@ -674,6 +722,7 @@ export class TutorialTwoComponent implements OnInit {
         console.log(this._activityFilter);
 
     }
+
     plusDay(dayId) {
         var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
         var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];

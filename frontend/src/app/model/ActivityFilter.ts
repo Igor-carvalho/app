@@ -19,6 +19,9 @@ export class ActivityFilter {
 
         this.date_starts = new Date().toISOString().substring(0, 10);
         this.date_ends = new Date().toISOString().substring(0, 10);
+
+        this.time_from = new Date().getHours();
+        this.time_to = new Date().getHours() + 1;
         Object.assign(this, values);
     }
 

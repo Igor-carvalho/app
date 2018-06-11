@@ -22,6 +22,9 @@ import {ItineraryDataService} from "../services/itinerary-data.service";
 import {Itinerary} from "../model/itinerary/Itinerary";
 import {StaticDataService} from "../services/static-data.service";
 import {FrontendLayoutComponent} from "../layouts/frontend-layout.component";
+import {AppInitialSettings} from "../model/AppInitialSettings";
+import {ItineraryExport} from "../model/ItineraryExport";
+import {ItineraryActivities} from "../model/ItineraryActivities";
 
 @Component({
     selector: 'app-wishlist',
@@ -34,9 +37,12 @@ export class WishlistComponent implements OnInit {
     public _selectedActivities: any;
     public macroCategories: any;
     public _arrayUtils: ArrayUtils;
+    public _singleDayTemporaryItinerary: Itinerary;
 
     public _itinerary: Itinerary;
     public loading: boolean;
+    public appInitSettings: AppInitialSettings;
+    private itineraryExport: ItineraryExport;
 
     constructor(private _router: Router,
                 private _userService: UserService,
@@ -46,6 +52,9 @@ export class WishlistComponent implements OnInit {
         this._selectedActivities = [];
         this.loading = true;
         this._activities = [];
+        this.appInitSettings = new AppInitialSettings();
+        this.itineraryExport = new ItineraryExport();
+        this._singleDayTemporaryItinerary = new Itinerary();
 
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             // this._activityFilter = <ActivityFilter> params;
@@ -96,16 +105,21 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(window.location.href.indexOf("wishlist") > -1) {
+        if (window.location.href.indexOf("wishlist") > -1) {
             console.log('this is working');
             $('.app').css('background-color', "#f0f0f0");
-         }
+        }
         console.log("ngInit");
 
         $("#edit-filter").show();
         this.populateFilterValues();
         this.getMacroCategories();
-        this.getActivities(this._activityFilter);
+
+        if (this.appInitSettings.isSingleDay) {
+            this.getOneDayItinerary(this._activityFilter);
+        } else {
+            this.getActivities(this._activityFilter);
+        }
         TweenLite.to("#heading", 2, {rotation: 360});
         $('#day_one').html($('#date_one').val());
         $('#calendar_dates_day_display_one').html($('#date_one').val());
@@ -685,6 +699,36 @@ export class WishlistComponent implements OnInit {
             );
     }
 
+    getOneDayItinerary(filter: ActivityFilter) {
+        this.loading = true;
+        this._activitesDataService
+            .filterSingleDay(filter.num_adults,
+                filter.budget_type,
+                filter.macro_categories,
+                filter.date_starts,
+                filter.date_ends,
+                filter.time_from,
+                filter.time_to
+            )
+            .subscribe(
+                itinerary => {
+                    this._singleDayTemporaryItinerary = itinerary;
+                    this.loading = false;
+                    this.itineraryExport.calculateTotalActivities(this._singleDayTemporaryItinerary.itinerary_cook_raw);
+                    console.log(this._singleDayTemporaryItinerary);
+                },
+                error => {
+                    this.loading = false;
+                    // unauthorized access
+                    if (error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    } else {
+                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                    }
+                }
+            );
+    }
+
     toggle_selected_acctivity(id) {
         var index = this._selectedActivities.indexOf(id);
         if (index != -1) {
@@ -770,7 +814,87 @@ export class WishlistComponent implements OnInit {
     }
 
     closeExportItineraryModalWishlist() {
+        console.log("closeExportItineraryModalWishlist()");
         $("#exportItineraryModalWishlist").hide('slow');
     }
+
+
+    skipExportActivity(activity_id) {
+        if (!this.itineraryExport.skip_export_activities.includes(activity_id)) {
+            this.itineraryExport.skip_export_activities.push(activity_id);
+        }
+    }
+
+
+    exportItinerary() {
+        if (this._selectedActivities.length == 0) {
+            alert("Wishlist is empty, Please select one or more items. ");
+        } else {
+
+            this.closeExportItineraryModalWishlist();
+            let itineraryActivities = [];
+            let selectActivities = this._selectedActivities;
+            this._singleDayTemporaryItinerary.itinerary_cook_raw.days.forEach((day) => {
+                day.hours.forEach(function (hour) {
+
+                    if (selectActivities.includes(hour.activity.id)) {
+                        let itineraryActivity = new ItineraryActivities();
+                        itineraryActivity.start_time = hour.scheduled_hour_from;
+                        itineraryActivity.end_time = hour.scheduled_hour_to;
+                        itineraryActivity.activities_id = hour.activity.id + "";
+
+                        itineraryActivities.push(itineraryActivity);
+                    }
+                });
+            });
+
+            this.loading = true;
+            this._itineraryDataService
+                .cookSingleDay(itineraryActivities, this._activityFilter)
+                .subscribe(
+                    itinerary => {
+                        this.loading = false;
+                        this._itinerary = itinerary;
+                        this.exportItineraryEmail(this._itinerary.id);
+                    },
+                    error => {
+                        // unauthorized access
+                        if (error.status == 401 || error.status == 403) {
+                            this._userService.unauthorizedAccess(error);
+                        } else {
+                            alert(error.data.message);
+                            //this._errorMessage = error.data.message; // TODO: uncomment later
+                        }
+                    }
+                );
+
+        }
+    }
+
+    exportItineraryEmail(itinerary_id) {
+
+        let activityToSkip = "";
+        if (!this.itineraryExport.export_all) {
+            activityToSkip = this.itineraryExport.skip_export_activities.join(",");
+        }
+
+        this._itineraryDataService
+            .exportItinerary(itinerary_id, activityToSkip)
+            .subscribe(
+                itinerary => {
+                    alert("Itinerary have been successfully exported. ");
+                    // this._router.navigate(['/tutorial-two']); TODO: Uncomment this
+                },
+                error => {
+                    // unauthorized access
+                    if (error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    } else {
+                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                    }
+                }
+            );
+    }
+
 
 }

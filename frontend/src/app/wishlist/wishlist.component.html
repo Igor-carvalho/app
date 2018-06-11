@@ -107,14 +107,16 @@
                      (click)="budgetSelection('low')">
             </label>
             <label class="radio-inline budget_icons_container budget_icons_container_two">
-                <input class="budget_inputs" type="radio" id="medium-budget-radio" name="budget_input" value="mid_range_budget"
+                <input class="budget_inputs" type="radio" id="medium-budget-radio" name="budget_input"
+                       value="mid_range_budget"
                        checked="checked">
                 <img class="mid_budget_icon budget_icons" src="assets/img/middle-range-budget.svg" alt="medium budget"
                      (click)="budgetSelection('medium')">
             </label>
             <label class="radio-inline budget_icons_container budget_icons_container_three">
                 <input class="budget_inputs" type="radio" name="budget_input" value="high_range_budget">
-                <img class="high_budget_icon budget_icons"  id="high-budget-radio" src="assets/img/high-range-budget.svg" alt="high budget"
+                <img class="high_budget_icon budget_icons" id="high-budget-radio" src="assets/img/high-range-budget.svg"
+                     alt="high budget"
                      (click)="budgetSelection('high')">
             </label>
             <div class="budget_range_text_display"></div>
@@ -153,7 +155,8 @@
     <div class="row">
         <div class="col-lg-1 left_container"></div>
         <div class="col-lg-9 middle_container">
-            <div *ngIf="!loading && _activities.length == 0" class="not_found_container">
+            <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0"
+                 class="not_found_container">
                 <div class="not_found_image_container">
                     <img src="assets/img/Icon_Not_Found.svg" alt="Search results not forund">
                 </div>
@@ -166,31 +169,74 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
-                   <div class="element_container wishlist_description_container">
-                       <h2>This is your<br>Wishlist!</h2>
-                       <p>Select one or more Activities you want to do while you're in <span id="wishlist_description_city">Neaples</span></p>
-                   </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
-                     *ngFor="let activity of _activities">
-                    <div class="element_container"
-                         (click)="toggle_selected_acctivity(activity.id)">
-                        <div class="image_container">
-                            <div class="image">
-                                <img class="elem_image" [src]="activity.images[0]" alt="image">
-                            </div>
-                            <div class="icon">
-                                <img [src]="'assets/img/'+activity.micro_icon" alt="Museum category">
-                            </div>
-                            <!--<div class="gradient_div gradient_class gradient_class_blue" [class.gradient_class]="check_activity_selected(activity.id)"-->
-                            <div class="gradient_div gradient_class" [class.gradient_class]="check_activity_selected(activity.id)"
-                            ></div>
+
+
+                <div *ngIf="!appInitSettings.isSingleDay && _activities.length > 0">
+                    <div
+                            class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
+                        <div class="element_container wishlist_description_container">
+                            <h2>This is your<br>Wishlist!</h2>
+                            <p>Select one or more Activities you want to do while you're in <span
+                                    id="wishlist_description_city">Neaples</span></p>
                         </div>
-                        <div class="place_name_container">
-                            <div class="place_name">{{ activity.name }}</div>
-                            <div class="arrow">
-                                <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                    </div>
+                    <div
+                            class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
+                            *ngFor="let activity of _activities">
+                        <div class="element_container"
+                             (click)="toggle_selected_acctivity(activity.id)">
+                            <div class="image_container">
+                                <div class="image">
+                                    <img class="elem_image" [src]="activity.images[0]" alt="image">
+                                </div>
+                                <div class="icon">
+                                    <img [src]="'assets/img/'+activity.micro_icon" alt="Museum category">
+                                </div>
+                                <!--<div class="gradient_div gradient_class gradient_class_blue" [class.gradient_class]="check_activity_selected(activity.id)"-->
+                                <div class="gradient_div gradient_class"
+                                     [class.gradient_class]="check_activity_selected(activity.id) "
+                                ></div>
+                            </div>
+                            <div class="place_name_container">
+                                <div class="place_name">{{ activity.name }}</div>
+                                <div class="arrow">
+                                    <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
+                        <div class="element_container wishlist_description_container">
+                            <h2>These are your<br>Results!</h2>
+                            <p>Select your Activities and get them send to you by clicking the Mail Button</p>
+                        </div>
+                    </div>
+                    <div *ngFor="let day of _singleDayTemporaryItinerary.itinerary_cook_raw.days">
+                        <div *ngFor="let hour of day.hours"
+                             class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
+                            <div class="element_container"
+                                 (click)="toggle_selected_acctivity(hour.activity.id)">
+                                <div class="image_container">
+                                    <div class="image">
+                                        <img class="elem_image" [src]="hour.activity.images[0]" alt="image">
+                                    </div>
+                                    <div class="icon">
+                                        <img [src]="'assets/img/'+hour.activity.micro_icon" alt="Museum category">
+                                    </div>
+                                    <!--<div class="gradient_div gradient_class gradient_class_blue" [class.gradient_class]="check_activity_selected(activity.id)"-->
+                                    <div class="gradient_div gradient_class_blue"
+                                         [class.gradient_class_blue]="check_activity_selected(hour.activity.id)"
+                                    ></div>
+                                </div>
+                                <div class="place_name_container">
+                                    <div class="place_name">{{ hour.activity.name }}</div>
+                                    <div class="arrow">
+                                        <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,13 +245,15 @@
         </div>
         <div class="col-lg-2 right_container">
             <!--<div class="edit_itinerary" (click)="exportItinerary()">Export<br>Itinerary</div>-->
-            <div class="export_itinerary" (click)="showExportItineraryModalWishlist()">
+            <div *ngIf="appInitSettings.isSingleDay" class="export_itinerary"
+                 (click)="showExportItineraryModalWishlist()">
                 <div class="export_itinerary_inner_container">
                     <img src="assets/img/Icon_Export_Blue.svg" alt="export itinerary">
                 </div>
             </div>
-            <div class="edit_itinerary_container">
-                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
+            <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container">
+                <div class="edit_itinerary_wrapper"
+                     id="edit_itinerary_wrapper_one">
                     <div class="edit_itinerary" (click)="show_my_itinerary()">Show my<br>Itinerary</div>
                 </div>
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
@@ -232,62 +280,37 @@
                         <h2>We will send you the<br>informations about:</h2>
                     </div>
                 </div>
-                <div class="exportitineraryModalBody">
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
+                <div class="exportitineraryModalBody" *ngIf="_singleDayTemporaryItinerary.itinerary_cook_raw != null">
+                    <div *ngFor="let day of _singleDayTemporaryItinerary.itinerary_cook_raw.days">
+                        <div *ngFor="let hour of day.hours" class="export_itinerary_half_width_column">
+                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id) && _selectedActivities.includes(hour.activity.id)">
+                                <div class="export_itinerary_delete_activity_icon">
+                                    <img (click)="skipExportActivity(hour.activity.id)"
+                                         src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
+                                </div>
+                                <div class="export_itinerary_activity_name">{{ hour.activity.name }}</div>
+                            </div>
                         </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Catacombs of San Gennaro</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pompie Excavations</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Kayak Tour</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Pizzeria Vesi</div>
-                    </div>
-                    <div class="export_itinerary_half_width_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <img src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
-                        </div>
-                        <div class="export_itinerary_activity_name">Trattoria Pop</div>
                     </div>
 
-                    <div class="export_itinerary_or_div">or</div>
-                    <div class="export_itinerary_full_width_column checkbox_column">
-                        <div class="export_itinerary_delete_activity_icon">
+                    <div *ngIf="_selectedActivities.length == 0">
+                        Please Select Atleast One Activity!
+
+                    </div>
+
+                    <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_or_div">or</div>
+                    <div *ngIf="_selectedActivities.length > 0"
+                         class="export_itinerary_full_width_column checkbox_column">
+                        <div  class="export_itinerary_delete_activity_icon">
                             <label class="checkbox_container">
                                 <input type="checkbox">
-                                <span class="checkbox_checkmark"></span>
+                                <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
                             </label>
                         </div>
-                        <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
+                        <div  class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
                     </div>
-                    <div class="export_itinerary_full_width_column send_column">
-                        <div class="send_button">
+                    <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_full_width_column send_column">
+                        <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count" (click)="exportItinerary()" class="send_button">
                             <div class="send_icon">
                                 <img src="assets/img/Icon_two_lines.svg" alt="send icon">
                             </div>

@@ -62,6 +62,38 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
+    cookSingleDay(itineraryActivities: ItineraryActivities[], activityFilter: ActivityFilter): Observable<Itinerary> {
+        let headers = this.getHeaders();
+
+        var parameters = {
+            num_childs: activityFilter.num_adults,
+            num_adults: activityFilter.num_adults,
+            date_starts: activityFilter.date_starts,
+            date_ends: activityFilter.date_ends,
+            budget_type: activityFilter.budget_type,
+            macro_categories: activityFilter.macro_categories,
+            time_from: activityFilter.time_from,
+            time_to: activityFilter.time_to,
+        };
+
+        let paramPost = {
+            itinerary_activities: itineraryActivities
+        };
+
+        return this._authHttp.post(
+            this._globalService.apiHost + '/itinerary/cooking-single-day?' + HttpUtils.ObjectToUriParams(parameters),
+            paramPost,
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Activities[]>response.data;
+            })
+            .catch(this.handleError);
+    }
+
     getOne(id: number): Observable<Itinerary> {
         let headers = this.getHeaders();
 

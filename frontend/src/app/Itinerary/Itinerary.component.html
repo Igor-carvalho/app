@@ -233,7 +233,7 @@
                     <div class="export_itinerary_or_div">or</div>
                     <div class="export_itinerary_full_width_column checkbox_column">
                         <div class="export_itinerary_delete_activity_icon">
-                            <label  class="checkbox_container">
+                            <label class="checkbox_container">
                                 <input name="export_all" type="checkbox">
                                 <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
                             </label>
@@ -241,7 +241,8 @@
                         <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
                     </div>
                     <div class="export_itinerary_full_width_column send_column">
-                        <div class="send_button" (click)="exportItinerary()">
+                        <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count"
+                             class="send_button" (click)="exportItinerary()">
                             <div class="send_icon">
                                 <img src="assets/img/Icon_two_lines.svg" alt="send icon">
                             </div>

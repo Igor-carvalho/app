@@ -107,7 +107,7 @@ class ItineraryCooker
                 }
 
                 $date = $dt->format("Y-m-d");
-                if (!isset($this->activity_day_key[$date]) && !is_array($this->activity_day_key[$date])) {
+                if (!isset($this->activity_day_key[$date]) || !is_array($this->activity_day_key[$date])) {
                     $this->activity_day_key[$date] = [];
                 }
 

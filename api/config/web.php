@@ -29,6 +29,14 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'email-smtp.eu-west-1.amazonaws.com',
+                'username' => 'AKIAILH7MLTSEQPK4E4Q',
+                'password' => 'Arb96RnU3Z4AeeX28PAAcY+8eg87gpCY0sTldAS+Tw/X',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
@@ -127,8 +135,12 @@ $config = [
                         'OPTIONS sse' => 'sse',
                         'OPTIONS filter' => 'options',
                         'GET filter' => 'filter',
+                        'OPTIONS filter-single-day' => 'options',
+                        'GET filter-single-day' => 'filter-single-day',
                         'OPTIONS cooking-itinerary' => 'options',
                         'GET cooking-itinerary' => 'cooking-itinerary',
+                        'OPTIONS replace-filter/{id}' => 'options',
+                        'GET replace-filter/{id}' => 'replace-filter',
                     ]
                 ],
                 [
@@ -149,6 +161,8 @@ $config = [
                         'GET public/{id}' => 'public',
                         'OPTIONS export/{id}' => 'options',
                         'GET export/{id}' => 'export',
+                        'OPTIONS cooking-single-day' => 'options',
+                        'POST cooking-single-day' => 'cooking-single-day',
                     ]
                 ],
                 [

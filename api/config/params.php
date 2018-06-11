@@ -2,7 +2,7 @@
 
 return [
     'frontendURL'   => 'http://dobedoo.acorn-labs.com/frontend/',
-    'supportEmail'  =>  'support@dobedoo.it',
+    'supportEmail'  =>  'info@dobedoo.it',
     'adminEmail'    => 'admin@dobedoo.it',
     'jwtSecretCode' =>  'someSecretKey',
     'user.passwordResetTokenExpire' => 3600,

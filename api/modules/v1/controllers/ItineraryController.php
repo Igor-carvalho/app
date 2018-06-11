@@ -98,7 +98,7 @@ class ItineraryController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'view', 'public', 'public-delete'];
+        $behaviors['authenticator']['except'] = ['options', 'view', 'cooking'];
 
 
         // setup access
@@ -318,7 +318,7 @@ class ItineraryController extends ActiveController
 
                 $transaction->commit();
             } else {
-                throw new HttpException(500, $itinerary->errors);
+                throw new HttpException(500, json_encode($itinerary->errors));
             }
         } catch (Exception $e) {
             HelperFunction::output("Exception");
@@ -333,9 +333,66 @@ class ItineraryController extends ActiveController
 
     }
 
+    public function actionCookingSingleDay($date_starts, $date_ends, $num_adults, $num_childs, $budget_type, $macro_categories, $time_from, $time_to)
+    {
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+
+        $user_id = Yii::$app->user->id;
+
+        $itinerary = new Itineraries();
+        $itinerary->user_id = $user_id;
+        $itinerary->date_starts = $date_starts;
+        $itinerary->date_ends = $date_ends;
+        $itinerary->adults = $num_adults;
+        $itinerary->childrens = $num_childs;
+        $itinerary->budget_type = $budget_type;
+        $itinerary->macro_categories = $macro_categories;
+        $itinerary->time_from = $time_from;
+        $itinerary->time_to = $time_from;
+        $itinerary->is_single_day = true;
+
+        $post = \Yii::$app->getRequest()->getBodyParams();
+
+        $post = json_decode(json_encode($post));
+
+        try {
+
+            if (!$itinerary->save()) {
+                throw new HttpException(500, json_encode("Unable to insert itinerary object."));
+            }
+
+            foreach ($post->itinerary_activities as $itineraryactivity) {
+                $storeItinerayActivity = new ItinerariesActivities();
+                $storeItinerayActivity->user_id = $user_id;
+                $storeItinerayActivity->activities_id = $itineraryactivity->activities_id;
+                $storeItinerayActivity->start_time = $itineraryactivity->start_time;
+                $storeItinerayActivity->end_time = $itineraryactivity->end_time;
+                $storeItinerayActivity->itineraries_id = $itinerary->id;
+                if (!$storeItinerayActivity->save()) {
+                    $transaction->rollBack();
+                    throw new HttpException(500, json_encode("unable to save Itinerary Activites."));
+                }
+
+            }
+
+            $transaction->commit();
+
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            throw  $exception;
+        }
+
+        return $itinerary;
+
+    }
+
     public function actionPublic($id)
     {
-        $itineraryDb = Itineraries::findOne(['id' => $id]);
+        $user_id = Yii::$app->user->id;
+        $itineraryDb = Itineraries::findOne(['id' => $id, 'user_id' => $user_id]);
         $itineraryActivities = ItinerariesActivities::find()
             ->where(['itineraries_id' => $id])
             ->with(['activities'])

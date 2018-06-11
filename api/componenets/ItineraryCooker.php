@@ -23,12 +23,24 @@ class ItineraryCooker
     private $activity_day_key;
 
     private $date_start, $date_ends;
+    private $time_from, $time_to;
+    private $isSingleDay = false;
+    private $eachDayLimit = 0;
 
-    public function __construct($activities, $date_start, $date_end)
+    public function __construct($activities, $date_start, $date_end, $isSingleDay = false, $time_from = null, $time_to = null)
     {
+        $this->isSingleDay = $isSingleDay;
 
         $this->date_start = new \DateTime($date_start);
         $this->date_ends = new \DateTime($date_end);
+        $this->time_from = $time_from;
+        $this->time_to = $time_to;
+
+        $difference = $this->date_ends->diff($this->date_start);
+        $dayDifference = intval($difference->d);
+        if ($dayDifference > 0)
+            $this->eachDayLimit = sizeof($activities) / intval($difference->d);
+
 
         $this->activities = $activities;
         $this->expand_activity_day_key(); // put all activities in date array with key by date
@@ -131,11 +143,20 @@ class ItineraryCooker
         $distanceTimeCalculator = new ActivityTimeDistance();
         $activities_assigned = [];
 
+//        HelperFunction::output($this->activity_day_breakdown);
+
         foreach ($this->activity_day_breakdown->days as $day) {
 
             $previousHour = null;
+            $successScheduleCounter = 0;
 
             foreach ($day->hours as $key => $hour) {
+
+                if ($this->eachDayLimit > 0 && $successScheduleCounter >= $this->eachDayLimit) {
+//                    echo $hour->activity['id'], ", ";
+                    unset($day->hours[$key]);
+                    continue;
+                }
 
                 if (in_array($hour->activity->id, $activities_assigned)) {
                     unset($day->hours[$key]);
@@ -146,14 +167,38 @@ class ItineraryCooker
                 $activityScheduleEnds = new \DateTime("{$day->day} {$hour->hour_to}:00");
 
                 if ($previousHour == null) {
-                    $startTime = new \DateTime("{$day->day} {$hour->hour_from}:00");
-                    $endTime = new \DateTime("{$day->day} {$hour->hour_from}:00");
+
+                    $startTime = null;
+
+                    // Start the day from user selected start date.
+                    if ($this->isSingleDay) {
+
+                        if ($hour->hour_from < $this->time_from) {
+                            $startTime = new \DateTime("{$day->day} {$this->time_from}:00");
+                        } else {
+                            $startTime = new \DateTime("{$day->day} {$hour->hour_from}:00");
+                        }
+                    } else {
+                        $startTime = new \DateTime("{$day->day} {$hour->hour_from}:00");
+                    }
+
+                    $endTime = clone $startTime;
                     $endTime->modify("+{$hour->duration} minutes");
+
+                    if ($this->isSingleDay && intval($endTime->format('H')) > $this->time_to) {
+//                        HelperFunction::output($this->time_to, false);
+//                        echo "{$hour->activity->id} ";
+//                        echo " - unset, ";
+                        unset($day->hours[$key]);
+                        continue;
+                    }
+
 
                     if (!($startTime >= $activityScheduleStarts &&
                         $startTime <= $activityScheduleEnds &&
                         $endTime >= $activityScheduleStarts &&
                         $endTime <= $activityScheduleEnds)) {
+//                        echo "Unset {$hour->activity->id} <br>";
                         unset($day->hours[$key]);
                         continue;
                     }
@@ -174,14 +219,43 @@ class ItineraryCooker
 
                     $startTime = clone $previousHour->scheduled_hour_to;
 
+                    if ($startTime < $activityScheduleStarts) {
+                        $startTime = clone $activityScheduleStarts;
+                    }
+
+
                     $startTime->modify("+$timeToTravelMinutes minutes");
                     $endTime = clone $startTime;
                     $endTime->modify("+{$hour->duration} minutes");
+
+                    if ($this->isSingleDay && intval($endTime->format('H')) > $this->time_to) {
+//                        HelperFunction::output($this->time_to, false);
+//                        echo "{$hour->activity->id} ";
+//                        echo " - unset, ";
+                        unset($day->hours[$key]);
+                        continue;
+                    }
+
+//                    if ($hour->activity->id == 30) {
+//                        HelperFunction::output($distanceToPreviousActivity);
+//                    }
+
+                    $startTimeFormatted = $startTime->format("Y-m-d H:i:s");
+                    $endTimeFormatted = $endTime->format("Y-m-d H:i:s");
+
+                    $activityTimeFormattedStart = $activityScheduleStarts->format("Y-m-d H:i:s");
+                    $activityTimeFormattedEnds = $activityScheduleEnds->format("Y-m-d H:i:s");
+
 
                     if (!($startTime >= $activityScheduleStarts &&
                         $startTime <= $activityScheduleEnds &&
                         $endTime >= $activityScheduleStarts &&
                         $endTime <= $activityScheduleEnds)) {
+//                        echo "Unset {$hour->activity->id} <br>Activity Time {$activityTimeFormattedStart} ---- {$activityTimeFormattedEnds}<br> Schedul Time {$startTimeFormatted} ---- {$endTimeFormatted} <br><br>";
+//                        var_dump($startTime >= $activityScheduleStarts);
+//                        var_dump($startTime <= $activityScheduleEnds);
+//                        var_dump($endTime >= $activityScheduleStarts);
+//                        var_dump($endTime <= $activityScheduleEnds);
                         unset($day->hours[$key]);
                         continue;
                     }
@@ -192,6 +266,8 @@ class ItineraryCooker
 
                     $hour->debug = "{$hour->activity->longitude}, {$hour->activity->latitude}, {$hour->activity->name}";
                     $activities_assigned[] = $hour->activity->id;
+
+                    $successScheduleCounter++;
                 }
 
                 $previousHour = $hour;
@@ -207,6 +283,9 @@ class ItineraryCooker
         }
 
         $this->format_sorted_data();
+
+
+//        HelperFunction::output($this->activity_day_breakdown);
         return $this->activity_day_breakdown;
     }
 
@@ -214,6 +293,8 @@ class ItineraryCooker
     {
 
 //        $this->activity_day_breakdown = array_values($this->activity_day_breakdown);
+
+//        HelperFunction::output($this->activity_day_breakdown);
         foreach ($this->activity_day_breakdown->days as $day) {
 
             foreach ($day->hours as $hour) {

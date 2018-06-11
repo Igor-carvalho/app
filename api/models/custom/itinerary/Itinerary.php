@@ -13,4 +13,9 @@ class Itinerary
 {
     public $days;
 
+    public function __construct()
+    {
+        $this->days = [];
+    }
+
 }

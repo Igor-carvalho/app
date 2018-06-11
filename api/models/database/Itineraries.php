@@ -16,6 +16,9 @@ use Yii;
  * @property integer $budget_type
  * @property string $macro_categories
  * @property string $itinerary_cook_raw
+ * @property integer $is_single_day
+ * @property integer $time_from
+ * @property integer $time_to
  * @property integer $user_id
  * @property string $created_at
  * @property string $updated_at

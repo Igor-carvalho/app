@@ -4,7 +4,9 @@ namespace app\modules\v1\controllers;
 
 use app\componenets\DateTimeHelper;
 use app\componenets\HelperFunction;
+use app\componenets\ItineraryCooker;
 use app\filters\auth\HttpBearerAuth;
+use app\models\custom\itinerary\Itinerary;
 use app\models\database\Activities;
 use app\models\database\ActivitiesMacroCategories;
 use app\models\database\ActivitiesMicroCategories;
@@ -94,7 +96,7 @@ class ActivitiesController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options'];
+        $behaviors['authenticator']['except'] = ['options', 'filter-single-day'];
 
 
         // setup access
@@ -311,6 +313,70 @@ class ActivitiesController extends ActiveController
 
 
         return $return;
+    }
+
+    public function actionFilterSingleDay($people, $budget, $macros = [], $date_start, $date_end, $time_from, $time_to)
+    {
+
+        $itinerary = new Itineraries();
+        $itinerary->itinerary_cook_raw = new Itinerary();
+//        $macros = implode(",", $macros);
+        $activities_macro_table = ActivitiesMacroCategories::tableName();
+        $activities_micro_table = ActivitiesMicroCategories::tableName();
+
+        $system_micro_table = SystemMicroCategories::tableName();
+
+        $activities = Activities::find()
+            ->where([
+                'budget' => $budget,
+            ])
+//            ->andWhere(['>=', 'date_starts', $date_start])
+//            ->andWhere(['<=', 'date_ends', $date_end])
+            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+            ->andWhere("('$time_from' BETWEEN time_start_hh AND time_end_hh) OR ('$time_to' BETWEEN time_start_hh AND time_end_hh)")
+            ->andWhere(['>=', 'max_people', $people])
+            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+            ->all();
+
+        if (sizeof($activities) == 0)
+            return $itinerary;
+
+//        HelperFunction::output($activities);
+
+        $activityIds = array_map(function ($activity) {
+            return $activity->id;
+        }, $activities);
+        $activitiesIdComma = implode(",", $activityIds);
+
+
+        $activitesMicroCategories = SystemMicroCategories::find()
+            ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
+            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($activitiesIdComma) )")
+            ->leftJoin($activities_micro_table, "{$activities_micro_table}.system_micro_categories_id = {$system_micro_table}.id")
+            ->groupBy("{$activities_micro_table}.activities_id")
+            ->asArray()
+            ->all();
+        $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
+
+
+        $iteraryCooker = new ItineraryCooker($activities, $date_start, $date_end, true, $time_from, $time_to);
+        $activitiesIternery = $iteraryCooker->sort_activities();
+
+
+//        return $activitiesIternery;
+
+        foreach ($activitiesIternery->days as $dayKey => $day) {
+
+            foreach ($day->hours as $hourKey => $hour) {
+                $hour->activity['micro_icon'] = $activityMicroIcon[$hour->activity['id']];
+            }
+
+        }
+
+
+        $itinerary->itinerary_cook_raw = $activitiesIternery;
+
+        return $itinerary;
     }
 
     public function actionReplaceFilter($id, $activity_id, $current_activities)

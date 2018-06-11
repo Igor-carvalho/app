@@ -212,8 +212,8 @@ class ItineraryCooker
                     $activities_assigned[] = $hour->activity->id;
                 } else {
 
-                    $distanceToPreviousActivity = DistanceHelper::long_lat_distance($previousHour->activity->latitude, $previousHour->longitude,
-                        $hour->activity->latitude, $hour->longitude);
+                    $distanceToPreviousActivity = DistanceHelper::long_lat_distance($previousHour->activity->latitude, $previousHour->activity->longitude,
+                        $hour->activity->latitude, $hour->activity->longitude);
                     $hour->distances_activity = $distanceToPreviousActivity;
                     $timeToTravelMinutes = ceil($distanceTimeCalculator->calculate_time($distanceToPreviousActivity));
 

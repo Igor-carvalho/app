@@ -98,7 +98,7 @@ class ItineraryController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'view', 'cooking'];
+        $behaviors['authenticator']['except'] = ['options', 'view'];
 
 
         // setup access

@@ -793,6 +793,8 @@ export class WishlistComponent implements OnInit {
     ngOnDestroy() {
         console.log("ngOnDestroy");
 
+        $('.app').css('background-color', "");
+
         $("#edit-filter").hide();
         $("#edit-filter").unbind('click');
         $("#global-page-loader").hide('');

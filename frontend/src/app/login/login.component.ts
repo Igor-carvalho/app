@@ -5,20 +5,20 @@ import {UserService} from '../model/user.service';
 import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
+    selector: 'app-login',
+    templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-    private _loginForm:FormGroup;
-    private _formErrors:any;
-    private _submitted:boolean = false;
-    private _errorMessage:string = '';
-    private _returnURL:string = '/';
+    private _loginForm: FormGroup;
+    private _formErrors: any;
+    private _submitted: boolean = false;
+    private _errorMessage: string = '';
+    private _returnURL: string = '/';
 
-    constructor(private _userService:UserService,
-                private _router:Router,
-                private _activatedRoute:ActivatedRoute,
-                private _formBuilder:FormBuilder) {
+    constructor(private _userService: UserService,
+                private _router: Router,
+                private _activatedRoute: ActivatedRoute,
+                private _formBuilder: FormBuilder) {
 
         this._loginForm = _formBuilder.group({
             username: ['', Validators.required],
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
     }
 
-    private _setFormErrors(errorFields:any):void{
+    private _setFormErrors(errorFields: any): void {
         for (let key in errorFields) {
             // skip loop if the property is from prototype
             if (!errorFields.hasOwnProperty(key)) continue;
@@ -40,29 +40,31 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    private _resetFormErrors():void{
+    private _resetFormErrors(): void {
         this._formErrors = {
             username: {valid: true, message: ''},
             password: {valid: true, message: ''},
         };
     }
 
-    private _isValid(field):boolean {
-        let isValid:boolean = false;
+    private _isValid(field): boolean {
+        let isValid: boolean = false;
 
         // If the field is not touched and invalid, it is considered as initial loaded form. Thus set as true
-        if(this._loginForm.controls[field].touched == false) {
+        if (this._loginForm.controls[field].touched == false) {
             isValid = true;
         }
         // If the field is touched and valid value, then it is considered as valid.
-        else if(this._loginForm.controls[field].touched == true && this._loginForm.controls[field].valid == true) {
+        else if (this._loginForm.controls[field].touched == true && this._loginForm.controls[field].valid == true) {
             isValid = true;
         }
         return isValid;
     }
 
     public onValueChanged(data?: any) {
-        if (!this._loginForm) { return; }
+        if (!this._loginForm) {
+            return;
+        }
         const form = this._loginForm;
         for (let field in this._formErrors) {
             // clear previous error message (if any)
@@ -79,7 +81,15 @@ export class LoginComponent implements OnInit {
         this._userService.logout();
 
         // get return url from route parameters or default to '/'
-        this._returnURL = this._activatedRoute.snapshot.queryParams['r'] || '/';
+        var returnUrl = this._activatedRoute.snapshot.queryParams['r'];
+
+        if (returnUrl == null) {
+            this._returnURL = '/';
+        } else {
+            this._returnURL = decodeURIComponent(this._activatedRoute.snapshot.queryParams['r']);
+        }
+
+        console.log(this._returnURL);
     }
 
     public onSubmit(elementValues: any) {
@@ -87,8 +97,8 @@ export class LoginComponent implements OnInit {
         this._userService.login(elementValues.username, elementValues.password)
             .subscribe(
                 result => {
-                    if(result.success) {
-                        this._router.navigate([this._returnURL]);
+                    if (result.success) {
+                        this._router.navigateByUrl(this._returnURL);
                     } else {
                         this._errorMessage = 'Username or password is incorrect.';
                         this._submitted = false;
@@ -97,7 +107,7 @@ export class LoginComponent implements OnInit {
                 error => {
                     this._submitted = false;
                     // Validation error
-                    if(error.status == 422) {
+                    if (error.status == 422) {
                         this._resetFormErrors();
                         // this._errorMessage = "There was an error on submission. Please check again.";
                         let errorFields = JSON.parse(error.data.message);

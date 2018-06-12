@@ -19,6 +19,7 @@ import {ArrayUtils} from "../utilities/ArrayUtils";
 
 import {Router} from "@angular/router";
 import {AppInitialSettings} from "../model/AppInitialSettings";
+import {UserService} from "../model/user.service";
 
 @Component({
     selector: 'app-tutorial-two',
@@ -34,6 +35,7 @@ export class TutorialTwoComponent implements OnInit {
     public macroCategories: any;
 
     constructor(private _staticDataService: StaticDataService,
+                private _userService: UserService,
                 private _router: Router) {
         this._activityFilter = new ActivityFilter();
         this.macroCategories = [];
@@ -290,7 +292,9 @@ export class TutorialTwoComponent implements OnInit {
                     this.macroCategories = requiredFormat;
                 },
                 error => {
-
+                    if(error.status == 401 || error.status == 403) {
+                        this._userService.unauthorizedAccess(error);
+                    }
                 }
             );
     }

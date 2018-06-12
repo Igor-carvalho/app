@@ -36,10 +36,7 @@ export class TutorialOneComponent implements OnInit {
             else
                 this.appInitSettings.isSingleDay = false;
 
-            if (!this._userService.isLoggedIn()) {
-                this._router.navigate(['/login']);
 
-            }
         });
 
 
@@ -47,6 +44,10 @@ export class TutorialOneComponent implements OnInit {
 
     ngOnInit() {
 
+        if (!this._userService.isLoggedIn()) {
+            this._router.navigate(['/login'], {queryParams: {r: this._router.url}});
+
+        }
 
         this.appInitSettings.store();
         TweenLite.from("#heading", 1, {top: -200, opacity: 0, ease: Bounce.easeOut, delay: 0.5});

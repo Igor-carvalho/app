@@ -191,17 +191,17 @@ export class UserService {
         return !!localStorage.getItem('frontend-token');
     }
 
-    public unauthorizedAccess(error: any): void {
+    public unauthorizedAccess(error: any, returnUrl = null): void {
         this.logout();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/login'], {queryParams: {r: this._router.url}});
     }
 
     public isLoggedIn(): boolean {
         return tokenNotExpired('frontend-token');
     }
 
-    public getJWTValue(): any{
-        if(this.isLoggedIn()) {
+    public getJWTValue(): any {
+        if (this.isLoggedIn()) {
             let token = this.getToken();
             return this.jwtHelper.decodeToken(token);
         } else {

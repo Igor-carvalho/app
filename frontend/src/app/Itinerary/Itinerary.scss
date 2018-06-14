@@ -757,6 +757,9 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     display: none;
   }
 
+  .modal_h2 {
+    line-height: 32px !important;
+  }
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
     .events_container .events {
@@ -806,6 +809,21 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     }
     .edit_itinerary_image {
       display: block !important;
+    }
+    .modal_content_wrapper {
+      max-width: 730px !important;
+    }
+    .modal_popup {
+      z-index: 100000;
+    }
+    .modal_content_right_section {
+      max-width: 470px !important;
+    }
+    .toggle_close_modal {
+      right: -6px !important;
+    }
+    .export_itinerary_inner_container {
+      max-width: 60px !important;
     }
   }
 
@@ -883,6 +901,27 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     }
     .edit_itinerary_image {
       display: block !important;
+    }    
+    .modal_popup {
+      z-index: 100000;
+    }
+    .modal_content_wrapper {
+      max-width: 475px !important;
+    }
+    .toggle_close_modal {
+      right: -6px !important;
+      top: -6px !important;
+    }
+    .modal_content_left_section {
+      width: 100% !important;
+      text-align: center !important;
+    }
+    .modal_left_section_image {
+      margin: 0px auto;
+    }
+    .modal_content_right_section {
+      width: 100% !important;
+      padding: 0px !important;
     }
   }
 
@@ -996,6 +1035,36 @@ app-itinerary { //these are selector, defined in component.ts, which make sure c
     }
     .export_itinerary_inner_container img {
       width: 50px !important;
+    }       
+    .modal_popup {
+      z-index: 100000;
+    } 
+    .modal_popup {
+      z-index: 100000;
+    }
+    .modal_content_wrapper {
+      max-width: 475px !important;
+      margin-left: 3px !important;
+      margin-right: 5px !important;
+    }
+    .toggle_close_modal {
+      right: -6px !important;
+      top: -6px !important;
+    }
+    .modal_content_left_section {
+      width: 100% !important;
+      text-align: center !important;
+    }
+    .modal_left_section_image {
+      margin: 0px auto;
+    }
+    .modal_content_right_section {
+      width: 100% !important;
+      padding: 0px !important;
+    }
+    .modal_h2 {
+      line-height: 32px !important;
+      font-size: 17px !important;
     }
   }
 }

@@ -8,7 +8,7 @@
         <br/>
         <button class="filter_edit_text applyFilters" (click)="applyFiltersFunction()">Apply Filters</button>
         <br/>
-        <button class="filter_edit_text">Reset all</button>
+        <button class="filter_edit_text reset_button">Reset all</button>
         <!--<div class="filter_edit_text">Advanced filters</div>-->
     </div>
     <div class="filters">
@@ -52,13 +52,81 @@
             <div class="icon_container icon_calendar">
                 <img class="calendar_image" src="assets/img/Icon_Calendar_White.svg" alt="person">
             </div>
-            <div class="calendar_dates_display">
+            <div class="calendar_dates_display calendar_dates_display_normal">
                 <span id="calendar_dates_month_display_one"></span>
                 <span id="calendar_dates_day_display_one"></span>
                 <span> - </span>
                 <span id="calendar_dates_month_display_two"></span>
                 <span id="calendar_dates_day_display_two"></span>
+            </div>            
+            <div class="calendar_dates_display calendar_dates_display_one_day">
+                <span id="calendar_dates_month_display"></span>
+                <span id="calendar_dates_day_display"></span>
+                <br />
+                <span><span id="calendar_dates_from_display"></span>:00 <span id="AmPmSpanOne"></span></span>
+                <span> - </span>
+                <span><span id="calendar_dates_to_display"></span>:00 <span id="AmPmSpanTwo"></span></span>
             </div>
+            <input type="hidden" name="one-day-flow-month" id="one-day-flow-month" value="">
+            <input type="hidden" name="one-day-flow-day" id="one-day-flow-day" value="">
+            <input type="hidden" name="one-day-flow-time-one" id="one-day-flow-time-one" value="">
+            <input type="hidden" name="one-day-flow-time-two" id="one-day-flow-time-two" value="">
+            <div class="one_day_calendar_wrapper">
+                <div class="one_day_calendar_row">
+                        <div class="month_container one_day_flow_month_container">
+                            <div class="left_icon_calendar">
+                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayMonth('minus')">
+                            </div>
+                            <div id="month_of_day_flow" class="month"></div>
+                            <div class="right_icon_calendar">
+                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayMonth('plus')">
+                            </div>
+                        </div>
+                        <div class="day_container one_day_flow_day_container">
+                            <div class="left_icon_calendar">
+                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayFlowDay('minus')">
+                            </div>
+                            <div id="day_of_one_day_flow" class="day"></div>
+                            <div class="right_icon_calendar">
+                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayFlowDay('plus')">
+                            </div>
+                        </div>
+                </div>
+                <div class="one_day_calendar_row">
+                    <div class="month_container one_day_flow_month_container">
+                        <div class="from from_day_flow">
+                            <div class="from_wrapper">from<div class="from_underline"></div></div>
+                        </div>
+                    </div>
+                    <div class="day_container one_day_flow_day_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayTime('minus_one')">
+                        </div>
+                        <div class="day one_day_flow_day"><span id="time_of_arrival"></span>:00 <span id="AmPmOne"></span></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayTime('plus_one')">
+                        </div>
+                    </div>
+                </div>
+                <div class="one_day_calendar_row">
+                    <div class="month_container one_day_flow_month_container">
+                        <div class="from from_day_flow">
+                            <div class="from_wrapper">to<div class="from_underline"></div></div>
+                        </div>
+                    </div>
+                    <div class="day_container one_day_flow_day_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayTime('minus_two')">
+                        </div>
+                        <div class="day one_day_flow_day"><span  id="time_of_exit"></span>:00 <span id="AmPmTwo"></span></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayTime('plus_two')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="calendar_container">
                 <div class="from">from</div>
                 <div class="month_container">
@@ -251,15 +319,21 @@
                     <img src="assets/img/Icon_Export_Blue.svg" alt="export itinerary">
                 </div>
             </div>
-            <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container">
-                <div class="edit_itinerary_wrapper"
-                     id="edit_itinerary_wrapper_one">
+            <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container edit_itinerary_text_container">
+                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
                     <div class="edit_itinerary" (click)="show_my_itinerary()">Show my<br>Itinerary</div>
                 </div>
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
                     <div class="edit_itinerary" (click)="backToItinerary()">Hide my<br>Itinerary</div>
                 </div>
             </div>
+
+            <div class="edit_itinerary_container edit_itinerary_icon_container">
+                <div class="edit_itinerary_wrapper show_my_itinerary_icon" id="edit_itinerary_wrapper_one">
+                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()" alt="show my itinerary">
+                </div>
+            </div>
+
             <div class="select_activity_container">
                 <img src="assets/img/triangle.svg" alt="empty wishlist arrow">
                 <div class="select_activity_description">Select atleast one Activity for your Wishlist!</div>

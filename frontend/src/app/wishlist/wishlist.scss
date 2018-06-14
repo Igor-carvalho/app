@@ -727,6 +727,75 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
         cursor: pointer;
       }
     }
+  }  
+  .reset_button {
+    display: none;
+  }
+  .edit_itinerary_icon_container {
+    display: none;
+  }
+  .show_my_itinerary_icon img {
+    width: 55px;
+  }
+  .one_day_calendar_wrapper {
+    width: calc(100% - 120px);
+    display: block;
+    position: relative;
+    float: left;
+    display: none;
+  }
+  .one_day_calendar_row {
+    display: block;
+    position: relative;
+    float: left;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .left_icon_calendar, .right_icon_calendar {
+    width: 30px;
+    position: relative;
+    float: left;
+  }
+  .right_icon_calendar {
+    transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+  .one_day_flow_month_container {
+    width: 154px;
+  }
+  .month {
+    width: calc(100% - 60px);
+    text-align: center;
+    line-height: 30px;
+  }
+  .one_day_flow_day_container {
+    width: calc(100% - 154px);
+    box-sizing: border-box;
+    padding: 0px 0px 0px 8px;
+  }
+  .day {
+    width: calc(100% - 60px);
+    text-align: center;
+    line-height: 30px;
+  }
+  .from_day_flow {
+    text-align: center;
+    display: block;
+    width: 100%;
+  }
+  .from_wrapper {
+    display: inline-block;
+  }
+  .from_underline {
+    border: 3px solid #fff;
+    border-radius: 3px;
+  }
+  .calendar_dates_display_one_day {
+    display: block;
+    position: relative;
+    float: left;
+    width: calc(100% - 120px);
   }
   /* Large Devices, Wide Screens */
   
@@ -750,7 +819,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
   @media only screen and (min-width : 769px) and (max-width : 992px) {
     .wishlist_container {
       padding-left: 20px !important;
-      padding-right: 20px !important;
+      padding-right: 55px !important;
     }    
     .select_activity_container {
       margin-bottom: 50px;
@@ -771,12 +840,24 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .exportitineraryModalBody {
       padding: 20px 0px 0px 80px !important;
     }
+    .edit_itinerary_text_container {
+      display: none;
+    }
+    .edit_itinerary_icon_container {
+      display: block;
+      position: fixed;
+      width: 56px;
+      height: 60px;
+      top: 75px;
+      right: 0px;
+      z-index: 1000;
+    }
   }
 
   /* Small Devices, Tablets */
   @media only screen and (min-width : 481px) and (max-width : 768px) {
     .sidebar_section {
-      width: 100%;
+      width: 100% !important;
     }
     .wishlist_container {
       box-sizing: border-box;
@@ -824,9 +905,12 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .sidebar_section .filters .filters_one .calendar_container .month_container .month_wrapper {
       width: 156px !important;
     }
+    .month {
+      line-height: 22px !important;
+    }
     .from {
-      font-size: 14px !important;
-      width: 45px !important;
+      font-size: 15px !important;
+      width: 70px !important;
     }
     .icon_left, .icon_right, .day_container .icon_left, .day_container .icon_right {
       box-sizing: border-box !important;
@@ -896,6 +980,44 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       z-index: 10000 !important;
       padding: 0px !important;
     }
+    .edit_itinerary_text_container {
+      display: none;
+    }
+    .edit_itinerary_icon_container {
+      display: block;
+      position: fixed;
+      width: 56px;
+      height: 60px;
+      top: 75px;
+      right: 0px;
+      z-index: 1000;
+    }
+    .calendar_dates_display_one_day {
+      width: calc(100% - 80px) !important;
+    }
+    .one_day_calendar_wrapper {
+      width: calc(100% - 80px) !important;
+    }
+    .one_day_flow_month_container {
+      width: 49% !important;
+      position: relative;
+      float: left;
+    }
+    .one_day_flow_day_container {
+      width: 50%;
+      position: relative;
+      float: left;
+      margin-left: 0px !important;
+      box-sizing: border-box;
+      padding-left: 15px;
+    }
+    .from_day_flow {
+      width: 100% !important;
+      text-align: center;
+    }
+    .calendar_container {
+      width: calc(100% - 80px) !important;
+    }
   }
 
   /* Extra Small Devices, Phones */ 
@@ -907,6 +1029,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }  
     .sidebar_section {
       width: 100%;
+      overflow-x: hidden !important;
     }
     /*.person_info {
       max-width: 150px;
@@ -914,8 +1037,12 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .add_person {
       margin: 0px 10px 0px 0px;
     }*/
+    .filters_edit {
+      padding: 10px 10px 10px 15px !important;
+    }
     .filters {
       margin-bottom: 40px;
+      padding: 10px 10px 10px 10px !important;
     }
     .filters_one {
       text-align: center !important;
@@ -934,6 +1061,16 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .from, .month_wrapper, .month_container, .month, .day_container, .day, .icon_left, .icon_right {
       float: none !important;
+    }
+    .month_container, .month_wrapper {
+      width: 100% !important;
+    }
+    .month_wrapper {
+      margin: 6px 0px !important;
+    }
+    .day_container {
+      width: 100% !important;
+      margin: 6px 0px !important;
     }
     .from {
       width: 100% !important;
@@ -1030,6 +1167,46 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .send_button {
       float: none !important;
+    }
+    .edit_itinerary_text_container {
+      display: none;
+    }
+    .edit_itinerary_icon_container {
+      display: block;
+      position: fixed;
+      width: 56px;
+      height: 60px;
+      top: 75px;
+      right: 0px;
+      z-index: 1000;
+    }
+    .calendar_dates_display_one_day {
+      width: 100% !important;
+    }
+    .one_day_calendar_wrapper {
+      width: 100% !important;
+    }
+    .one_day_flow_month_container {
+      width: 100% !important;
+      position: relative;
+      float: left !important;
+      margin: 10px 0px;
+    }
+    .one_day_flow_day_container {
+      width: 100%;
+      position: relative;
+      float: left;
+      margin-left: 0px !important;
+      box-sizing: border-box;
+      padding-left: 0px;
+      margin: 10px 0px;
+    }
+    .from_day_flow {
+      width: 100% !important;
+      text-align: center;
+    }
+    #month_of_day_flow, #day_of_one_day_flow, .one_day_flow_day {
+      float: left !important;
     }
   }
 }

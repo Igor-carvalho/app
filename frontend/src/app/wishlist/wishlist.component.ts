@@ -158,6 +158,45 @@ export class WishlistComponent implements OnInit {
             TweenLite.to('.budget_icons_container', 0.4, {float: 'none'});
         }
 
+        var dateFunction = new Date();
+        var todaysDate = dateFunction.getDate();
+        var currentMonth = dateFunction.getMonth();
+        var currentTime = dateFunction.getHours();
+        var endTime = currentTime + 1;
+
+
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        $('#month_of_day_flow').html(monthsArray[currentMonth]);
+        $('#calendar_dates_month_display').html(monthsArray[currentMonth]);
+        $('#one-day-flow-month').val(monthsArray[currentMonth]);
+        $('#day_of_one_day_flow').html(todaysDate);
+        $('#calendar_dates_day_display').html(todaysDate);
+        $('#one-day-flow-day').val(todaysDate);
+        $('#time_of_arrival').html(currentTime);
+        $('#calendar_dates_from_display').html(currentTime);
+        $('#one-day-flow-time-one').val(currentTime);
+        $('#time_of_exit').html(endTime);
+        $('#calendar_dates_to_display').html(endTime);
+        $('#one-day-flow-time-two').val(endTime);
+
+        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
+        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
+        if (timeOneInputVal > 11) {
+            $('#AmPmOne').html('pm');
+            $('#AmPmSpanOne').html('pm');
+        }
+        if (timeOneInputVal <= 11) {
+            $('#AmPmOne').html('am');
+            $('#AmPmSpanOne').html('am');
+        }
+        if (timeTwoInputVal > 11) {
+            $('#AmPmTwo').html('pm');
+            $('#AmPmSpanTwo').html('am');
+        }
+        if (timeTwoInputVal <= 11) {
+            $('#AmPmTwo').html('am');
+            $('#AmPmSpanTwo').html('am');
+        }
 
     }
 
@@ -184,6 +223,8 @@ export class WishlistComponent implements OnInit {
         TweenLite.to('.calendar_dates_display', 0.4, {display: 'none', clearProps: "transform"});
         TweenLite.to('.calendar_container', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
         TweenLite.from('.calendar_container', 0.4, {scale: 0, delay: 0.4});
+        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.from('.one_day_calendar_wrapper', 0.4, {scale: 0, delay: 0.4});
         TweenLite.to('.budget_range_text_display', 0.4, {display: 'none', clearProps: "transform"});
         TweenLite.to('.budget_icons_container', 0.4, {
             display: 'inline-block',
@@ -205,6 +246,7 @@ export class WishlistComponent implements OnInit {
         TweenLite.to('.calendar_dates_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
         TweenLite.from('.calendar_dates_display', 0.4, {scale: 0, delay: 0.4});
         TweenLite.to('.calendar_container', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
+        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
         TweenLite.to('.budget_range_text_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
         TweenLite.from('.budget_range_text_display', 0.4, {scale: 0, delay: 0.4});
         //TweenLite.to('.budget_icons_container', 0.4, {display: 'none', textAlign: 'left', clearProps:"transform"});
@@ -896,6 +938,199 @@ export class WishlistComponent implements OnInit {
                     }
                 }
             );
+    }
+
+    oneDayMonth(monthID) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var monthInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-month")).value);
+        var monthDisplayString = document.getElementById("month_of_day_flow").innerHTML;
+        monthDisplayString = monthDisplayString.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(monthDisplayString);
+        var dateFunction = new Date();
+        var thisMonth = dateFunction.getMonth();
+        if (monthID == 'minus' && ((indexOfMonth - 1) >= thisMonth)) {
+            var getLowerMonth = monthsArray[indexOfMonth - 1];
+            console.log(getLowerMonth);
+            document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
+            $('#one-day-flow-month').val(getLowerMonth);
+            $('#calendar_dates_month_display').html(getLowerMonth);
+
+            var date = new Date(this._activityFilter.date_starts);
+            var monthNumber = indexOfMonth + 1;
+            date.setMonth(monthNumber);
+
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+        if (monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
+            var getNextMonth = monthsArray[indexOfMonth + 1];
+            document.getElementById('month_of_day_flow').innerHTML = getNextMonth;
+            $('#one-day-flow-month').val(getNextMonth);
+            $('#calendar_dates_month_display').html(getNextMonth);
+
+
+            var date = new Date(this._activityFilter.date_starts);
+            var monthNumber = indexOfMonth + 1;
+            date.setMonth(monthNumber);
+
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+
+        }
+        console.log(this._activityFilter);
+    }
+
+    oneDayFlowDay(dayID) {
+        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
+        var thirtyDayMonths = ['april', 'june', 'september', 'november'];
+        var februaryMonth = ['february'];
+        var month = document.getElementById("month_of_day_flow").innerHTML;
+        month = month.toLowerCase();
+        var indexOfMonth = monthsArray.indexOf(month);
+        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var dateFunction = new Date();
+        var todaysDate = dateFunction.getDate();
+        var thisMonth = dateFunction.getMonth();
+        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
+        var dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
+        var indexOfDay = daysArray.indexOf(dayInputVal);
+        console.log("dayInputVal", dayInputVal);
+        var getHigherDay;
+        if (dayID == 'minus' && (monthsArray[thisMonth] == month) && indexOfDay >= todaysDate) {
+            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            $('#day_of_one_day_flow').html(getLowerDay);
+            $('#one-day-flow-day').val(getLowerDay);
+            $('#calendar_dates_day_display').html(getLowerDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            var dayNumber = getLowerDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+        if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
+            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            $('#day_of_one_day_flow').html(getLowerDay);
+            $('#one-day-flow-day').val(getLowerDay);
+            $('#calendar_dates_day_display').html(getLowerDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            var dayNumber = getLowerDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+        if (dayID == 'plus' && (thirtyOneDayMonths.indexOf(month) > -1) && (dayInputVal < 31)) {
+            getHigherDay = dayInputVal + 1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+            $('#calendar_dates_day_display').html(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+        if (dayID == 'plus' && (thirtyDayMonths.indexOf(month) > -1) && (dayInputVal < 30)) {
+            getHigherDay = dayInputVal + 1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+            $('#calendar_dates_day_display').html(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+        if (dayID == 'plus' && (februaryMonth.indexOf(month) > -1) && (dayInputVal < 28)) {
+            getHigherDay = dayInputVal + 1;
+            $('#day_of_one_day_flow').html(getHigherDay);
+            $('#one-day-flow-day').val(getHigherDay);
+            $('#calendar_dates_day_display').html(getHigherDay);
+
+            var date = new Date(this._activityFilter.date_starts);
+            let dayNumber: number = getHigherDay;
+            console.log(dayNumber);
+            date.setDate(dayNumber);
+
+            this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+        }
+
+        console.log(this._activityFilter);
+    }
+
+    oneDayTime(timeID) {
+        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
+        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
+        var timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
+        var timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
+        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
+        var dateFunction = new Date();
+        var currentTime = dateFunction.getHours();
+        var currentDay = dateFunction.getDate();
+        if (timeID == 'minus_one' && timeOneInputVal > 0) {
+            if(dayInputVal > currentDay) {
+                timeOneInputVal -= 1;
+            }
+            if (dayInputVal == currentDay && timeOneInputVal > currentTime) {
+                timeOneInputVal -= 1;
+            }
+        }
+        if (timeID == 'plus_one' && timeOneInputVal < 23) {
+            if ((timeTwoInputVal - timeOneInputVal) == 1) {
+                timeOneInputVal += 1;
+                timeTwoInputVal += 1;
+            }
+            if (timeOneInputVal < timeTwoInputVal && (timeTwoInputVal - timeOneInputVal) > 1) {
+                timeOneInputVal += 1;
+            }
+        }
+        if (timeID == 'minus_two' && timeTwoInputVal > 1) {
+            if ((timeTwoInputVal - timeOneInputVal) == 1) {
+                timeOneInputVal -= 1;
+                timeTwoInputVal -= 1;
+            }
+            if ((timeTwoInputVal - timeOneInputVal) > 1) {
+                timeTwoInputVal -= 1;
+            }
+        }
+        if (timeID == 'plus_two' && timeTwoInputVal < 24) {
+            timeTwoInputVal += 1;
+        }
+        $('#time_of_arrival').html(timeOneInputVal);
+        $('#calendar_dates_from_display').html(timeOneInputVal);
+        $('#time_of_exit').html(timeTwoInputVal);
+        $('#calendar_dates_to_display').html(timeTwoInputVal);
+        $('#one-day-flow-time-one').val(timeOneInputVal);
+        $('#one-day-flow-time-two').val(timeTwoInputVal);
+        if (timeOneInputVal > 11) {
+            $('#AmPmOne').html('pm');
+            $('#AmPmSpanOne').html('pm');
+        }
+        if (timeOneInputVal <= 11) {
+            $('#AmPmOne').html('am');
+            $('#AmPmSpanOne').html('am');
+        }
+        if (timeTwoInputVal > 11) {
+            $('#AmPmTwo').html('pm');
+            $('#AmPmSpanTwo').html('am');
+        }
+        if (timeTwoInputVal <= 11) {
+            $('#AmPmTwo').html('am');
+            $('#AmPmSpanTwo').html('am');
+        }
+
+        this._activityFilter.time_from = timeOneInputVal;
+        this._activityFilter.time_to = timeTwoInputVal;
+
+        console.log(this._activityFilter);
     }
 
 

@@ -615,10 +615,17 @@ export class TutorialTwoComponent implements OnInit {
         var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
         var timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
         var timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
+        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
         var dateFunction = new Date();
         var currentTime = dateFunction.getHours();
-        if (timeID == 'minus_one' && timeOneInputVal > 0 && timeOneInputVal > currentTime) {
-            timeOneInputVal -= 1;
+        var currentDay = dateFunction.getDate();
+        if (timeID == 'minus_one' && timeOneInputVal > 0) {
+            if(dayInputVal > currentDay) {
+                timeOneInputVal -= 1;
+            }
+            if (dayInputVal == currentDay && timeOneInputVal > currentTime) {
+                timeOneInputVal -= 1;
+            }
         }
         if (timeID == 'plus_one' && timeOneInputVal < 23) {
             if ((timeTwoInputVal - timeOneInputVal) == 1) {

@@ -223,8 +223,7 @@
     <div class="row">
         <div class="col-lg-1 left_container"></div>
         <div class="col-lg-9 middle_container">
-            <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0"
-                 class="not_found_container">
+            <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0" class="not_found_container">
                 <div class="not_found_image_container">
                     <img src="assets/img/Icon_Not_Found.svg" alt="Search results not forund">
                 </div>
@@ -237,11 +236,8 @@
                 </div>
             </div>
             <div class="row">
-
-
                 <div *ngIf="!appInitSettings.isSingleDay && _activities.length > 0">
-                    <div
-                            class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
                         <div class="element_container wishlist_description_container">
                             <h2>This is your<br>Wishlist!</h2>
                             <p>Select one or more Activities you want to do while you're in <span
@@ -333,7 +329,7 @@
                         </div>
                     </div>
 
-                <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0">
+                <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0" style="width: 100%;">
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
                         <div class="element_container wishlist_description_container">
                             <h2>These are your<br>Results!</h2>
@@ -370,6 +366,11 @@
             </div>
         </div>
         <div class="col-lg-2 right_container">
+            <div class="edit_itinerary_container edit_itinerary_icon_container">
+                <div class="edit_itinerary_wrapper show_my_itinerary_icon" id="edit_itinerary_wrapper_one">
+                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()" alt="show my itinerary">
+                </div>
+            </div>
             <!--<div class="edit_itinerary" (click)="exportItinerary()">Export<br>Itinerary</div>-->
             <div *ngIf="appInitSettings.isSingleDay" class="export_itinerary"
                  (click)="showExportItineraryModalWishlist()">
@@ -386,11 +387,6 @@
                 </div>
             </div>
 
-            <div class="edit_itinerary_container edit_itinerary_icon_container">
-                <div class="edit_itinerary_wrapper show_my_itinerary_icon" id="edit_itinerary_wrapper_one">
-                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()" alt="show my itinerary">
-                </div>
-            </div>
 
             <div class="select_activity_container">
                 <img src="assets/img/triangle.svg" alt="empty wishlist arrow">

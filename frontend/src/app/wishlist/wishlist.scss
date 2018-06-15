@@ -947,13 +947,14 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       padding-right: 55px !important;
     }    
     .select_activity_container {
-      margin-bottom: 50px;
       display: block;
-      position: relative;
+      position: absolute;
       float: left;
       width: 100%;
+      top: 116px;
+      right: 8px;
       img {
-        right: 50%;
+        right: 6px;
       }
     }
     .exportItineraryModalHeaderIcon {
@@ -970,12 +971,13 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .edit_itinerary_icon_container {
       display: block;
-      position: fixed;
-      width: 56px;
+      position: absolute;
+      width: 60px;
       height: 60px;
-      top: 75px;
       right: 0px;
       z-index: 1000;
+      float: right;
+      top: 0px;
     }    
     .modal_popup {
       z-index: 100000;
@@ -985,6 +987,21 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .toggle_close_modal {
       right: -6px !important;
+    }
+    .right_container {
+      position: fixed;
+      top: 100px;
+      right: 0px;
+      width: 175px;
+      padding: 0px;
+      z-index: 1000;
+    }
+    .export_itinerary {
+      width: 62px;
+      float: right;
+      position: absolute;
+      top: 60px;
+      right: 0px;
     }
   }
 
@@ -1065,11 +1082,13 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .select_activity_container {
       margin-bottom: 20px;
       display: block;
-      position: relative;
+      position: absolute;
       float: left;
       width: 100%;
+      top: 116px;
+      right: 8px;
       img {
-        right: 50%;
+        right: 6px;
       }
     }
     .exportItineraryModalHeaderIcon {
@@ -1119,12 +1138,14 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .edit_itinerary_icon_container {
       display: block;
-      position: fixed;
-      width: 56px;
+      position: absolute;
+      width: 60px;
       height: 60px;
       top: 75px;
       right: 0px;
       z-index: 1000;
+      top: 0px;
+      float: right;
     }
     .calendar_dates_display_one_day {
       width: calc(100% - 80px) !important;
@@ -1172,6 +1193,21 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .modal_content_right_section {
       width: 100% !important;
       padding: 0px !important;
+    }
+    .right_container {
+      position: fixed;
+      top: 75px;
+      right: 0px;
+      width: 175px;
+      padding: 0px;
+      z-index: 1000;
+    }
+    .export_itinerary {
+      width: 62px;
+      float: right;
+      position: absolute;
+      top: 60px;
+      right: 0px;
     }
   }
 
@@ -1261,11 +1297,13 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .select_activity_container {
       margin-bottom: 10px;
       display: block;
-      position: relative;
+      position: absolute;
       float: left;
       width: 100%;
+      top: 116px;
+      right: 8px;
       img {
-        right: 50%;
+        right: 6px;
       }
     }
     .exportItineraryModalContent {
@@ -1328,12 +1366,14 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }
     .edit_itinerary_icon_container {
       display: block;
-      position: fixed;
-      width: 56px;
+      position: absolute;
+      width: 60px;
       height: 60px;
       top: 75px;
       right: 0px;
       z-index: 1000;
+      top: 0px;
+      float: right;
     }
     .calendar_dates_display_one_day {
       width: 100% !important;
@@ -1389,6 +1429,21 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     .modal_h2 {
       line-height: 32px !important;
       font-size: 17px !important;
+    }    
+    .right_container {
+      position: fixed;
+      top: 75px;
+      right: 0px;
+      width: 175px;
+      padding: 0px;
+      z-index: 1000;
+    }
+    .export_itinerary {
+      width: 62px;
+      float: right;
+      position: absolute;
+      top: 60px;
+      right: 0px;
     }
   }
 }

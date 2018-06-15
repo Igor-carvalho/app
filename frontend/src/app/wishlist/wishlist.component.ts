@@ -1133,5 +1133,13 @@ export class WishlistComponent implements OnInit {
         console.log(this._activityFilter);
     }
 
+    showActivityDetails() {
+        $("#modal-activity-details").show();
+    }
+
+    closeActivityDetails() {
+        $("#modal-activity-details").hide('slow');
+    }
+
 
 }

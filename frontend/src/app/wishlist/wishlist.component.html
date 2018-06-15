@@ -248,12 +248,9 @@
                                     id="wishlist_description_city">Neaples</span></p>
                         </div>
                     </div>
-                    <div
-                            class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
-                            *ngFor="let activity of _activities">
-                        <div class="element_container"
-                             (click)="toggle_selected_acctivity(activity.id)">
-                            <div class="image_container">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container" *ngFor="let activity of _activities">
+                        <div class="element_container">
+                            <div class="image_container" (click)="toggle_selected_acctivity(activity.id)">
                                 <div class="image">
                                     <img class="elem_image" [src]="activity.images[0]" alt="image">
                                 </div>
@@ -265,7 +262,7 @@
                                      [class.gradient_class]="check_activity_selected(activity.id) "
                                 ></div>
                             </div>
-                            <div class="place_name_container">
+                            <div class="place_name_container" (click)="showActivityDetails()">
                                 <div class="place_name">{{ activity.name }}</div>
                                 <div class="arrow">
                                     <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
@@ -274,6 +271,67 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="modal-activity-details" class="modal_popup">
+                        <div class="modal_content_wrapper">
+                            <span (click)="closeActivityDetails()" class="toggle_close_modal">
+                                <img src="assets/img/Icon_Close.svg" alt="close modal">
+                            </span>
+                            <span class="modal_category_icon">
+                                <img src="assets/img/Icon_Museum.svg" alt="category name here">
+                            </span>
+                            <div class="modal_content">
+                                <div class="modal_content_left_section">
+                                    <div class="modal_left_section_image">
+                                        <img src="assets/img/napolinvespa_tour.jpg" alt="description image here">
+                                    </div>
+                                    <div class="info">info</div>
+                                    <div class="modal_description_address">
+                                        Salita Moiariello, 16, 80131 Napoli NA, Italia
+                                    </div>
+                                    <div class="modal_pricing_container">
+                                        <!--<span class="price">Price:</span>-->
+                                        <!--<div class="ordinary_ticket">Ordinary ticket: <span-->
+                                                <!--id="ordinary_ticket_price">&euro; 7.00</span></div>-->
+                                        <!--<span class="price">Children</span>-->
+                                        <!--<div class="ordinary_ticket">from 10 to 25 years: <span-->
+                                                <!--id="activity_children_range_price">&euro; 5.00</span></div>-->
+                                        <!--<div class="ordinary_ticket">FAI members: <span-->
+                                                <!--id="activity_fai_price">&euro; 5.00</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="ordinary_ticket">Schools: <span-->
+                                                <!--id="activity_schools_price">&euro; 3.00</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="ordinary_ticket">Children up to 9 years: <span-->
+                                                <!--id="activity_children_upto_nine_price">free</span></div>-->
+                                        <!--<div class="ordinary_ticket">Audio guide: <span-->
+                                                <!--id="activity_audio_guide">&euro; 3.50</span>-->
+                                        <!--</div>-->
+                                        <br/>
+                                    </div>
+                                    <div class="modal_schedule_container">
+                                        <!--<span class="price">Schedule:</span>-->
+                                        <!--<div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="closing_day">Closed on <span-->
+                                                <!--id="activity_closing_day">Tuesday</span></div>-->
+                                    </div>
+                                </div>
+                                <div class="modal_content_right_section">
+                                    <div class="modal_right_heading">
+                                        <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">THE ASTRONOMICAL OBSERVATORY OF CAPODIMONTE</span>
+                                        </h2>
+                                    </div>
+                                    <div class="modal_right_description">
+                                        <p>DOBEDOO – The Astronomical Observatory of Capodimonte is part of the network of 12 astronomical observatories and of 4 astrophysics organized on the Italian territory by the National Institute of AstroFisica – INAF – the leading Italian agency for astronomical and astrophysical research on land and space. It is located on the hill of Miradois in Capodimonte, in Salita Moiariello 16: the building, created by Federico Zuccari and designed by Stefano Gasse, overlooks the Gulf of Naples and offers a breathtaking panoramic view. The works for the construction of the structure began in 1812 and the Astronomical Observatory of Capodimonte was inaugurated in 1819, beginning with the observations in the same premises attended today by researchers engaged in various observation and didactic activities. The activities of the observatories are significant and they also fascinate amateurs: just to entice people to visit the wonderful structures of the Observatory and to bring them closer to the world of astronomy, often there are cultural or entertainment events, both industry-specific and more generalist, combined with astral observations or concerts. The Astronomical Observatory of Capodimonte is just a few minutes from the Bosco and you can walk on foot after having strolled through the tree-lined avenues of the park, visiting the National Museum and enjoying the panoramic view. To complete the visit of Capodimonte, in addition, just after 1 km you can access the Catacombs of Naples, in Via Capodimonte 13. </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0">
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">

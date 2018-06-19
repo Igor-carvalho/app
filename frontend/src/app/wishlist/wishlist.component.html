@@ -58,11 +58,11 @@
                 <span> - </span>
                 <span id="calendar_dates_month_display_two"></span>
                 <span id="calendar_dates_day_display_two"></span>
-            </div>            
+            </div>
             <div class="calendar_dates_display calendar_dates_display_one_day">
                 <span id="calendar_dates_month_display"></span>
                 <span id="calendar_dates_day_display"></span>
-                <br />
+                <br/>
                 <span><span id="calendar_dates_from_display"></span>:00 <span id="AmPmSpanOne"></span></span>
                 <span> - </span>
                 <span><span id="calendar_dates_to_display"></span>:00 <span id="AmPmSpanTwo"></span></span>
@@ -71,63 +71,77 @@
             <input type="hidden" name="one-day-flow-day" id="one-day-flow-day" value="">
             <input type="hidden" name="one-day-flow-time-one" id="one-day-flow-time-one" value="">
             <input type="hidden" name="one-day-flow-time-two" id="one-day-flow-time-two" value="">
-            <div class="one_day_calendar_wrapper">
-                <div class="one_day_calendar_row">
-                        <div class="month_container one_day_flow_month_container">
-                            <div class="left_icon_calendar">
-                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayMonth('minus')">
-                            </div>
-                            <div id="month_of_day_flow" class="month"></div>
-                            <div class="right_icon_calendar">
-                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayMonth('plus')">
-                            </div>
-                        </div>
-                        <div class="day_container one_day_flow_day_container">
-                            <div class="left_icon_calendar">
-                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayFlowDay('minus')">
-                            </div>
-                            <div id="day_of_one_day_flow" class="day"></div>
-                            <div class="right_icon_calendar">
-                                <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayFlowDay('plus')">
-                            </div>
-                        </div>
-                </div>
+            <div [hidden]="!appInitSettings.isSingleDay" class="one_day_calendar_wrapper">
                 <div class="one_day_calendar_row">
                     <div class="month_container one_day_flow_month_container">
-                        <div class="from from_day_flow">
-                            <div class="from_wrapper">from<div class="from_underline"></div></div>
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous"
+                                 (click)="oneDayMonth('minus')">
+                        </div>
+                        <div id="month_of_day_flow" class="month"></div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next"
+                                 (click)="oneDayMonth('plus')">
                         </div>
                     </div>
                     <div class="day_container one_day_flow_day_container">
                         <div class="left_icon_calendar">
-                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayTime('minus_one')">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous"
+                                 (click)="oneDayFlowDay('minus')">
                         </div>
-                        <div class="day one_day_flow_day"><span id="time_of_arrival"></span>:00 <span id="AmPmOne"></span></div>
+                        <div id="day_of_one_day_flow" class="day"></div>
                         <div class="right_icon_calendar">
-                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayTime('plus_one')">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next"
+                                 (click)="oneDayFlowDay('plus')">
                         </div>
                     </div>
                 </div>
                 <div class="one_day_calendar_row">
                     <div class="month_container one_day_flow_month_container">
                         <div class="from from_day_flow">
-                            <div class="from_wrapper">to<div class="from_underline"></div></div>
+                            <div class="from_wrapper">from
+                                <div class="from_underline"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="day_container one_day_flow_day_container">
                         <div class="left_icon_calendar">
-                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous" (click)="oneDayTime('minus_two')">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous"
+                                 (click)="oneDayTime('minus_one')">
                         </div>
-                        <div class="day one_day_flow_day"><span  id="time_of_exit"></span>:00 <span id="AmPmTwo"></span></div>
+                        <div class="day one_day_flow_day"><span id="time_of_arrival"></span>:00 <span
+                                id="AmPmOne"></span></div>
                         <div class="right_icon_calendar">
-                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next" (click)="oneDayTime('plus_two')">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next"
+                                 (click)="oneDayTime('plus_one')">
+                        </div>
+                    </div>
+                </div>
+                <div class="one_day_calendar_row">
+                    <div class="month_container one_day_flow_month_container">
+                        <div class="from from_day_flow">
+                            <div class="from_wrapper">to
+                                <div class="from_underline"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day_container one_day_flow_day_container">
+                        <div class="left_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="previous"
+                                 (click)="oneDayTime('minus_two')">
+                        </div>
+                        <div class="day one_day_flow_day"><span id="time_of_exit"></span>:00 <span id="AmPmTwo"></span>
+                        </div>
+                        <div class="right_icon_calendar">
+                            <img src="assets/img/Icon_Arrow_white_tutorial.svg" alt="next"
+                                 (click)="oneDayTime('plus_two')">
                         </div>
                     </div>
                 </div>
             </div>
 
 
-            <div class="calendar_container">
+            <div [hidden]="appInitSettings.isSingleDay" class="calendar_container">
                 <div class="from">from</div>
                 <div class="month_container">
                     <div class="month_wrapper">
@@ -147,7 +161,7 @@
                     <img class="icon_right" src="assets/img/Icon_Arrow_White.svg" alt="next" (click)="plusDay('one')">
                 </div>
             </div>
-            <div class="calendar_container">
+            <div [hidden]="appInitSettings.isSingleDay" class="calendar_container">
                 <div class="from">to</div>
                 <div class="month_container">
                     <div class="month_wrapper">
@@ -223,7 +237,8 @@
     <div class="row">
         <div class="col-lg-1 left_container"></div>
         <div class="col-lg-9 middle_container">
-            <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0" class="not_found_container">
+            <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0"
+                 class="not_found_container">
                 <div class="not_found_image_container">
                     <img src="assets/img/Icon_Not_Found.svg" alt="Search results not forund">
                 </div>
@@ -244,7 +259,8 @@
                                     id="wishlist_description_city">Neaples</span></p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container" *ngFor="let activity of _activities">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container"
+                         *ngFor="let activity of _activities">
                         <div class="element_container">
                             <div class="image_container" (click)="toggle_selected_acctivity(activity.id)">
                                 <div class="image">
@@ -258,78 +274,82 @@
                                      [class.gradient_class]="check_activity_selected(activity.id) "
                                 ></div>
                             </div>
-                            <div class="place_name_container" (click)="showActivityDetails()">
+                            <div class="place_name_container" (click)="showActivityDetails(activity.id)">
                                 <div class="place_name">{{ activity.name }}</div>
                                 <div class="arrow">
                                     <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div id="modal-activity-details" class="modal_popup">
-                        <div class="modal_content_wrapper">
-                            <span (click)="closeActivityDetails()" class="toggle_close_modal">
-                                <img src="assets/img/Icon_Close.svg" alt="close modal">
-                            </span>
-                            <span class="modal_category_icon">
-                                <img src="assets/img/Icon_Museum.svg" alt="category name here">
-                            </span>
-                            <div class="modal_content">
-                                <div class="modal_content_left_section">
-                                    <div class="modal_left_section_image">
-                                        <img src="assets/img/napolinvespa_tour.jpg" alt="description image here">
+                        <div id="modal-activity-details-{{activity.id}}" class="modal_popup">
+                            <div class="modal_content_wrapper">
+                                        <span (click)="closeActivityDetails(activity.id)"
+                                              class="toggle_close_modal">
+                                            <img src="assets/img/Icon_Close.svg" alt="close modal">
+                                        </span>
+                                <span class="modal_category_icon">
+                                            <img [src]="'assets/img/'+activity.micro_icon"
+                                                 alt="category name here">
+                                        </span>
+                                <div class="modal_content">
+                                    <div class="modal_content_left_section">
+                                        <div class="modal_left_section_image">
+                                            <img [src]="activity.images"
+                                                 alt="description image here">
+                                        </div>
+                                        <div class="info">info</div>
+                                        <div class="modal_description_address">
+                                            {{activity.address}}
+                                        </div>
+                                        <div class="modal_pricing_container">
+                                            <!--<span class="price">Price:</span>-->
+                                            <!--<div class="ordinary_ticket">Ordinary ticket: <span-->
+                                            <!--id="ordinary_ticket_price">&euro; 7.00</span></div>-->
+                                            <!--<span class="price">Children</span>-->
+                                            <!--<div class="ordinary_ticket">from 10 to 25 years: <span-->
+                                            <!--id="activity_children_range_price">&euro; 5.00</span></div>-->
+                                            <!--<div class="ordinary_ticket">FAI members: <span-->
+                                            <!--id="activity_fai_price">&euro; 5.00</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="ordinary_ticket">Schools: <span-->
+                                            <!--id="activity_schools_price">&euro; 3.00</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="ordinary_ticket">Children up to 9 years: <span-->
+                                            <!--id="activity_children_upto_nine_price">free</span></div>-->
+                                            <!--<div class="ordinary_ticket">Audio guide: <span-->
+                                            <!--id="activity_audio_guide">&euro; 3.50</span>-->
+                                            <!--</div>-->
+                                            <br/>
+                                        </div>
+                                        <div class="modal_schedule_container">
+                                            <!--<span class="price">Schedule:</span>-->
+                                            <!--<div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="closing_day">Closed on <span-->
+                                            <!--id="activity_closing_day">Tuesday</span></div>-->
+                                        </div>
                                     </div>
-                                    <div class="info">info</div>
-                                    <div class="modal_description_address">
-                                        Salita Moiariello, 16, 80131 Napoli NA, Italia
-                                    </div>
-                                    <div class="modal_pricing_container">
-                                        <!--<span class="price">Price:</span>-->
-                                        <!--<div class="ordinary_ticket">Ordinary ticket: <span-->
-                                                <!--id="ordinary_ticket_price">&euro; 7.00</span></div>-->
-                                        <!--<span class="price">Children</span>-->
-                                        <!--<div class="ordinary_ticket">from 10 to 25 years: <span-->
-                                                <!--id="activity_children_range_price">&euro; 5.00</span></div>-->
-                                        <!--<div class="ordinary_ticket">FAI members: <span-->
-                                                <!--id="activity_fai_price">&euro; 5.00</span>-->
-                                        <!--</div>-->
-                                        <!--<div class="ordinary_ticket">Schools: <span-->
-                                                <!--id="activity_schools_price">&euro; 3.00</span>-->
-                                        <!--</div>-->
-                                        <!--<div class="ordinary_ticket">Children up to 9 years: <span-->
-                                                <!--id="activity_children_upto_nine_price">free</span></div>-->
-                                        <!--<div class="ordinary_ticket">Audio guide: <span-->
-                                                <!--id="activity_audio_guide">&euro; 3.50</span>-->
-                                        <!--</div>-->
-                                        <br/>
-                                    </div>
-                                    <div class="modal_schedule_container">
-                                        <!--<span class="price">Schedule:</span>-->
-                                        <!--<div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>-->
-                                        <!--</div>-->
-                                        <!--<div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>-->
-                                        <!--</div>-->
-                                        <!--<div class="closing_day">Closed on <span-->
-                                                <!--id="activity_closing_day">Tuesday</span></div>-->
-                                    </div>
-                                </div>
-                                <div class="modal_content_right_section">
-                                    <div class="modal_right_heading">
-                                        <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">THE ASTRONOMICAL OBSERVATORY OF CAPODIMONTE</span>
-                                        </h2>
-                                    </div>
-                                    <div class="modal_right_description">
-                                        <p>DOBEDOO – The Astronomical Observatory of Capodimonte is part of the network of 12 astronomical observatories and of 4 astrophysics organized on the Italian territory by the National Institute of AstroFisica – INAF – the leading Italian agency for astronomical and astrophysical research on land and space. It is located on the hill of Miradois in Capodimonte, in Salita Moiariello 16: the building, created by Federico Zuccari and designed by Stefano Gasse, overlooks the Gulf of Naples and offers a breathtaking panoramic view. The works for the construction of the structure began in 1812 and the Astronomical Observatory of Capodimonte was inaugurated in 1819, beginning with the observations in the same premises attended today by researchers engaged in various observation and didactic activities. The activities of the observatories are significant and they also fascinate amateurs: just to entice people to visit the wonderful structures of the Observatory and to bring them closer to the world of astronomy, often there are cultural or entertainment events, both industry-specific and more generalist, combined with astral observations or concerts. The Astronomical Observatory of Capodimonte is just a few minutes from the Bosco and you can walk on foot after having strolled through the tree-lined avenues of the park, visiting the National Museum and enjoying the panoramic view. To complete the visit of Capodimonte, in addition, just after 1 km you can access the Catacombs of Naples, in Via Capodimonte 13. </p>
+                                    <div class="modal_content_right_section">
+                                        <div class="modal_right_heading">
+                                            <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">{{ activity.name}}</span>
+                                            </h2>
+                                        </div>
+                                        <div class="modal_right_description">
+                                            <p>{{activity.description}}</p>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0" style="width: 100%;">
+
+                <div *ngIf="appInitSettings.isSingleDay && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length > 0">
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
                         <div class="element_container wishlist_description_container">
                             <h2>These are your<br>Results!</h2>
@@ -340,8 +360,8 @@
                         <div *ngFor="let hour of day.hours"
                              class="col-lg-3 col-md-4 col-sm-6 col-xs-12 activity_container">
                             <div class="element_container"
-                                 (click)="toggle_selected_acctivity(hour.activity.id)">
-                                <div class="image_container">
+                            >
+                                <div class="image_container" (click)="toggle_selected_acctivity(hour.activity.id)">
                                     <div class="image">
                                         <img class="elem_image" [src]="hour.activity.images[0]" alt="image">
                                     </div>
@@ -353,22 +373,88 @@
                                          [class.gradient_class_blue]="check_activity_selected(hour.activity.id)"
                                     ></div>
                                 </div>
-                                <div class="place_name_container">
+                                <div class="place_name_container" (click)="showActivityDetails(hour.activity.id)">
                                     <div class="place_name">{{ hour.activity.name }}</div>
                                     <div class="arrow">
                                         <img src="assets/img/Icon_Arrow_Wishlist.svg" alt="Museum category">
                                     </div>
                                 </div>
                             </div>
+                            <div id="modal-activity-details-{{hour.activity.id}}" class="modal_popup">
+                                <div class="modal_content_wrapper">
+                                        <span (click)="closeActivityDetails(hour.activity.id)"
+                                              class="toggle_close_modal">
+                                            <img src="assets/img/Icon_Close.svg" alt="close modal">
+                                        </span>
+                                    <span class="modal_category_icon">
+                                            <img [src]="'assets/img/'+hour.activity.micro_icon"
+                                                 alt="category name here">
+                                        </span>
+                                    <div class="modal_content">
+                                        <div class="modal_content_left_section">
+                                            <div class="modal_left_section_image">
+                                                <img [src]="hour.activity.images"
+                                                     alt="description image here">
+                                            </div>
+                                            <div class="info">info</div>
+                                            <div class="modal_description_address">
+                                                {{hour.activity.address}}
+                                            </div>
+                                            <div class="modal_pricing_container">
+                                                <!--<span class="price">Price:</span>-->
+                                                <!--<div class="ordinary_ticket">Ordinary ticket: <span-->
+                                                <!--id="ordinary_ticket_price">&euro; 7.00</span></div>-->
+                                                <!--<span class="price">Children</span>-->
+                                                <!--<div class="ordinary_ticket">from 10 to 25 years: <span-->
+                                                <!--id="activity_children_range_price">&euro; 5.00</span></div>-->
+                                                <!--<div class="ordinary_ticket">FAI members: <span-->
+                                                <!--id="activity_fai_price">&euro; 5.00</span>-->
+                                                <!--</div>-->
+                                                <!--<div class="ordinary_ticket">Schools: <span-->
+                                                <!--id="activity_schools_price">&euro; 3.00</span>-->
+                                                <!--</div>-->
+                                                <!--<div class="ordinary_ticket">Children up to 9 years: <span-->
+                                                <!--id="activity_children_upto_nine_price">free</span></div>-->
+                                                <!--<div class="ordinary_ticket">Audio guide: <span-->
+                                                <!--id="activity_audio_guide">&euro; 3.50</span>-->
+                                                <!--</div>-->
+                                                <br/>
+                                            </div>
+                                            <div class="modal_schedule_container">
+                                                <!--<span class="price">Schedule:</span>-->
+                                                <!--<div class="ordinary_ticket">Every day: <span id="activity_timing">9:30 am - 6:30 pm</span>-->
+                                                <!--</div>-->
+                                                <!--<div class="ordinary_ticket">Every day: <span id="activity_note">Last admission allowed up to 30 min before closing.</span>-->
+                                                <!--</div>-->
+                                                <!--<div class="closing_day">Closed on <span-->
+                                                <!--id="activity_closing_day">Tuesday</span></div>-->
+                                            </div>
+                                        </div>
+                                        <div class="modal_content_right_section">
+                                            <div class="modal_right_heading">
+                                                <h2 class="modal_h2">About the <br/><span class="modal_h2_dynamic">{{ hour.activity.name}}</span>
+                                                </h2>
+                                            </div>
+                                            <div class="modal_right_description">
+                                                <p>{{hour.activity.description}}</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
         <div class="col-lg-2 right_container">
-            <div class="edit_itinerary_container edit_itinerary_icon_container">
+            <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container edit_itinerary_icon_container">
                 <div class="edit_itinerary_wrapper show_my_itinerary_icon" id="edit_itinerary_wrapper_one">
-                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()" alt="show my itinerary">
+                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()"
+                         alt="show my itinerary">
                 </div>
             </div>
             <!--<div class="edit_itinerary" (click)="exportItinerary()">Export<br>Itinerary</div>-->
@@ -429,16 +515,17 @@
                     <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_or_div">or</div>
                     <div *ngIf="_selectedActivities.length > 0"
                          class="export_itinerary_full_width_column checkbox_column">
-                        <div  class="export_itinerary_delete_activity_icon">
+                        <div class="export_itinerary_delete_activity_icon">
                             <label class="checkbox_container">
                                 <input type="checkbox">
                                 <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
                             </label>
                         </div>
-                        <div  class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
+                        <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
                     </div>
                     <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_full_width_column send_column">
-                        <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count" (click)="exportItinerary()" class="send_button">
+                        <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count"
+                             (click)="exportItinerary()" class="send_button">
                             <div class="send_icon">
                                 <img src="assets/img/Icon_two_lines.svg" alt="send icon">
                             </div>

@@ -463,7 +463,6 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
   .select_activity_container {
     width: 100%;
     position: relative;
-    display: block;
     display: none;
     img {
       max-width: 60px;
@@ -931,6 +930,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       max-width: 33.333333334%;
     }
     .select_activity_container {
+      display: none;
       img {
         right: 30px;
       }
@@ -947,7 +947,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       padding-right: 55px !important;
     }    
     .select_activity_container {
-      display: block;
+      display: none;
       position: absolute;
       float: left;
       width: 100%;
@@ -1080,8 +1080,8 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
       font-size: 15px !important;
     }      
     .select_activity_container {
+      display: none;
       margin-bottom: 20px;
-      display: block;
       position: absolute;
       float: left;
       width: 100%;
@@ -1296,7 +1296,7 @@ app-wishlist { //these are selector, defined in component.ts, which make sure cs
     }  
     .select_activity_container {
       margin-bottom: 10px;
-      display: block;
+      display: none;
       position: absolute;
       float: left;
       width: 100%;

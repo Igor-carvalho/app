@@ -290,7 +290,12 @@ export class WishlistComponent implements OnInit {
         }
         $("#edit-filter").click();
         this._router.navigate(['/wishlist'], {queryParams: this._activityFilter});
-        this.getActivities(this._activityFilter);
+
+        if (!this.appInitSettings.isSingleDay)
+            this.getActivities(this._activityFilter);
+        else {
+            this.getOneDayItinerary(this._activityFilter);
+        }
     }
 
     addAdults() {
@@ -786,7 +791,11 @@ export class WishlistComponent implements OnInit {
 
     show_my_itinerary() {
         if (this._selectedActivities.length == 0) {
-            alert("Wishlist is empty, Please select one or more items. ");
+            $(".select_activity_container").show();
+            setTimeout(() => {
+                $(".select_activity_container").hide();
+            }, 3000)
+            // alert("Wishlist is empty, Please select one or more items. ");
         } else {
             this.loading = true;
             this._itineraryDataService
@@ -854,7 +863,17 @@ export class WishlistComponent implements OnInit {
     }
 
     showExportItineraryModalWishlist() {
-        $("#exportItineraryModalWishlist").show();
+
+        if (this._selectedActivities.length == 0) {
+            $(".select_activity_container").show();
+            setTimeout(() => {
+                $(".select_activity_container").hide();
+            }, 3000)
+            // alert("Wishlist is empty, Please select one or more items. ");
+        } else {
+            $("#exportItineraryModalWishlist").show();
+        }
+
     }
 
     closeExportItineraryModalWishlist() {
@@ -872,7 +891,11 @@ export class WishlistComponent implements OnInit {
 
     exportItinerary() {
         if (this._selectedActivities.length == 0) {
-            alert("Wishlist is empty, Please select one or more items. ");
+            $(".select_activity_container").show();
+            setTimeout(() => {
+                $(".select_activity_container").hide();
+            }, 3000)
+            // alert("Wishlist is empty, Please select one or more items. ");
         } else {
 
             this.closeExportItineraryModalWishlist();
@@ -961,6 +984,7 @@ export class WishlistComponent implements OnInit {
 
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
             var getNextMonth = monthsArray[indexOfMonth + 1];
@@ -973,8 +997,8 @@ export class WishlistComponent implements OnInit {
             var monthNumber = indexOfMonth + 1;
             date.setMonth(monthNumber);
 
-
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
 
         }
         console.log(this._activityFilter);
@@ -1009,6 +1033,7 @@ export class WishlistComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
             var getLowerDay = daysArray.indexOf(indexOfDay + 1);
@@ -1022,6 +1047,7 @@ export class WishlistComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyOneDayMonths.indexOf(month) > -1) && (dayInputVal < 31)) {
             getHigherDay = dayInputVal + 1;
@@ -1035,6 +1061,7 @@ export class WishlistComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyDayMonths.indexOf(month) > -1) && (dayInputVal < 30)) {
             getHigherDay = dayInputVal + 1;
@@ -1048,6 +1075,7 @@ export class WishlistComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (februaryMonth.indexOf(month) > -1) && (dayInputVal < 28)) {
             getHigherDay = dayInputVal + 1;
@@ -1061,6 +1089,7 @@ export class WishlistComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
 
         console.log(this._activityFilter);
@@ -1076,7 +1105,7 @@ export class WishlistComponent implements OnInit {
         var currentTime = dateFunction.getHours();
         var currentDay = dateFunction.getDate();
         if (timeID == 'minus_one' && timeOneInputVal > 0) {
-            if(dayInputVal > currentDay) {
+            if (dayInputVal > currentDay) {
                 timeOneInputVal -= 1;
             }
             if (dayInputVal == currentDay && timeOneInputVal > currentTime) {
@@ -1133,12 +1162,12 @@ export class WishlistComponent implements OnInit {
         console.log(this._activityFilter);
     }
 
-    showActivityDetails() {
-        $("#modal-activity-details").show();
+    showActivityDetails(activity_id) {
+        $("#modal-activity-details-" + activity_id).show();
     }
 
-    closeActivityDetails() {
-        $("#modal-activity-details").hide('slow');
+    closeActivityDetails(activity_id) {
+        $("#modal-activity-details-" + activity_id).hide('slow');
     }
 
 

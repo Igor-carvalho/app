@@ -511,6 +511,7 @@ export class TutorialTwoComponent implements OnInit {
 
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
             var getNextMonth = monthsArray[indexOfMonth + 1];
@@ -524,6 +525,7 @@ export class TutorialTwoComponent implements OnInit {
 
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
 
         }
         console.log(this._activityFilter);
@@ -557,6 +559,7 @@ export class TutorialTwoComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
             var getLowerDay = daysArray.indexOf(indexOfDay + 1);
@@ -569,6 +572,7 @@ export class TutorialTwoComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyOneDayMonths.indexOf(month) > -1) && (dayInputVal < 31)) {
             getHigherDay = dayInputVal + 1;
@@ -581,6 +585,7 @@ export class TutorialTwoComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (thirtyDayMonths.indexOf(month) > -1) && (dayInputVal < 30)) {
             getHigherDay = dayInputVal + 1;
@@ -593,6 +598,7 @@ export class TutorialTwoComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'plus' && (februaryMonth.indexOf(month) > -1) && (dayInputVal < 28)) {
             getHigherDay = dayInputVal + 1;
@@ -605,6 +611,7 @@ export class TutorialTwoComponent implements OnInit {
             date.setDate(dayNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
+            this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
 
         console.log(this._activityFilter);

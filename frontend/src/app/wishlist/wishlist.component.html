@@ -365,8 +365,11 @@
                                     <div class="image">
                                         <img class="elem_image" [src]="hour.activity.images[0]" alt="image">
                                     </div>
-                                    <div class="icon">
+                                    <div *ngIf="!check_activity_selected(hour.activity.id)" class="icon">
                                         <img [src]="'assets/img/'+hour.activity.micro_icon" alt="Museum category">
+                                    </div>
+                                    <div *ngIf="check_activity_selected(hour.activity.id)" class="icon">
+                                        <img [src]="'assets/img/Blue_'+hour.activity.micro_icon" alt="Museum category">
                                     </div>
                                     <!--<div class="gradient_div gradient_class gradient_class_blue" [class.gradient_class]="check_activity_selected(activity.id)"-->
                                     <div class="gradient_div gradient_class_blue"

@@ -97,7 +97,7 @@ class Itineraries extends \yii\db\ActiveRecord
 
     public function export($itinerary, $user_email)
     {
-        $itineraryLink = \Yii::$app->params['frontendURL'] . "/itinerary?id={$itinerary->id}";
+        $itineraryLink = \Yii::$app->params['frontendURL'] . "itinerary?id={$itinerary->id}";
         $itineraryCook = $itinerary->itinerary_cook_raw;
 
         Yii::$app->mailer->htmlLayout = "itinerary/itinerary_layout";

@@ -219,26 +219,71 @@ class ActivitiesController extends ActiveController
 
     public function actionUpdate($id)
     {
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
         $model = Activities::find()
             ->where([
                 'id' => $id
             ])
             ->one();
 
-        $model->load(\Yii::$app->getRequest()->getBodyParams(), '');
+
+        $postData = \Yii::$app->getRequest()->getBodyParams();
+        $model->load($postData, '');
         $model->images = json_encode($model->images);
+
+        $translations = $postData['translations'];
+        return $translations;
 
 
         $model->date_starts = $this->fromFrontDateObject($model->date_starts);
         $model->date_ends = $this->fromFrontDateObject($model->date_ends);
 
-        if ($model->validate() && $model->save()) {
-            $response = \Yii::$app->getResponse();
-            $response->setStatusCode(200);
-        } else {
-            // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+
+        return $model;
+
+        try {
+            if ($model->validate() && $model->save()) {
+
+                ActivitiesMicroCategories::deleteAll(['activities_id' => $model->id]);
+                foreach ($model->micro_category as $micro) {
+                    $storeMicroCat = new ActivitiesMicroCategories();
+                    $storeMicroCat->activities_id = $model->id;
+                    $storeMicroCat->system_micro_categories_id = $micro;
+                    $storeMicroCat->save();
+                }
+
+                ActivitiesMacroCategories::deleteAll(['activities_id' => $model->id]);
+                foreach ($model->macro_category as $each) {
+                    $storeCategory = new ActivitiesMacroCategories();
+                    $storeCategory->activities_id = $model->id;
+                    $storeCategory->system_macro_categories_id = $each;
+                    $storeCategory->save();
+                }
+
+                ActivitiesWeathers::deleteAll(['activities_id' => $model->id]);
+                foreach ($model->weather_types as $each) {
+                    $storeChild = new ActivitiesWeathers();
+                    $storeChild->activities_id = $model->id;
+                    $storeChild->weather_types_id = $each;
+                    $storeChild->save();
+                }
+
+
+            } else {
+                // Validation error
+                throw new HttpException(422, json_encode($model->errors));
+            }
+        } catch (\Exception $exception) {
+            $transaction->rollBack();
+            throw new HttpException(500, json_encode("unable to complete database trasactions"));
         }
+
+
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+
 
         return $model;
     }

@@ -322,11 +322,11 @@ class SocialUserController extends ActiveController
 
                     if ($provider == SocialProviders::$FACEBOOK) {
 
-                        $userProfileDb->first_name = $user->first_name;
-                        $userProfileDb->last_name = $user->last_name;
-                        $userProfileDb->full_name = $user->name;
+                        $userProfileDb->first_name = $userProfile->first_name;
+                        $userProfileDb->last_name = $userProfile->last_name;
+                        $userProfileDb->full_name = $userProfile->full_name;
                         $userProfileDb->facebook_auth = $authToken;
-                        $userProfileDb->facebook_profile_id = $user->id;
+                        $userProfileDb->facebook_profile_id = $userProfile->facebook_profile_id;
 
                     } else if ($provider == SocialProviders::$GOOGLE) {
 

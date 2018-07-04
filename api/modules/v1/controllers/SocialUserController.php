@@ -394,7 +394,10 @@ class SocialUserController extends ActiveController
             }
         } catch (\Exception $exception) {
             $transaction->rollBack();
-            throw new HttpException(500, $exception->getMessage());
+            throw new HttpException(500, [
+                'message' => $exception->getMessage(),
+                'code' => $exception->getLine()
+            ]);
         }
     }
 

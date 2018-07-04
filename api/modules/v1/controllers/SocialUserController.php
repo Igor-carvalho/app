@@ -311,9 +311,9 @@ class SocialUserController extends ActiveController
             // if user already registered with email or another social network
             if ($userDb != null) {
 
-                $userProfile = UserProfile::findOne(['user_id' => $userDb->id]);
+                $userProfileDb = UserProfile::findOne(['user_id' => $userDb->id]);
 
-                if ($userProfile == null) {
+                if ($userProfileDb == null) {
                     $userProfile->user_id = $userDb->id;
                     if (!$userProfile->save()) {
                         throw new HttpException(422, json_encode($userProfile->errors));
@@ -322,24 +322,24 @@ class SocialUserController extends ActiveController
 
                     if ($provider == SocialProviders::$FACEBOOK) {
 
-                        $userProfile->first_name = $user->first_name;
-                        $userProfile->last_name = $user->last_name;
-                        $userProfile->full_name = $user->name;
-                        $userProfile->facebook_auth = $authToken;
-                        $userProfile->facebook_profile_id = $user->id;
+                        $userProfileDb->first_name = $user->first_name;
+                        $userProfileDb->last_name = $user->last_name;
+                        $userProfileDb->full_name = $user->name;
+                        $userProfileDb->facebook_auth = $authToken;
+                        $userProfileDb->facebook_profile_id = $user->id;
 
                     } else if ($provider == SocialProviders::$GOOGLE) {
 
-                        $userProfile->first_name = $user->givenName;
-                        $userProfile->last_name = $user->familyName;
-                        $userProfile->full_name = $user->name;
-                        $userProfile->google_auth = $authToken;
-                        $userProfile->google_profile_id = $user->id;
-                        $userProfile->profile_image = $user->picture;
+                        $userProfileDb->first_name = $user->givenName;
+                        $userProfileDb->last_name = $user->familyName;
+                        $userProfileDb->full_name = $user->name;
+                        $userProfileDb->google_auth = $authToken;
+                        $userProfileDb->google_profile_id = $user->id;
+                        $userProfileDb->profile_image = $user->picture;
 
                     }
 
-                    if (!$userProfile->save()) {
+                    if (!$userProfileDb->save()) {
                         throw new HttpException(422, json_encode($userProfile->errors));
                     }
 

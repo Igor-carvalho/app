@@ -1,4 +1,4 @@
-import {WeatherType} from "./weather-type";
+import {LanguageContent} from "./language-content";
 
 export class Activities {
     id: number;
@@ -26,6 +26,8 @@ export class Activities {
     time_end_mm: string;
     duration: number;
 
+    translations: LanguageContent[];
+
 
     constructor(values: Object = {}) {
         this.time_end_hh = "00";
@@ -33,8 +35,9 @@ export class Activities {
         this.time_start_hh = "00";
         this.time_start_mm = "00";
 
-        Object.assign(this, values);
 
+        Object.assign(this, values);
     }
+
 
 }

@@ -18,6 +18,11 @@ import {ImageUploadService} from "../model/image-upload.service";
 import {StaticDataService} from "../model/static-data.service";
 import {IMyDpOptions} from 'angular4-datepicker/src/my-date-picker';
 import {DateUtils} from "../utilities/DateUtils";
+import {Language} from "../model/language";
+import {LanguagesTablesColumns} from "../model/languages-tables-columns";
+import {LanguagesDataService} from "../services/languages-data.service";
+import {LanguagesTableColumnsDataService} from "../services/languages-table-columns-data.service";
+import {LanguageContent} from "../model/language-content";
 
 
 @Component({
@@ -33,6 +38,10 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
     private weatherTypes: IMultiSelectOption[];
     private macroCategories: IMultiSelectOption[];
     private microCategories: IMultiSelectOption[];
+
+    public languages: Language[];
+    public languageTableColumns: LanguagesTablesColumns[];
+
     private budgetList: any;
     private hoursLlist: any;
     private minutesList: any;
@@ -54,13 +63,21 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
                 private _activatedRoute: ActivatedRoute,
                 private _imageUpload: ImageUploadService,
                 private _staticData: StaticDataService,
+                private _languagesService: LanguagesDataService,
+                private _languagesTableColumnService: LanguagesTableColumnsDataService,
                 private _formBuilder: FormBuilder) {
         this.weatherTypes = [];
         this.microCategories = [];
         this.macroCategories = [];
 
+        this._activity = new Activities();
+
         this.hoursLlist = DateUtils.HOURS;
         this.minutesList = DateUtils.MINUTES;
+
+        this.getLanguageData();
+
+        console.log(this._activity);
 
 
     }
@@ -186,7 +203,12 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
     public onSubmit() {
         this._submitted = true;
 
+
+        this._activity.translations = this.formatTranslationData(this.languages);
+
+
         console.log(this._activity);
+        console.log(this.languages);
 
         this._resetFormErrors();
         if (this._mode == 'create') {
@@ -376,17 +398,91 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
             );
     }
 
-}
 
-function validateDateTime(fieldKeys: any) {
-    return (group: FormGroup) => {
-        for (let i = 0; i < fieldKeys.length; i++) {
-            let field = group.controls[fieldKeys[i]];
-            if (typeof field !== "undefined" && (field.value != "" && field.value != null)) {
-                if (moment(field.value, "YYYY-MM-DD HH:mm:ss", true).isValid() == false) {
-                    return field.setErrors({validateDateTime: true});
+    private getLanguageData() {
+        this._languagesService.public()
+            .subscribe(
+                result => {
+                    // console.log(result);
+                    this.languages = result;
+
+                    this.languages.forEach((each) => {
+                        each['activity'] = new Activities();
+                    });
+                    console.log(this.languages);
+                },
+                error => {
+                    this._submitted = false;
+                    // Validation errors
+                    if (error.status == 422) {
+                        let errorFields = JSON.parse(error.data.message);
+                        this._setFormErrors(errorFields);
+                    }
+                    // Unauthorized Access
+                    if (error.status == 401 || error.status == 403) {
+                        this._staffService.unauthorizedAccess(error);
+                    }
+                    // All other errors
+                    else {
+                        this._errorMessage = error.data.message;
+                    }
                 }
-            }
-        }
+            );
+
+        this._languagesTableColumnService.public(ActivitiesDataService.TABLE_NAME)
+            .subscribe(
+                result => {
+                    // console.log(result);
+                    this.languageTableColumns = result;
+                    console.log(this.languageTableColumns);
+                },
+                error => {
+                    alert("Translation Data wasn't populated, Saving might lose, translation changes.");
+                    this._submitted = false;
+                    // Validation errors
+                    if (error.status == 422) {
+                        let errorFields = JSON.parse(error.data.message);
+                        this._setFormErrors(errorFields);
+                    }
+                    // Unauthorized Access
+                    if (error.status == 401 || error.status == 403) {
+                        this._staffService.unauthorizedAccess(error);
+                    }
+                    // All other errors
+                    else {
+                        this._errorMessage = error.data.message;
+                    }
+                }
+            );
+
+
     }
+
+    private formatTranslationData(languages: Language[]) {
+
+        let languageContents = [];
+
+        languages.forEach((eachLanguage)=> {
+            if(eachLanguage.short_code != 'en') {
+
+                Language.DB_COLUMN_ID_REFERENCE.it.activities.columns.forEach((eachColumn)=>{
+                    let langContent = new LanguageContent();
+                    langContent.languages_id = eachLanguage.id;
+                    langContent.languages_tables_columns_id = eachColumn.id;
+                    langContent.languages_tables_id = Language.DB_COLUMN_ID_REFERENCE.it.activities.table_id;
+                    langContent.translation = eachLanguage.activity[eachColumn.name];
+
+                    languageContents.push(langContent);
+                });
+
+
+            }
+        });
+
+        console.log(languageContents);
+
+        return languageContents;
+
+    }
+
 }

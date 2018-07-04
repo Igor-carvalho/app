@@ -37,6 +37,8 @@ import {ImageUploadService} from "./model/image-upload.service";
 import {StaticDataService} from "./model/static-data.service";
 import {MacroCategoriesDataService} from "./model/macro-categories-data.service";
 import {MicroCategoriesDataService} from "./model/micro-categories-data.service";
+import {LanguagesDataService} from "./services/languages-data.service";
+import {LanguagesTableColumnsDataService} from "./services/languages-table-columns-data.service";
 
 @NgModule({
     imports: [
@@ -74,6 +76,8 @@ import {MicroCategoriesDataService} from "./model/micro-categories-data.service"
         StaticDataService,
         MacroCategoriesDataService,
         MicroCategoriesDataService,
+        LanguagesDataService,
+        LanguagesTableColumnsDataService,
         UserDataService,
     ],
     bootstrap: [AppComponent]

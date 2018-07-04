@@ -201,7 +201,7 @@ class SocialUserController extends ActiveController
                     throw new HttpException(422, json_encode("invalid authentication token."));
                 }
 
-                $userProfileDb = UserProfile::findOne(['facebook_profile_id' => $socialUser->id]);
+                $userProfileDb = UserProfile::findOne(['facebook_profile_id' => $socialUser->getId()]);
 
                 if ($userProfileDb == null) {
                     throw new HttpException(422, json_encode("invalid authentication token."));

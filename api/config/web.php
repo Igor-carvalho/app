@@ -247,7 +247,7 @@ $config = [
                         'OPTIONS signup' => 'options',
                         'GET signup' => 'signup',
                         'OPTIONS login' => 'options',
-                        'GET login' => 'register',
+                        'GET login' => 'login',
                     ]
                 ],
             ]

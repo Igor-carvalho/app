@@ -2,7 +2,12 @@
 
 namespace app\modules\v1\controllers;
 
+use app\componenets\HelperFunction;
+use app\componenets\social\FacebookComponent;
+use app\componenets\social\GoogleComponent;
+use app\componenets\social\SocialProviders;
 use app\filters\auth\HttpBearerAuth;
+use app\models\database\UserProfile;
 use app\models\UserEditForm;
 use Yii;
 
@@ -24,7 +29,7 @@ use app\models\SignupConfirmForm;
 use app\models\PasswordResetRequestForm;
 use app\models\PasswordResetTokenVerificationForm;
 
-class UserController extends ActiveController
+class SocialUserController extends ActiveController
 {
     public $modelClass = 'app\models\User';
 
@@ -59,7 +64,7 @@ class UserController extends ActiveController
                 'create' => ['post'],
                 'update' => ['put'],
                 'delete' => ['delete'],
-                'login' => ['post'],
+                'login' => ['get'],
                 'me' => ['get', 'post'],
             ],
         ];
@@ -81,7 +86,7 @@ class UserController extends ActiveController
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options', 'login', 'signup', 'confirm', 'password-reset-request', 'password-reset-token-verification', 'password-reset'];
+        $behaviors['authenticator']['except'] = ['options', 'login', 'signup'];
 
 
         // setup access
@@ -184,75 +189,212 @@ class UserController extends ActiveController
         return "ok";
     }
 
-    public function actionLogin()
+    public function actionLogin($authToken, $provider)
     {
-        $model = new LoginForm();
-        $model->roles = [
-            User::ROLE_USER,
-        ];
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $user = $model->getUser();
-            $user->generateAccessTokenAfterUpdatingClientInfo(true);
+        $socialUser = null;
+        $userProfileDb = null;
+        switch ($provider) {
+            case 'FACEBOOK':
+                $facebook = new FacebookComponent();
+                $socialUser = $facebook->me($authToken);
+                if ($socialUser == null) {
+                    throw new HttpException(422, json_encode("invalid authentication token."));
+                }
 
-            $response = \Yii::$app->getResponse();
-            $response->setStatusCode(200);
-            $id = implode(',', array_values($user->getPrimaryKey(true)));
+                $userProfileDb = UserProfile::findOne(['facebook_profile_id' => $socialUser->id]);
 
-            $responseData = [
-                'id' => (int)$id,
-                'access_token' => $user->access_token,
-            ];
+                if ($userProfileDb == null) {
+                    throw new HttpException(422, json_encode("invalid authentication token."));
+                } else {
+                    $userProfileDb->facebook_auth = $authToken;
+                    $userProfileDb->save();
+                }
 
-            return $responseData;
-        } else {
-            // Validation error
-            throw new HttpException(422, json_encode($model->errors));
+                break;
+            case "GOOGLE":
+                $google = new GoogleComponent();
+                $socialUser = $google->me($authToken);
+
+                if ($socialUser == null) {
+                    throw new HttpException(422, json_encode("invalid authentication token."));
+                }
+                $userProfileDb = UserProfile::findOne(['google_profile_id' => $socialUser->id]);
+
+                if ($userProfileDb == null) {
+                    throw new HttpException(422, json_encode("invalid authentication token."));
+                } else {
+                    $userProfileDb->google_auth = $authToken;
+                    $userProfileDb->save();
+                }
+                break;
+
         }
+
+        $user = User::findOne(['id' => $userProfileDb->user_id]);
+        $user->generateAccessTokenAfterUpdatingClientInfo(true);
+
+
+        $response = \Yii::$app->getResponse();
+        $response->setStatusCode(200);
+        $id = implode(',', array_values($user->getPrimaryKey(true)));
+
+//        HelperFunction::output($user);
+        $responseData = [
+            'id' => (int)$id,
+            'access_token' => $user->access_token,
+        ];
+
+        return $responseData;
     }
 
     public function actionSignup($authToken, $provider)
     {
-
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
         $model = new SignupForm();
+        $userProfile = new UserProfile();
 
         try {
 
             $user = null;
 
             switch ($provider) {
-                case 'FACEBOOK':
-                    break;
-                case "GOOGLE":
-                    break;
+                case SocialProviders::$FACEBOOK:
+                    $facebook = new FacebookComponent();
+                    $user = $facebook->me($authToken);
 
+                    if ($user == null) {
+                        throw new HttpException(422, json_encode("invalid authentication token."));
+                    }
+
+                    $model->email = $user->getEmail();
+                    $model->username = $user->getEmail();
+                    $model->password = HelperFunction::random_password();
+
+                    $userProfile->first_name = $user->getFirstName();
+                    $userProfile->last_name = $user->getLastName();
+                    $userProfile->full_name = $user->getName();
+                    $userProfile->facebook_auth = $authToken;
+                    $userProfile->facebook_profile_id = $user->getId();
+                    $userProfile->password = $model->password;
+
+
+                    break;
+                case SocialProviders::$GOOGLE:
+                    $google = new GoogleComponent();
+                    $user = $google->me($authToken);
+
+//                    HelperFunction::output($user);
+                    if ($user == null) {
+                        throw new HttpException(422, json_encode("invalid authentication token."));
+                    }
+
+                    $model->email = $user->email;
+                    $model->username = $user->email;
+                    $model->password = HelperFunction::random_password();
+
+                    $userProfile->first_name = $user->givenName;
+                    $userProfile->last_name = $user->familyName;
+                    $userProfile->full_name = $user->name;
+                    $userProfile->google_auth = $authToken;
+                    $userProfile->google_profile_id = $user->id;
+                    $userProfile->password = $model->password;
+                    $userProfile->profile_image = $user->picture;
+
+                    break;
 
             }
 
-            if ($user == null) {
-                throw new HttpException(422, json_encode("invalid authentication token."));
-            }
+            $userDb = User::findOne(['username' => $model->username]);
+//            HelperFunction::output($model);
+            // if user already registered with email or another social network
+            if ($userDb != null) {
+
+                $userProfile = UserProfile::findOne(['user_id' => $userDb->id]);
+
+                if ($userProfile == null) {
+                    $userProfile->user_id = $userDb->id;
+                    if (!$userProfile->save()) {
+                        throw new HttpException(422, json_encode($userProfile->errors));
+                    }
+                } else {
+
+                    if ($provider == SocialProviders::$FACEBOOK) {
+
+                        $userProfile->first_name = $user->first_name;
+                        $userProfile->last_name = $user->last_name;
+                        $userProfile->full_name = $user->name;
+                        $userProfile->facebook_auth = $authToken;
+                        $userProfile->facebook_profile_id = $user->id;
+
+                    } else if ($provider == SocialProviders::$GOOGLE) {
+
+                        $userProfile->first_name = $user->givenName;
+                        $userProfile->last_name = $user->familyName;
+                        $userProfile->full_name = $user->name;
+                        $userProfile->google_auth = $authToken;
+                        $userProfile->google_profile_id = $user->id;
+                        $userProfile->profile_image = $user->picture;
+
+                    }
+
+                    if (!$userProfile->save()) {
+                        throw new HttpException(422, json_encode($userProfile->errors));
+                    }
+
+                }
+
+                $userDb->status = User::STATUS_ACTIVE;
+                $userDb->confirmed_at = HelperFunction::current_mysql_datetime();
+
+                if ($userDb->save(false)) {
+                    $transaction->commit();
+                    $response = \Yii::$app->getResponse();
+                    $response->setStatusCode(201);
+                    $responseData = "true";
+                    return $responseData;
+
+                } else {
+                    throw new HttpException(422, json_encode($user->errors));
+                }
 
 
-            if ($model->validate() && $model->signup()) {
-                // Send confirmation email
-                $model->sendConfirmationEmail();
-
-                $response = \Yii::$app->getResponse();
-                $response->setStatusCode(201);
-
-                $responseData = "true";
-
-                return $responseData;
             } else {
-                // Validation error
-                throw new HttpException(422, json_encode($model->errors));
+
+                if ($model->validate() && $model->signup()) {
+
+                    $user = User::findOne(['username' => $model->username]);
+
+                    $userProfile->user_id = $user->id;
+
+                    if ($userProfile->save()) {
+                        $user->status = User::STATUS_ACTIVE;
+                        $user->confirmed_at = HelperFunction::current_mysql_datetime();
+                        if ($user->save(false)) {
+                        } else {
+                            throw new HttpException(422, json_encode($user->errors));
+                        }
+
+                    } else {
+                        throw new HttpException(422, json_encode($userProfile->errors));
+                    }
+
+                    $transaction->commit();
+                    $response = \Yii::$app->getResponse();
+                    $response->setStatusCode(201);
+
+                    $responseData = "true";
+
+                    return $responseData;
+                } else {
+                    // Validation error
+                    throw new HttpException(422, json_encode($model->errors));
+                }
             }
         } catch (\Exception $exception) {
             $transaction->rollBack();
-            throw new \HttpException(500, json_encode("unable to complete database trasactions"));
+            throw new HttpException(500, $exception->getMessage());
         }
     }
 

@@ -31,4 +31,9 @@ class HelperFunction
         }
         return implode($pass); //turn the array into a string
     }
+
+    public static function current_mysql_datetime()
+    {
+        return date("Y-m-d H:i:s");
+    }
 }

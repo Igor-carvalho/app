@@ -57,16 +57,18 @@ export class UserService {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
+        var parameters = {
+            "SignupForm": {
+                "username": username,
+                "email": email,
+                "password": password
+            }
+        };
+
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/signup',
-                JSON.stringify({
-                    "SignupForm": {
-                        "username": username,
-                        "email": email,
-                        "password": password
-                    }
-                }),
+                JSON.stringify(parameters),
                 {headers: headers}
             )
             .map(response => response.json())

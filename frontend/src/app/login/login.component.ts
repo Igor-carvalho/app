@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 import {UserService} from '../model/user.service';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {SocialUserService} from "../services/social-user.service";
+import {ActivityFilter} from "../model/ActivityFilter";
 
 @Component({
     selector: 'app-login',
@@ -14,12 +16,15 @@ export class LoginComponent implements OnInit {
     private _submitted: boolean = false;
     private _errorMessage: string = '';
     private _returnURL: string = '/';
+    private autoLoginProceeded: boolean;
 
     constructor(private _userService: UserService,
                 private _router: Router,
                 private _activatedRoute: ActivatedRoute,
+                private _socialUserService: SocialUserService,
                 private _formBuilder: FormBuilder) {
 
+        this.autoLoginProceeded = false;
         this._loginForm = _formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
@@ -89,7 +94,44 @@ export class LoginComponent implements OnInit {
             this._returnURL = decodeURIComponent(this._activatedRoute.snapshot.queryParams['r']);
         }
 
+        if (!this.autoLoginProceeded) {
+            this._router.routerState.root.queryParams.subscribe((params: Params) => {
+                // this._activityFilter = <ActivityFilter> params;
+                if (params.authToken != null && params.provider != null) {
+                    this.socialLogin(params.authToken, params.provider);
+                }
+            });
+            this.autoLoginProceeded = true;
+        }
+
         console.log(this._returnURL);
+    }
+
+    private socialLogin(authToken, provider) {
+        this._socialUserService.login(authToken, provider)
+            .subscribe(
+                result => {
+                    if (result.success) {
+                        console.log(result.data);
+                        this._router.navigateByUrl(this._returnURL);
+                    } else {
+                        this._errorMessage = 'Username or password is incorrect.';
+                        this._submitted = false;
+                    }
+                },
+                error => {
+                    this._submitted = false;
+                    // Validation error
+                    if (error.status == 422) {
+                        this._resetFormErrors();
+                        // this._errorMessage = "There was an error on submission. Please check again.";
+                        let errorFields = JSON.parse(error.data.message);
+                        this._setFormErrors(errorFields);
+                    } else {
+                        this._errorMessage = error.data;
+                    }
+                }
+            );
     }
 
     public onSubmit(elementValues: any) {

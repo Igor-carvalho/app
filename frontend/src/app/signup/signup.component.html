@@ -32,22 +32,30 @@
                             <div class="form-group row" [ngClass]="{'has-danger': !_isValid('email')}">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <input class="form-control registration_inputs" type="email" placeholder="Email Address" [formControl]="_signupForm.controls['email']" [ngClass]="{'form-control-danger': !_isValid('email')}">
-                                    </div><div class="clearfix"></div>
-                                </div><div class="clearfix"></div>
+                                        <input class="form-control registration_inputs" type="email"
+                                               placeholder="Email Address" [formControl]="_signupForm.controls['email']"
+                                               [ngClass]="{'form-control-danger': !_isValid('email')}">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
                                 <div class="col-sm-12" *ngIf="!_formErrors.email.valid">
                                     <span class="help-block help-block-error">{{_formErrors.email.message}}</span>
                                 </div>
                                 <div class="col-sm-12">
-                                    <p class="help-text">* Email must be valid email address. i.e. sample@username.com.</p>
+                                    <p class="help-text">* Email must be valid email address. i.e.
+                                        sample@username.com.</p>
                                 </div>
                             </div>
                             <div class="form-group row" [ngClass]="{'has-danger': !_isValid('password')}">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <input class="form-control registration_inputs" type="password" placeholder="Password" [formControl]="_signupForm.controls['password']" [ngClass]="{'form-control-danger': !_isValid('password')}">
+                                        <input class="form-control registration_inputs" type="password"
+                                               placeholder="Password" [formControl]="_signupForm.controls['password']"
+                                               [ngClass]="{'form-control-danger': !_isValid('password')}">
                                     </div>
-                                </div><div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
                                 <div class="col-sm-12" *ngIf="!_formErrors.password.valid">
                                     <span class="help-block help-block-error">{{_formErrors.password.message}}</span>
                                 </div>
@@ -55,21 +63,28 @@
                                     <p class="help-text">* Password must be more than 6 characters.</p>
                                 </div>
                             </div>
-                            <div class="form-group row sign_up_form_bottom_row" [ngClass]="{'has-danger': !_isValid('password_confirm')}">
+                            <div class="form-group row sign_up_form_bottom_row"
+                                 [ngClass]="{'has-danger': !_isValid('password_confirm')}">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <input class="form-control registration_inputs" type="password" placeholder="Repeat Password" [formControl]="_signupForm.controls['password_confirm']" [ngClass]="{'form-control-danger': !_isValid('password_confirm')}">
+                                        <input class="form-control registration_inputs" type="password"
+                                               placeholder="Repeat Password"
+                                               [formControl]="_signupForm.controls['password_confirm']"
+                                               [ngClass]="{'form-control-danger': !_isValid('password_confirm')}">
                                     </div>
-                                    <span class="help-block help-block-error" *ngIf="!_formErrors.password_confirm.valid">{{_formErrors.password_confirm.message}}</span>
+                                    <span class="help-block help-block-error"
+                                          *ngIf="!_formErrors.password_confirm.valid">{{_formErrors.password_confirm.message}}</span>
                                 </div>
                             </div>
 
                             <div class="row submit_button_row">
                                 <div class="col-xs-12 center_text">
-                                    <button type="submit" class="btn form_submit_buttons px-2" [disabled]="!_signupForm.valid || _submitted == true">Signup</button>
+                                    <button type="submit" class="btn form_submit_buttons px-2"
+                                            [disabled]="!_signupForm.valid || _submitted == true">Signup
+                                    </button>
                                 </div>
-                                <div class="col-xs-12" *ngIf="_submitted" >
-                                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                <div class="col-xs-12" *ngIf="_submitted">
+                                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                                 </div>
                                 <div *ngIf="_errorMessage" class="col-xs-12 error-block mt-h">
                                     <div class="alert alert-danger">{{_errorMessage}}</div>
@@ -79,12 +94,15 @@
                             <div class="row center_text or_div">or</div>
                             <div class="row google_and_facebook_signup_rows">
                                 <div class="col-xs-12 center_text">
-                                    <button type="submit" class="btn btn-block btn_google px-2">Sign up with Google</button>
+                                    <button type="button" (click)="signInWithGoogle()" class="btn btn-block btn_google px-2">Sign up with Google
+                                    </button>
                                 </div>
                             </div>
                             <div class="row google_and_facebook_signup_rows">
                                 <div class="col-xs-12 center_text">
-                                    <button type="submit" class="btn btn-block btn_facebook px-2">Sign up with Facebook</button>
+                                    <button (click)="signInWithFB()" type="button"
+                                            class="btn btn-block btn_facebook px-2">Sign up with Facebook
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -92,11 +110,13 @@
 
                     <div class="card-body p-4" *ngIf="_showConfirmation == true">
                         <h1>Thank you for signing up</h1>
-                        <br />
+                        <br/>
                         <p class="text-muted">
-                            To complete the registration process you must confirm your account. An email has sent to {{_signupForm.controls['email'].value}}.<br />
-                            <br />
-                            To confirm and activate your account please check your inbox and click on the link found in the email we just sent.
+                            To complete the registration process you must confirm your account. An email has sent to
+                            {{_signupForm.controls['email'].value}}.<br/>
+                            <br/>
+                            To confirm and activate your account please check your inbox and click on the link found in
+                            the email we just sent.
                         </p>
                         <div class="row">
                             <div class="col-xs-6">

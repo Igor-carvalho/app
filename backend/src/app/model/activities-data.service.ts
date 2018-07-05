@@ -15,6 +15,8 @@ import {Activities} from "./activities";
 @Injectable()
 export class ActivitiesDataService {
 
+    public static TABLE_NAME = "activities";
+
     constructor(private _globalService: GlobalService,
                 private _staffService: StaffService,
                 private _authHttp: AuthHttp) {

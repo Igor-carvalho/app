@@ -9,6 +9,8 @@ import {ActivitiesRoutingModule} from "./activities-routing.module";
 import {MultiselectDropdownModule} from "angular-2-dropdown-multiselect";
 import {MyDatePickerModule} from 'angular4-datepicker/src/my-date-picker';
 
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
 
 @NgModule({
     imports: [
@@ -16,7 +18,8 @@ import {MyDatePickerModule} from 'angular4-datepicker/src/my-date-picker';
         SharedModule,
         ActivitiesRoutingModule,
         MultiselectDropdownModule,
-        MyDatePickerModule
+        MyDatePickerModule,
+        TabsModule
     ],
     declarations: [
         ActivitiesListComponent,

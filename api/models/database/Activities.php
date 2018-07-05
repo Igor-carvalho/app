@@ -39,6 +39,7 @@ class Activities extends \yii\db\ActiveRecord
     public $macro_category;
     public $micro_category;
     public $weather_types;
+    public $translations;
 
     /**
      * @inheritdoc

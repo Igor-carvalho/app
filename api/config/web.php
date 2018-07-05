@@ -215,6 +215,41 @@ $config = [
                         'GET budget-types' => 'budget-types',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/languages',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS public' => 'options',
+                        'GET public' => 'public',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/languages-table-columns',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS public' => 'options',
+                        'GET public' => 'public',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/social-user',
+                    'pluralize' => false,
+                    'tokens' => [
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS signup' => 'options',
+                        'GET signup' => 'signup',
+                        'OPTIONS login' => 'options',
+                        'GET login' => 'login',
+                    ]
+                ],
             ]
         ],
         'response' => [

@@ -4,22 +4,29 @@ import {CustomValidators} from 'ng2-validation';
 
 import {UserService} from '../model/user.service';
 import {Router} from "@angular/router";
+import {AuthService, FacebookLoginProvider, GoogleLoginProvider} from "angularx-social-login";
+import {SocialUserService} from "../services/social-user.service";
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
 })
 export class SignupComponent implements OnInit {
-    private _signupForm:FormGroup;
-    private _formErrors:any;
-    private _submitted:boolean = false;
-    private _errorMessage:string = '';
-    private _showConfirmation:boolean = false;
+    private _signupForm: FormGroup;
+    private _formErrors: any;
+    private _submitted: boolean = false;
+    private _errorMessage: string = '';
+    private _showConfirmation: boolean = false;
 
-    constructor(private _userService:UserService,
-                private _router:Router,
-                private _formBuilder:FormBuilder) {
+    private socialSigningUp: boolean;
 
+    constructor(private _userService: UserService,
+                private _router: Router,
+                private _formBuilder: FormBuilder,
+                private authService: AuthService,
+                private _socialUserService: SocialUserService
+    ) {
+        this.socialSigningUp = false;
         let password = new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)]));
         let passwordConfirm = new FormControl('', Validators.compose([Validators.required, CustomValidators.equalTo(password)]));
 
@@ -37,7 +44,15 @@ export class SignupComponent implements OnInit {
 
     }
 
-    private _setFormErrors(errorFields:any):void{
+    signInWithFB(): void {
+        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    }
+
+    signInWithGoogle(): void {
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    }
+
+    private _setFormErrors(errorFields: any): void {
         for (let key in errorFields) {
             // skip loop if the property is from prototype
             if (!errorFields.hasOwnProperty(key)) continue;
@@ -48,7 +63,7 @@ export class SignupComponent implements OnInit {
         }
     }
 
-    private _resetFormErrors():void{
+    private _resetFormErrors(): void {
         this._formErrors = {
             email: {valid: true, message: ''},
             password: {valid: true, message: ''},
@@ -56,22 +71,24 @@ export class SignupComponent implements OnInit {
         };
     }
 
-    private _isValid(field):boolean {
-        let isValid:boolean = false;
+    private _isValid(field): boolean {
+        let isValid: boolean = false;
 
         // If the field is not touched and invalid, it is considered as initial loaded form. Thus set as true
-        if(this._signupForm.controls[field].touched == false) {
+        if (this._signupForm.controls[field].touched == false) {
             isValid = true;
         }
         // If the field is touched and valid value, then it is considered as valid.
-        else if(this._signupForm.controls[field].touched == true && this._signupForm.controls[field].valid == true) {
+        else if (this._signupForm.controls[field].touched == true && this._signupForm.controls[field].valid == true) {
             isValid = true;
         }
         return isValid;
     }
 
     public onValueChanged(data?: any) {
-        if (!this._signupForm) { return; }
+        if (!this._signupForm) {
+            return;
+        }
         const form = this._signupForm;
         for (let field in this._formErrors) {
             // clear previous error message (if any)
@@ -86,6 +103,47 @@ export class SignupComponent implements OnInit {
     ngOnInit() {
         this._resetFormErrors();
         this._userService.logout();
+
+        if (!this.socialSigningUp) {
+            this.authService.authState.subscribe((user) => {
+                console.log(user);
+                if (user != null)
+                    this.loginSocial(user.authToken, user.provider);
+                else {
+                    this.socialSigningUp = false;
+                }
+            });
+        }
+    }
+
+    private loginSocial(authToken, provider) {
+        this._socialUserService.signup(authToken, provider)
+            .subscribe(
+                result => {
+                    if (result.success) {
+                        // show confirmation dialog
+
+                        this._router.navigate(['/login'], {queryParams: {authToken: authToken, provider: provider}});
+                    } else {
+                        this._errorMessage = 'Registration is failed. Please check and try again.';
+                        this._submitted = false;
+                    }
+                },
+                error => {
+                    this._submitted = false;
+                    // Validation error
+                    if (error.status == 422) {
+                        this._resetFormErrors();
+                        // this._errorMessage = "There was an error on submission. Please check again.";
+                        let errorFields = JSON.parse(error.data.message);
+                        this._setFormErrors(errorFields);
+                    } else {
+                        this._errorMessage = error.data;
+                    }
+
+                    console.log(this._errorMessage);
+                }
+            );
     }
 
     public onSubmit(elementValues: any) {
@@ -94,7 +152,7 @@ export class SignupComponent implements OnInit {
         this._userService.signup(elementValues.username, elementValues.email, elementValues.password)
             .subscribe(
                 result => {
-                    if(result.success) {
+                    if (result.success) {
                         // show confirmation dialog
                         this._showConfirmation = true;
                     } else {
@@ -105,7 +163,7 @@ export class SignupComponent implements OnInit {
                 error => {
                     this._submitted = false;
                     // Validation error
-                    if(error.status == 422) {
+                    if (error.status == 422) {
                         this._resetFormErrors();
                         // this._errorMessage = "There was an error on submission. Please check again.";
                         let errorFields = JSON.parse(error.data.message);

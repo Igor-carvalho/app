@@ -350,10 +350,13 @@ class ActivitiesController extends ActiveController
         $return = [];
 
         foreach ($activities as $activity) {
-            $object = json_decode(json_encode($activity->toArray()));
-            $object->micro_icon = $activityMicroIcon[$activity->id];
 
-            $return[] = $object;
+            if(isset($activityMicroIcon[$activity->id])) {
+                $object = json_decode(json_encode($activity->toArray()));
+                $object->micro_icon = $activityMicroIcon[$activity->id];
+
+                $return[] = $object;
+            }
         }
 
 

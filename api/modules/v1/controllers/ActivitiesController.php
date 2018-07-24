@@ -233,15 +233,14 @@ class ActivitiesController extends ActiveController
         $model->load($postData, '');
         $model->images = json_encode($model->images);
 
-        $translations = $postData['translations'];
-        return $translations;
+//        $translations = $postData['translations'];
+//        return $translations;
 
 
         $model->date_starts = $this->fromFrontDateObject($model->date_starts);
         $model->date_ends = $this->fromFrontDateObject($model->date_ends);
 
 
-        return $model;
 
         try {
             if ($model->validate() && $model->save()) {
@@ -281,6 +280,7 @@ class ActivitiesController extends ActiveController
         }
 
 
+        $transaction->commit();
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(200);
 

@@ -241,7 +241,6 @@ class ActivitiesController extends ActiveController
         $model->date_ends = $this->fromFrontDateObject($model->date_ends);
 
 
-
         try {
             if ($model->validate() && $model->save()) {
 
@@ -292,11 +291,11 @@ class ActivitiesController extends ActiveController
     {
         $model = Activities::findOne(['id' => $id]);
 
-        $model->soft_deleted = true;
-
-        if ($model->save(false) === false) {
-            throw new ServerErrorHttpException('Failed to delete the object for unknown reason.');
+        if ($model == null) {
+            throw new NotFoundHttpException("Object not found: $id");
         }
+
+        Activities::updateAll(['soft_deleted' => true], ['id' => $id]);
 
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(204);
@@ -351,7 +350,7 @@ class ActivitiesController extends ActiveController
 
         foreach ($activities as $activity) {
 
-            if(isset($activityMicroIcon[$activity->id])) {
+            if (isset($activityMicroIcon[$activity->id])) {
                 $object = json_decode(json_encode($activity->toArray()));
                 $object->micro_icon = $activityMicroIcon[$activity->id];
 

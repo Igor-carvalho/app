@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "languages_content".
  *
  * @property integer $id
+ * @property integer $record_id
  * @property integer $languages_id
  * @property integer $languages_tables_columns_id
  * @property integer $languages_tables_id
@@ -34,8 +35,8 @@ class LanguagesContent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['languages_id', 'languages_tables_columns_id', 'languages_tables_id'], 'required'],
-            [['languages_id', 'languages_tables_columns_id', 'languages_tables_id'], 'integer'],
+            [['record_id', 'languages_id', 'languages_tables_columns_id', 'languages_tables_id'], 'required'],
+            [['record_id', 'languages_id', 'languages_tables_columns_id', 'languages_tables_id'], 'integer'],
             [['translation'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['languages_id'], 'exist', 'skipOnError' => true, 'targetClass' => Languages::className(), 'targetAttribute' => ['languages_id' => 'id']],
@@ -50,6 +51,7 @@ class LanguagesContent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'record_id' => 'Record ID',
             'languages_id' => 'Languages ID',
             'languages_tables_columns_id' => 'Languages Tables Columns ID',
             'languages_tables_id' => 'Languages Tables ID',

@@ -36,6 +36,8 @@ use Yii;
  */
 class Activities extends \yii\db\ActiveRecord
 {
+    public static $LANGUAGE_TABLE_ID = 1; //Reference from DB.
+
     public $macro_category;
     public $micro_category;
     public $weather_types;

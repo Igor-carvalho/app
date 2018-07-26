@@ -13,6 +13,7 @@ use app\models\database\ActivitiesMicroCategories;
 use app\models\database\ActivitiesWeathers;
 use app\models\database\Itineraries;
 use app\models\database\ItinerariesActivities;
+use app\models\database\language\LanguagesContent;
 use app\models\database\SystemMicroCategories;
 use app\models\database\WeatherTypes;
 use app\models\UserEditForm;
@@ -149,6 +150,10 @@ class ActivitiesController extends ActiveController
 
             $activityObj->date_starts = $this->toFrontDateObject(DateTimeHelper::getDateOnly($activityObj->date_starts));
             $activityObj->date_ends = $this->toFrontDateObject(DateTimeHelper::getDateOnly($activityObj->date_ends));
+            $activityObj->translations = LanguagesContent::findAll([
+                'record_id' => $activity->id,
+                'languages_tables_id' => Activities::$LANGUAGE_TABLE_ID
+            ]);
 
             return $activityObj;
         } else {
@@ -233,8 +238,7 @@ class ActivitiesController extends ActiveController
         $model->load($postData, '');
         $model->images = json_encode($model->images);
 
-//        $translations = $postData['translations'];
-//        return $translations;
+        $translations = $postData['translations'];
 
 
         $model->date_starts = $this->fromFrontDateObject($model->date_starts);
@@ -266,6 +270,28 @@ class ActivitiesController extends ActiveController
                     $storeChild->activities_id = $model->id;
                     $storeChild->weather_types_id = $each;
                     $storeChild->save();
+                }
+
+                LanguagesContent::deleteAll([
+                    'record_id' => $model->id,
+                    'languages_tables_id' => $translations[0]['languages_tables_id']
+                ]);
+
+                foreach ($translations as $translation) {
+
+                    if (empty($translation['translation'])) {
+                        continue;
+                    }
+
+                    $storeLanguageContent = new LanguagesContent();
+                    $storeLanguageContent->record_id = $model->id;
+                    $storeLanguageContent->languages_id = $translation['languages_id'];
+                    $storeLanguageContent->languages_tables_columns_id = $translation['languages_tables_columns_id'];
+                    $storeLanguageContent->languages_tables_id = $translation['languages_tables_id'];
+                    $storeLanguageContent->translation = $translation['translation'];
+                    if (!$storeLanguageContent->save()) {
+                        HelperFunction::output($storeLanguageContent->errors);
+                    }
                 }
 
 

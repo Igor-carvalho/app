@@ -177,6 +177,7 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
                     .subscribe(
                         activity => {
                             this._activity = activity;
+                            this.restoreLanguageData(activity.translations);
                             this._mode = 'update';
                         },
                         error => {
@@ -458,14 +459,56 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
 
     }
 
+    private restoreLanguageData(translations: LanguageContent[]) {
+
+        this.languages.forEach((eachLang) => {
+
+            translations.forEach(function (activityTranslation) {
+                if (activityTranslation.languages_id == eachLang.id && eachLang.id == Language.DB_COLUMN_ID_REFERENCE.it.language_id) {
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.it.activities.columns[0].id)
+                        eachLang.activity.description = activityTranslation.translation;
+
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.it.activities.columns[1].id)
+                        eachLang.activity.name = activityTranslation.translation;
+
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.it.activities.columns[2].id) {
+                        eachLang.activity.address = activityTranslation.translation;
+                        // console.log("set address", activityTranslation.translation);
+                    }
+
+                }
+
+                if (activityTranslation.languages_id == eachLang.id && eachLang.id == Language.DB_COLUMN_ID_REFERENCE.fr.language_id) {
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.fr.activities.columns[0].id)
+                        eachLang.activity.description = activityTranslation.translation;
+
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.fr.activities.columns[1].id)
+                        eachLang.activity.name = activityTranslation.translation;
+
+                    if (activityTranslation.languages_tables_columns_id == Language.DB_COLUMN_ID_REFERENCE.fr.activities.columns[2].id) {
+                        eachLang.activity.address = activityTranslation.translation;
+                        // console.log("set address", activityTranslation.translation);
+                    }
+
+                }
+
+            });
+
+
+        });
+
+        console.log(this.languages);
+
+    }
+
     private formatTranslationData(languages: Language[]) {
 
         let languageContents = [];
 
-        languages.forEach((eachLanguage)=> {
-            if(eachLanguage.short_code != 'en') {
+        languages.forEach((eachLanguage) => {
+            if (eachLanguage.short_code != 'en') {
 
-                Language.DB_COLUMN_ID_REFERENCE.it.activities.columns.forEach((eachColumn)=>{
+                Language.DB_COLUMN_ID_REFERENCE.it.activities.columns.forEach((eachColumn) => {
                     let langContent = new LanguageContent();
                     langContent.languages_id = eachLanguage.id;
                     langContent.languages_tables_columns_id = eachColumn.id;

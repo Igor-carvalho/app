@@ -20,11 +20,25 @@ export class Language {
             activities: {
                 table_id: 1,
                 columns: [
+                    // column sequence should remain same.
                     {id: 2, name: "description"},
                     {id: 1, name: "name"},
                     {id: 3, name: "address"}
                 ]
-            }
+            },
+            language_id: 2,
+        },
+        fr: {
+            activities: {
+                table_id: 1,
+                columns: [
+                    // column sequence should remain same.
+                    {id: 2, name: "description"},
+                    {id: 1, name: "name"},
+                    {id: 3, name: "address"}
+                ]
+            },
+            language_id: 3,
         }
     };
 

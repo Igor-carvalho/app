@@ -36,7 +36,9 @@
                                     {{activity.id}}
                                 </td>
                                 <td style="text-align: center;">
-                                    <img height="86" [src]="activity.images[0]"/>
+                                    <div *ngIf="activity.images">
+                                        <img height="86" [src]="activity.images[0]"/>
+                                    </div>
                                 </td>
                                 <td>
                                     {{activity.name}}

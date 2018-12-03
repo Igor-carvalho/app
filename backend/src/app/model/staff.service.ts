@@ -24,7 +24,13 @@ export class StaffService {
     }
 
     public login(username, password) {
-        let headers = new Headers();
+        // let headers = new Headers();
+        let headers =new Headers({
+            'Content-Type':  'application/json',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Origin': '*'
+        })
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp

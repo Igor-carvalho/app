@@ -4,10 +4,10 @@ import {UserService} from './user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-    constructor(private _userService: UserService, private _router:Router) {}
+    constructor(private _userService: UserService, private _router: Router) {}
 
-    canActivate(route:ActivatedRouteSnapshot, state:RouterStateSnapshot):boolean {
-        let url:string = state.url;
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        const url: string = state.url;
         return this.checkLogin(url);
     }
 
@@ -15,8 +15,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.canActivate(route, state);
     }
 
-    checkLogin(url: string):boolean{
-        if(this._userService.isLoggedIn()) {  return true; }
+    checkLogin(url: string): boolean {
+        if (this._userService.isLoggedIn()) {  return true; }
 
         // Store the attempted URL for redirecting
         this._userService.redirectURL = url;

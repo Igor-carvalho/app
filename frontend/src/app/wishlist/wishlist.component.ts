@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, DoCheck} from '@angular/core';
 import {
     TweenMax,
     Power2,
@@ -11,26 +11,27 @@ import {
     TweenLite,
     CSSPlugin,
     EasePack
-} from "gsap";
+} from 'gsap';
 import * as $ from 'jquery';
-import {Params, Router} from "@angular/router";
-import {ActivityFilter} from "../model/ActivityFilter";
-import {ActivitiesDataService} from "../services/activities-data.service";
-import {UserService} from "../model/user.service";
-import {ArrayUtils} from "../utilities/ArrayUtils";
-import {ItineraryDataService} from "../services/itinerary-data.service";
-import {Itinerary} from "../model/itinerary/Itinerary";
-import {StaticDataService} from "../services/static-data.service";
-import {FrontendLayoutComponent} from "../layouts/frontend-layout.component";
-import {AppInitialSettings} from "../model/AppInitialSettings";
-import {ItineraryExport} from "../model/ItineraryExport";
-import {ItineraryActivities} from "../model/ItineraryActivities";
+import {Params, Router} from '@angular/router';
+import {ActivityFilter} from '../model/ActivityFilter';
+import {ActivitiesDataService} from '../services/activities-data.service';
+import {UserService} from '../model/user.service';
+import {ArrayUtils} from '../utilities/ArrayUtils';
+import {ItineraryDataService} from '../services/itinerary-data.service';
+import {Itinerary} from '../model/itinerary/Itinerary';
+import {StaticDataService} from '../services/static-data.service';
+import {FrontendLayoutComponent} from '../layouts/frontend-layout.component';
+import {AppInitialSettings} from '../model/AppInitialSettings';
+import {ItineraryExport} from '../model/ItineraryExport';
+import {ItineraryActivities} from '../model/ItineraryActivities';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
     selector: 'app-wishlist',
     templateUrl: './wishlist.component.html',
 })
-export class WishlistComponent implements OnInit {
+export class WishlistComponent implements OnInit, OnDestroy, DoCheck {
 
     public _activityFilter: ActivityFilter;
     public _activities: any;
@@ -43,6 +44,7 @@ export class WishlistComponent implements OnInit {
     public loading: boolean;
     public appInitSettings: AppInitialSettings;
     private itineraryExport: ItineraryExport;
+    filterParams ;
 
     constructor(private _router: Router,
                 private _userService: UserService,
@@ -58,8 +60,10 @@ export class WishlistComponent implements OnInit {
 
         this._router.routerState.root.queryParams.subscribe((params: Params) => {
             // this._activityFilter = <ActivityFilter> params;
+            this.filterParams = params;
+            // console.log(typeof params);
             this._activityFilter = new ActivityFilter(params);
-            console.log(this._activityFilter);
+            console.log('filter', this._activityFilter);
         });
         this._arrayUtils = new ArrayUtils();
         this.macroCategories = [];
@@ -67,60 +71,65 @@ export class WishlistComponent implements OnInit {
     }
 
     populateFilterValues() {
-        $("#adult_number").html(this._activityFilter.num_adults);
-        $("#adults_number_input").val(this._activityFilter.num_adults);
+        $('#adult_number').html(this._activityFilter.num_adults);
+        $('#adults_number_input').val(this._activityFilter.num_adults);
 
 
-        $("#child_number").html(this._activityFilter.num_childs);
-        $("#children_number_input").val(this._activityFilter.num_childs);
+        $('#child_number').html(this._activityFilter.num_childs);
+        $('#children_number_input').val(this._activityFilter.num_childs);
 
 
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var startDate = new Date(this._activityFilter.date_starts);
-        var endDate = new Date(this._activityFilter.date_ends);
-        var getLowerMonthOne = monthsArray[startDate.getMonth()];
-        document.getElementById("month_one").innerHTML = getLowerMonthOne;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const startDate = new Date(this._activityFilter.date_starts + ' 00:00:00');
+        const endDate = new Date(this._activityFilter.date_ends + ' 00:00:00');
+        // console.log('date', [startDate, endDate]);
+        const getLowerMonthOne = monthsArray[startDate.getMonth()];
+        document.getElementById('month_one').innerHTML = getLowerMonthOne;
         $('#month-one').val(getLowerMonthOne);
         document.getElementById('calendar_dates_month_display_one').innerHTML = getLowerMonthOne;
 
-        var getLowerMonthTwo = monthsArray[endDate.getMonth()];
-        document.getElementById("month_two").innerHTML = getLowerMonthOne;
-        $('#month-two').val(getLowerMonthOne);
-        document.getElementById('calendar_dates_month_display_two').innerHTML = getLowerMonthOne;
+        const getLowerMonthTwo = monthsArray[endDate.getMonth()];
+        document.getElementById('month_two').innerHTML = getLowerMonthTwo;
+        $('#month-two').val(getLowerMonthTwo);
+        document.getElementById('calendar_dates_month_display_two').innerHTML = getLowerMonthTwo;
 
 
         $('#date_one').val(startDate.getDate());
         $('#date_two').val(endDate.getDate());
-        var budgetType = "low";
+        let budgetType = 'low';
 
         if (this._activityFilter.budget_type == 2)
-            budgetType = "medium";
+            budgetType = 'medium';
         else if (this._activityFilter.budget_type == 3)
-            budgetType = "high";
+            budgetType = 'high';
 
-        $("#" + budgetType + "-budget-radio").click();
+        $('#' + budgetType + '-budget-radio').click();
         this.budgetSelection(budgetType);
-
 
     }
 
     ngOnInit() {
-        if (window.location.href.indexOf("wishlist") > -1) {
-            console.log('this is working');
-            $('.app').css('background-color', "#f0f0f0");
+        if (window.location.href.indexOf('wishlist') > -1) {
+            $('.app').css('background-color', '#f0f0f0');
         }
-        console.log("ngInit");
+        console.log('wishlist:singleday?', this.appInitSettings.isSingleDay);
 
-        $("#edit-filter").show();
+        $('#edit-filter').css('display', 'inline-block');
+        $('#menu_back_icon').css('display', 'none');
+
         this.populateFilterValues();
         this.getMacroCategories();
 
         if (this.appInitSettings.isSingleDay) {
+            $('#calendar_not_singleday').hide();
+            $('#calendar_singleday').show();
             this.getOneDayItinerary(this._activityFilter);
         } else {
+            $('#calendar_not_singleday').show();
+            $('#calendar_singleday').hide();
             this.getActivities(this._activityFilter);
         }
-        TweenLite.to("#heading", 2, {rotation: 360});
+        TweenLite.to('#heading', 2, {rotation: 360});
         $('#day_one').html($('#date_one').val());
         $('#calendar_dates_day_display_one').html($('#date_one').val());
         $('#day_two').html($('#date_two').val());
@@ -152,20 +161,20 @@ export class WishlistComponent implements OnInit {
         }
 
         $('#edit-filter').click(function () {
-            $(".sidebar_section").toggle(400);
+            $('.sidebar_section').toggle(400);
         });
         if ($(window).width() <= 480) {
             TweenLite.to('.budget_icons_container', 0.4, {float: 'none'});
         }
 
-        var dateFunction = new Date();
-        var todaysDate = dateFunction.getDate();
-        var currentMonth = dateFunction.getMonth();
-        var currentTime = dateFunction.getHours();
-        var endTime = currentTime + 1;
+        const dateFunction = new Date();
+        const todaysDate = dateFunction.getDate();
+        const currentMonth = dateFunction.getMonth();
+        const currentTime = dateFunction.getHours();
+        const endTime = currentTime + 1;
 
 
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
         $('#month_of_day_flow').html(monthsArray[currentMonth]);
         $('#calendar_dates_month_display').html(monthsArray[currentMonth]);
         $('#one-day-flow-month').val(monthsArray[currentMonth]);
@@ -179,8 +188,8 @@ export class WishlistComponent implements OnInit {
         $('#calendar_dates_to_display').html(endTime);
         $('#one-day-flow-time-two').val(endTime);
 
-        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
-        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
+        const timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-time-one')).value);
+        const timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-time-two')).value);
         if (timeOneInputVal > 11) {
             $('#AmPmOne').html('pm');
             $('#AmPmSpanOne').html('pm');
@@ -216,21 +225,21 @@ export class WishlistComponent implements OnInit {
         }
         TweenLite.to('.editFilters', 0.4, {visibility: 'hidden', borderBottomWidth: 0});
         TweenLite.to('.applyFilters', 0.4, {borderBottomWidth: 5, visibility: 'visible'});
-        TweenLite.to('.add_person', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.add_person', 0.4, {display: 'block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.add_person', 0.4, {scale: 0, delay: 0.4});
-        TweenLite.to('.remove_person', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.remove_person', 0.4, {display: 'block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.remove_person', 0.4, {scale: 0, delay: 0.4});
-        TweenLite.to('.calendar_dates_display', 0.4, {display: 'none', clearProps: "transform"});
-        TweenLite.to('.calendar_container', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.calendar_dates_display', 0.4, {display: 'none', clearProps: 'transform'});
+        TweenLite.to('.calendar_container', 0.4, {display: 'block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.calendar_container', 0.4, {scale: 0, delay: 0.4});
-        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.one_day_calendar_wrapper', 0.4, {scale: 0, delay: 0.4});
-        TweenLite.to('.budget_range_text_display', 0.4, {display: 'none', clearProps: "transform"});
+        TweenLite.to('.budget_range_text_display', 0.4, {display: 'none', clearProps: 'transform'});
         TweenLite.to('.budget_icons_container', 0.4, {
             display: 'inline-block',
             textAlign: 'center',
             delay: 0.4,
-            clearProps: "transform"
+            clearProps: 'transform'
         });
         TweenLite.from('.budget_icons_container', 0.4, {scale: 0, delay: 0.4});
 
@@ -241,15 +250,15 @@ export class WishlistComponent implements OnInit {
         TweenLite.to('.sidebar_section', 0.4, {width: 460, delay: 0.6});
         TweenLite.to('.applyFilters', 0.4, {visibility: 'hidden', borderBottomWidth: 0});
         TweenLite.to('.editFilters', 0.4, {borderBottomWidth: 5, visibility: 'visible'});
-        TweenLite.to('.add_person', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.remove_person', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.calendar_dates_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.add_person', 0.4, {display: 'none', scale: 0, clearProps: 'transform'});
+        TweenLite.to('.remove_person', 0.4, {display: 'none', scale: 0, clearProps: 'transform'});
+        TweenLite.to('.calendar_dates_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.calendar_dates_display', 0.4, {scale: 0, delay: 0.4});
-        TweenLite.to('.calendar_container', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'none', scale: 0, clearProps: "transform"});
-        TweenLite.to('.budget_range_text_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: "transform"});
+        TweenLite.to('.calendar_container', 0.4, {display: 'none', scale: 0, clearProps: 'transform'});
+        TweenLite.to('.one_day_calendar_wrapper', 0.4, {display: 'none', scale: 0, clearProps: 'transform'});
+        TweenLite.to('.budget_range_text_display', 0.4, {display: 'inline-block', delay: 0.4, clearProps: 'transform'});
         TweenLite.from('.budget_range_text_display', 0.4, {scale: 0, delay: 0.4});
-        //TweenLite.to('.budget_icons_container', 0.4, {display: 'none', textAlign: 'left', clearProps:"transform"});
+        // TweenLite.to('.budget_icons_container', 0.4, {display: 'none', textAlign: 'left', clearProps:"transform"});
         if ($('input[name=budget_input]:checked').val() == 'low_budget') {
             $('.low_budget_icon').attr('src', 'assets/img/low-budget-selected.svg');
             $('.budget_icons_container_two').css('display', 'none');
@@ -288,77 +297,80 @@ export class WishlistComponent implements OnInit {
                 $('.budget_icons_container').css('float', 'none');
             }
         }
-        $("#edit-filter").click();
+        $('#edit-filter').click();
+
         this._router.navigate(['/wishlist'], {queryParams: this._activityFilter});
 
         if (!this.appInitSettings.isSingleDay)
             this.getActivities(this._activityFilter);
         else {
-            this.getOneDayItinerary(this._activityFilter);
+            // this.getOneDayItinerary(this._activityFilter);
+            this.getActivities(this._activityFilter);
         }
+
     }
 
     addAdults() {
-        var $adultCount = $("#adults_number_input").val();
+        let $adultCount = $('#adults_number_input').val();
         $adultCount++;
-        $("#adult_number").html($adultCount);
-        $("#adults_number_input").val($adultCount);
+        $('#adult_number').html($adultCount);
+        $('#adults_number_input').val($adultCount);
         this._activityFilter.num_adults = $adultCount;
     }
 
     removeAdults() {
-        var $adultCount = $("#adults_number_input").val();
+        let $adultCount = $('#adults_number_input').val();
         if ($adultCount > 1) {
             $adultCount--;
-            $("#adult_number").html($adultCount);
-            $("#adults_number_input").val($adultCount);
+            $('#adult_number').html($adultCount);
+            $('#adults_number_input').val($adultCount);
         }
         this._activityFilter.num_adults = $adultCount;
     }
 
     addChild(id) {
         console.log(id);
-        var $childCount = $("#children_number_input").val();
+        let $childCount = $('#children_number_input').val();
         $childCount++;
-        $("#child_number").html($childCount);
-        $("#children_number_input").val($childCount);
+        $('#child_number').html($childCount);
+        $('#children_number_input').val($childCount);
         this._activityFilter.num_childs = $childCount;
     }
 
     removeChild() {
-        var $childCount = $("#children_number_input").val();
+        let $childCount = $('#children_number_input').val();
         if ($childCount > 0) {
             $childCount--;
-            $("#child_number").html($childCount);
-            $("#children_number_input").val($childCount);
+            $('#child_number').html($childCount);
+            $('#children_number_input').val($childCount);
         }
         this._activityFilter.num_childs = $childCount;
     }
 
     minusMonth(monthId) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-one")).value);
-        var monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-two")).value);
-        var monthOne = document.getElementById("month_one").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById('month-one')).value);
+        const monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById('month-two')).value);
+        let monthOne = document.getElementById('month_one').innerHTML;
         monthOne = monthOne.toLowerCase();
-        var indexOfMonthOne = monthsArray.indexOf(monthOne);
-        var monthTwo = document.getElementById("month_two").innerHTML;
+        const indexOfMonthOne = monthsArray.indexOf(monthOne);
+        let monthTwo = document.getElementById('month_two').innerHTML;
         monthTwo = monthTwo.toLowerCase();
-        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
-        var monthDisplay = document.getElementById("month_" + monthId).innerHTML;
+        const indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        let monthDisplay = document.getElementById('month_' + monthId).innerHTML;
         monthDisplay = monthDisplay.toLowerCase();
-        var indexOfMonth = monthsArray.indexOf(monthDisplay);
+        const indexOfMonth = monthsArray.indexOf(monthDisplay);
         if ((indexOfMonth - 1) >= 0) {
             if (monthId == 'two') {
                 if (indexOfMonthTwo > indexOfMonthOne) {
-                    var getLowerMonth = monthsArray[indexOfMonth - 1];
+                    const getLowerMonth = monthsArray[indexOfMonth - 1];
                     console.log(getLowerMonth);
-                    document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
+                    document.getElementById('month_' + monthId).innerHTML = getLowerMonth;
                     $('#month-' + monthId).val(getLowerMonth);
                     document.getElementById('calendar_dates_month_display_two').innerHTML = getLowerMonth;
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var monthNumber = indexOfMonth - 1;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const monthNumber = indexOfMonth - 1;
                     date.setMonth(monthNumber);
 
 
@@ -367,15 +379,15 @@ export class WishlistComponent implements OnInit {
                 }
             }
             if (monthId == 'one') {
-                var getLowerMonth = monthsArray[indexOfMonth - 1];
+                const getLowerMonth = monthsArray[indexOfMonth - 1];
                 console.log(getLowerMonth);
-                document.getElementById("month_" + monthId).innerHTML = getLowerMonth;
+                document.getElementById('month_' + monthId).innerHTML = getLowerMonth;
                 $('#month-' + monthId).val(getLowerMonth);
                 document.getElementById('calendar_dates_month_display_one').innerHTML = getLowerMonth;
 
 
-                var date = new Date(this._activityFilter.date_starts);
-                var monthNumber = indexOfMonth - 1;
+                const date = new Date(this._activityFilter.date_starts);
+                const monthNumber = indexOfMonth - 1;
                 date.setMonth(monthNumber);
 
                 this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -386,24 +398,24 @@ export class WishlistComponent implements OnInit {
     }
 
     plusMonth(monthId) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-one")).value);
-        var monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("month-two")).value);
-        var monthOne = document.getElementById("month_one").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const monthOneInputVal = parseFloat((<HTMLInputElement>document.getElementById('month-one')).value);
+        const monthTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById('month-two')).value);
+        let monthOne = document.getElementById('month_one').innerHTML;
         monthOne = monthOne.toLowerCase();
-        var indexOfMonthOne = monthsArray.indexOf(monthOne);
-        var monthTwo = document.getElementById("month_two").innerHTML;
+        const indexOfMonthOne = monthsArray.indexOf(monthOne);
+        let monthTwo = document.getElementById('month_two').innerHTML;
         monthTwo = monthTwo.toLowerCase();
-        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
-        var monthDisplay = document.getElementById("month_" + monthId).innerHTML;
+        const indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        let monthDisplay = document.getElementById('month_' + monthId).innerHTML;
         monthDisplay = monthDisplay.toLowerCase();
-        var indexOfMonth = monthsArray.indexOf(monthDisplay);
-        var getNextMonth = monthsArray[indexOfMonth + 1];
+        const indexOfMonth = monthsArray.indexOf(monthDisplay);
+        const getNextMonth = monthsArray[indexOfMonth + 1];
         if ((indexOfMonth + 1) <= 11) {
             if (monthId == 'one') {
                 if (indexOfMonthOne == (indexOfMonthTwo - 1)) {
-                    document.getElementById("month_one").innerHTML = getNextMonth;
-                    document.getElementById("month_two").innerHTML = getNextMonth;
+                    document.getElementById('month_one').innerHTML = getNextMonth;
+                    document.getElementById('month_two').innerHTML = getNextMonth;
                     $('#month-one').val(getNextMonth);
                     $('#month-two').val(getNextMonth);
                     $('#calendar_dates_month_display_one').val(getNextMonth);
@@ -412,24 +424,23 @@ export class WishlistComponent implements OnInit {
                     $('#date_one').val(1);
                     $('#calendar_dates_day_display_one').val(1);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var monthNumber = indexOfMonth + 1;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const monthNumber = indexOfMonth + 1;
                     date.setMonth(monthNumber);
 
                     this._activityFilter.date_ends = date.toISOString().substring(0, 10);
 
-                    var dateEnd = new Date(this._activityFilter.date_starts);
-                    var monthNumber = indexOfMonth + 1;
+                    const dateEnd = new Date(this._activityFilter.date_starts);
                     dateEnd.setMonth(monthNumber);
                     dateEnd.setDate(1);
 
                     this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
-
+                    console.log(dateEnd.toISOString().substring(0, 10));
 
                 }
                 if (indexOfMonthOne >= indexOfMonthTwo) {
-                    document.getElementById("month_one").innerHTML = getNextMonth;
-                    document.getElementById("month_two").innerHTML = getNextMonth;
+                    document.getElementById('month_one').innerHTML = getNextMonth;
+                    document.getElementById('month_two').innerHTML = getNextMonth;
                     $('#month-one').val(getNextMonth);
                     $('#month-two').val(getNextMonth);
                     $('#calendar_dates_month_display_one').val(getNextMonth);
@@ -438,62 +449,61 @@ export class WishlistComponent implements OnInit {
                     $('#date_one').val(1);
                     $('#calendar_dates_day_display_one').val(1);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var monthNumber = indexOfMonth + 1;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const monthNumber = indexOfMonth + 1;
                     date.setMonth(monthNumber);
 
                     this._activityFilter.date_ends = date.toISOString().substring(0, 10);
 
-                    var dateEnd = new Date(this._activityFilter.date_starts);
-                    var monthNumber = indexOfMonth + 1;
+                    const dateEnd = new Date(this._activityFilter.date_starts);
                     dateEnd.setMonth(monthNumber);
                     dateEnd.setDate(1);
 
                     this._activityFilter.date_starts = dateEnd.toISOString().substring(0, 10);
                 } else {
-                    document.getElementById("month_" + monthId).innerHTML = getNextMonth;
-                    document.getElementById("calendar_dates_month_display_" + monthId).innerHTML = getNextMonth;
+                    document.getElementById('month_' + monthId).innerHTML = getNextMonth;
+                    document.getElementById('calendar_dates_month_display_' + monthId).innerHTML = getNextMonth;
                     $('#month-' + monthId).val(getNextMonth);
 
-                    var date = new Date(this._activityFilter.date_starts);
-                    var monthNumber = indexOfMonth + 1;
+                    const date = new Date(this._activityFilter.date_starts);
+                    const monthNumber = indexOfMonth + 1;
                     date.setMonth(monthNumber);
 
                     this._activityFilter.date_starts = date.toISOString().substring(0, 10);
                 }
             }
             if (monthId == 'two') {
-                document.getElementById("month_" + monthId).innerHTML = getNextMonth;
-                document.getElementById("calendar_dates_month_display_" + monthId).innerHTML = getNextMonth;
+                document.getElementById('month_' + monthId).innerHTML = getNextMonth;
+                document.getElementById('calendar_dates_month_display_' + monthId).innerHTML = getNextMonth;
                 $('#month-' + monthId).val(getNextMonth);
 
-                var date = new Date(this._activityFilter.date_ends);
-                var monthNumber = indexOfMonth + 1;
+                const date = new Date(this._activityFilter.date_ends);
+                const monthNumber = indexOfMonth + 1;
                 date.setMonth(monthNumber);
 
 
                 this._activityFilter.date_ends = date.toISOString().substring(0, 10);
             }
         }
-        console.log(this._activityFilter);
+        // console.log(this._activityFilter);
     }
 
     minusDay(dayId) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var monthOne = document.getElementById("month_one").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        let monthOne = document.getElementById('month_one').innerHTML;
         monthOne = monthOne.toLowerCase();
-        var indexOfMonthOne = monthsArray.indexOf(monthOne);
-        var monthTwo = document.getElementById("month_two").innerHTML;
+        const indexOfMonthOne = monthsArray.indexOf(monthOne);
+        let monthTwo = document.getElementById('month_two').innerHTML;
         monthTwo = monthTwo.toLowerCase();
-        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
-        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var dayValue = parseFloat((<HTMLInputElement>document.getElementById("date_" + dayId)).value);
-        var indexOfDay = daysArray.indexOf(dayValue);
-        var getLowerDay;
-        var dayOneString = document.getElementById('day_one').innerHTML;
-        var dayOneValue = +dayOneString;
-        var dayTwoString = document.getElementById('day_two').innerHTML;
-        var dayTwoValue = +dayTwoString;
+        const indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        const daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        const dayValue = parseFloat((<HTMLInputElement>document.getElementById('date_' + dayId)).value);
+        const indexOfDay = daysArray.indexOf(dayValue);
+        let getLowerDay;
+        const dayOneString = document.getElementById('day_one').innerHTML;
+        const dayOneValue = +dayOneString;
+        const dayTwoString = document.getElementById('day_two').innerHTML;
+        const dayTwoValue = +dayTwoString;
         if (indexOfDay > 0) {
             if (dayId == 'two') {
                 if (indexOfMonthTwo > indexOfMonthOne) {
@@ -502,8 +512,8 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getLowerDay;
                     $('#date_two').val(getLowerDay);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var dayNumber = indexOfDay;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const dayNumber = indexOfDay;
                     console.log(dayNumber);
                     date.setDate(dayNumber);
 
@@ -516,8 +526,8 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('calendar_dates_day_display_two').innerHTML = getLowerDay;
                         $('#date_two').val(getLowerDay);
 
-                        var date = new Date(this._activityFilter.date_ends);
-                        var dayNumber = indexOfDay;
+                        const date = new Date(this._activityFilter.date_ends);
+                        const dayNumber = indexOfDay;
                         console.log(dayNumber);
                         date.setDate(dayNumber);
 
@@ -532,8 +542,8 @@ export class WishlistComponent implements OnInit {
                 document.getElementById('calendar_dates_day_display_one').innerHTML = getLowerDay;
                 $('#date_one').val(getLowerDay);
 
-                var date = new Date(this._activityFilter.date_starts);
-                var dayNumber = indexOfDay;
+                const date = new Date(this._activityFilter.date_starts);
+                const dayNumber = indexOfDay;
                 console.log(dayNumber);
                 date.setDate(dayNumber);
 
@@ -545,24 +555,24 @@ export class WishlistComponent implements OnInit {
     }
 
     plusDay(dayId) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
-        var thirtyDayMonths = ['april', 'june', 'september', 'november'];
-        var frbruaryMonth = ['february'];
-        var monthOne = document.getElementById("month_one").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
+        const thirtyDayMonths = ['april', 'june', 'september', 'november'];
+        const frbruaryMonth = ['february'];
+        let monthOne = document.getElementById('month_one').innerHTML;
         monthOne = monthOne.toLowerCase();
-        var indexOfMonthOne = monthsArray.indexOf(monthOne);
-        var monthTwo = document.getElementById("month_two").innerHTML;
+        const indexOfMonthOne = monthsArray.indexOf(monthOne);
+        let monthTwo = document.getElementById('month_two').innerHTML;
         monthTwo = monthTwo.toLowerCase();
-        var indexOfMonthTwo = monthsArray.indexOf(monthTwo);
-        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var dayValue = parseFloat((<HTMLInputElement>document.getElementById("date_" + dayId)).value);
-        var indexOfDay = daysArray.indexOf(dayValue);
-        var getHigherDay;
-        var dayOneString = document.getElementById('day_one').innerHTML;
-        var dayOneValue = +dayOneString;
-        var dayTwoString = document.getElementById('day_two').innerHTML;
-        var dayTwoValue = +dayTwoString;
+        const indexOfMonthTwo = monthsArray.indexOf(monthTwo);
+        const daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        const dayValue = parseFloat((<HTMLInputElement>document.getElementById('date_' + dayId)).value);
+        const indexOfDay = daysArray.indexOf(dayValue);
+        let getHigherDay;
+        const dayOneString = document.getElementById('day_one').innerHTML;
+        const dayOneValue = +dayOneString;
+        const dayTwoString = document.getElementById('day_two').innerHTML;
+        const dayTwoValue = +dayTwoString;
         if (dayId == 'two') {
             if (thirtyOneDayMonths.indexOf(monthTwo) > -1) {
                 if (indexOfDay < 30) {
@@ -571,8 +581,8 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var dayNumber = indexOfDay + 2;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const dayNumber = indexOfDay + 2;
                     date.setDate(dayNumber);
 
                     this._activityFilter.date_ends = date.toISOString().substring(0, 10);
@@ -585,8 +595,8 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var dayNumber = indexOfDay + 2;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const dayNumber = indexOfDay + 2;
                     date.setDate(dayNumber);
 
                     this._activityFilter.date_ends = date.toISOString().substring(0, 10);
@@ -599,8 +609,8 @@ export class WishlistComponent implements OnInit {
                     document.getElementById('calendar_dates_day_display_two').innerHTML = getHigherDay;
                     $('#date_two').val(getHigherDay);
 
-                    var date = new Date(this._activityFilter.date_ends);
-                    var dayNumber = indexOfDay + 2;
+                    const date = new Date(this._activityFilter.date_ends);
+                    const dayNumber = indexOfDay + 2;
                     date.setDate(dayNumber);
 
                     this._activityFilter.date_ends = date.toISOString().substring(0, 10);
@@ -617,8 +627,8 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
 
-                            var date = new Date(this._activityFilter.date_starts);
-                            var dayNumber = indexOfDay + 2;
+                            const date = new Date(this._activityFilter.date_starts);
+                            const dayNumber = indexOfDay + 2;
                             date.setDate(dayNumber);
 
                             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -631,8 +641,8 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
 
-                            var date = new Date(this._activityFilter.date_starts);
-                            var dayNumber = indexOfDay + 2;
+                            const date = new Date(this._activityFilter.date_starts);
+                            const dayNumber = indexOfDay + 2;
                             date.setDate(dayNumber);
 
                             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -645,8 +655,8 @@ export class WishlistComponent implements OnInit {
                             document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                             $('#date_one').val(getHigherDay);
 
-                            var date = new Date(this._activityFilter.date_starts);
-                            var dayNumber = indexOfDay + 2;
+                            const date = new Date(this._activityFilter.date_starts);
+                            const dayNumber = indexOfDay + 2;
                             date.setDate(dayNumber);
 
                             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -662,8 +672,8 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
 
-                        var date = new Date(this._activityFilter.date_starts);
-                        var dayNumber = indexOfDay + 2;
+                        const date = new Date(this._activityFilter.date_starts);
+                        const dayNumber = indexOfDay + 2;
                         date.setDate(dayNumber);
 
                         this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -676,8 +686,8 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
 
-                        var date = new Date(this._activityFilter.date_starts);
-                        var dayNumber = indexOfDay + 2;
+                        const date = new Date(this._activityFilter.date_starts);
+                        const dayNumber = indexOfDay + 2;
                         date.setDate(dayNumber);
 
                         this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -690,8 +700,8 @@ export class WishlistComponent implements OnInit {
                         document.getElementById('calendar_dates_day_display_one').innerHTML = getHigherDay;
                         $('#date_one').val(getHigherDay);
 
-                        var date = new Date(this._activityFilter.date_starts);
-                        var dayNumber = indexOfDay + 2;
+                        const date = new Date(this._activityFilter.date_starts);
+                        const dayNumber = indexOfDay + 2;
                         date.setDate(dayNumber);
 
                         this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -728,7 +738,7 @@ export class WishlistComponent implements OnInit {
     getActivities(activity: ActivityFilter) {
         this.loading = true;
         this._activitesDataService
-            .filterActivites(activity.num_adults, activity.budget_type, activity.macro_categories, activity.date_starts, activity.date_ends)
+            .filterActivites(activity.num_adults, activity.budget_type, activity.macro_categories, activity.date_starts, activity.date_ends, activity.lat, activity.lng, activity.citylat, activity.citylng)
             .subscribe(
                 activities => {
                     this._activities = activities;
@@ -737,10 +747,10 @@ export class WishlistComponent implements OnInit {
                 error => {
                     this.loading = false;
                     // unauthorized access
-                    if (error.status == 401 || error.status == 403) {
+                    if (error.status === 401 || error.status === 403) {
                         this._userService.unauthorizedAccess(error);
                     } else {
-                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                        // this._errorMessage = error.data.message; // TODO: uncomment later
                     }
                 }
             );
@@ -755,7 +765,11 @@ export class WishlistComponent implements OnInit {
                 filter.date_starts,
                 filter.date_ends,
                 filter.time_from,
-                filter.time_to
+                filter.time_to,
+                filter.lat,
+                filter.lng,
+                filter.citylat,
+                filter.citylng
             )
             .subscribe(
                 itinerary => {
@@ -770,14 +784,14 @@ export class WishlistComponent implements OnInit {
                     if (error.status == 401 || error.status == 403) {
                         this._userService.unauthorizedAccess(error);
                     } else {
-                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                        // this._errorMessage = error.data.message; // TODO: uncomment later
                     }
                 }
             );
     }
 
     toggle_selected_acctivity(id) {
-        var index = this._selectedActivities.indexOf(id);
+        const index = this._selectedActivities.indexOf(id);
         if (index != -1) {
             this._selectedActivities.splice(index, 1);
         } else {
@@ -790,10 +804,10 @@ export class WishlistComponent implements OnInit {
     }
 
     show_my_itinerary() {
-        if (this._selectedActivities.length == 0) {
-            $(".select_activity_container").show();
+        if (this._selectedActivities.length === 0) {
+            $('.select_activity_container').show();
             setTimeout(() => {
-                $(".select_activity_container").hide();
+                $('.select_activity_container').hide();
             }, 3000)
             // alert("Wishlist is empty, Please select one or more items. ");
         } else {
@@ -808,11 +822,11 @@ export class WishlistComponent implements OnInit {
                     },
                     error => {
                         // unauthorized access
-                        if (error.status == 401 || error.status == 403) {
+                        if (error.status === 401 || error.status === 403) {
                             this._userService.unauthorizedAccess(error);
                         } else {
                             alert(error.data.message);
-                            //this._errorMessage = error.data.message; // TODO: uncomment later
+                            // this._errorMessage = error.data.message; // TODO: uncomment later
                         }
                     }
                 );
@@ -825,7 +839,7 @@ export class WishlistComponent implements OnInit {
             .subscribe(
                 result => {
                     // console.log(result);
-                    var requiredFormat = [];
+                    const requiredFormat = [];
                     result.forEach(each => {
                         requiredFormat.push({id: each.id, name: each.label});
                     });
@@ -837,48 +851,44 @@ export class WishlistComponent implements OnInit {
             );
     }
 
-    toggleMacroCategory(id) {
-
-    }
-
     ngOnDestroy() {
-        console.log("ngOnDestroy");
+        console.log('ngOnDestroy');
 
-        $('.app').css('background-color', "");
+        $('.app').css('background-color', '');
 
-        $("#edit-filter").hide();
-        $("#edit-filter").unbind('click');
-        $("#global-page-loader").hide('');
+        $('#edit-filter').hide();
+        $('#edit-filter').unbind('click');
+        $('#global-page-loader').hide('');
 
     }
 
     ngDoCheck() {
         // console.log("ngDoCheck");
-        var globalLoader = document.getElementById("global-page-loader").style.display;
-        if ($("#global-page-loader").css('display') == 'none' && this.loading) {
-            $("#global-page-loader").show();
-        } else if ($("#global-page-loader").css('display') == 'block' && !this.loading) {
-            $("#global-page-loader").hide('slow');
+        const globalLoader = document.getElementById('global-page-loader').style.display;
+        if ($('#global-page-loader').css('display') == 'none' && this.loading) {
+            $('#global-page-loader').show();
+        } else if ($('#global-page-loader').css('display') == 'block' && !this.loading) {
+            $('#global-page-loader').hide('slow');
         }
     }
 
     showExportItineraryModalWishlist() {
 
         if (this._selectedActivities.length == 0) {
-            $(".select_activity_container").show();
+            $('.select_activity_container').show();
             setTimeout(() => {
-                $(".select_activity_container").hide();
+                $('.select_activity_container').hide();
             }, 3000)
             // alert("Wishlist is empty, Please select one or more items. ");
         } else {
-            $("#exportItineraryModalWishlist").show();
+            $('#exportItineraryModalWishlist').show();
         }
 
     }
 
     closeExportItineraryModalWishlist() {
-        console.log("closeExportItineraryModalWishlist()");
-        $("#exportItineraryModalWishlist").hide('slow');
+        console.log('closeExportItineraryModalWishlist()');
+        $('#exportItineraryModalWishlist').hide('slow');
     }
 
 
@@ -890,96 +900,101 @@ export class WishlistComponent implements OnInit {
 
 
     exportItinerary() {
-        if (this._selectedActivities.length == 0) {
-            $(".select_activity_container").show();
-            setTimeout(() => {
-                $(".select_activity_container").hide();
-            }, 3000)
-            // alert("Wishlist is empty, Please select one or more items. ");
+        if (!this._userService.isLoggedIn()) {
+            this._router.navigate(['/login'], {queryParams: {r: this._router.url}});
+            return;
         } else {
+            console.log('logined',this._userService.isLoggedIn());
+            if (this._selectedActivities.length === 0) {
+                $('.select_activity_container').show();
+                setTimeout(() => {
+                    $('.select_activity_container').hide();
+                }, 3000)
+                // alert("Wishlist is empty, Please select one or more items. ");
+            } else {
 
-            this.closeExportItineraryModalWishlist();
-            let itineraryActivities = [];
-            let selectActivities = this._selectedActivities;
-            this._singleDayTemporaryItinerary.itinerary_cook_raw.days.forEach((day) => {
-                day.hours.forEach(function (hour) {
+                this.closeExportItineraryModalWishlist();
+                const itineraryActivities = [];
+                const selectActivities = this._selectedActivities;
+                this._singleDayTemporaryItinerary.itinerary_cook_raw.days.forEach((day) => {
+                    day.hours.forEach(function (hour) {
 
-                    if (selectActivities.includes(hour.activity.id)) {
-                        let itineraryActivity = new ItineraryActivities();
-                        itineraryActivity.start_time = hour.scheduled_hour_from;
-                        itineraryActivity.end_time = hour.scheduled_hour_to;
-                        itineraryActivity.activities_id = hour.activity.id + "";
+                        if (selectActivities.includes(hour.activity.id)) {
+                            const itineraryActivity = new ItineraryActivities();
+                            itineraryActivity.start_time = hour.scheduled_hour_from;
+                            itineraryActivity.end_time = hour.scheduled_hour_to;
+                            itineraryActivity.activities_id = hour.activity.id + '';
 
-                        itineraryActivities.push(itineraryActivity);
-                    }
-                });
-            });
-
-            this.loading = true;
-            this._itineraryDataService
-                .cookSingleDay(itineraryActivities, this._activityFilter)
-                .subscribe(
-                    itinerary => {
-                        this.loading = false;
-                        this._itinerary = itinerary;
-                        this.exportItineraryEmail(this._itinerary.id);
-                    },
-                    error => {
-                        // unauthorized access
-                        if (error.status == 401 || error.status == 403) {
-                            this._userService.unauthorizedAccess(error);
-                        } else {
-                            alert(error.data.message);
-                            //this._errorMessage = error.data.message; // TODO: uncomment later
+                            itineraryActivities.push(itineraryActivity);
                         }
-                    }
-                );
+                    });
+                });
 
+                this.loading = true;
+                this._itineraryDataService
+                    .cookSingleDay(itineraryActivities, this._activityFilter)
+                    .subscribe(
+                        itinerary => {
+                            this.loading = false;
+                            this._itinerary = itinerary;
+                            this.exportItineraryEmail(this._itinerary.id);
+                        },
+                        error => {
+                            // unauthorized access
+                            if (error.status === 401 || error.status === 403) {
+                                this._userService.unauthorizedAccess(error);
+                            } else {
+                                alert(error.data.message);
+                                // this._errorMessage = error.data.message; // TODO: uncomment later
+                            }
+                        }
+                    );
+            }
         }
     }
 
     exportItineraryEmail(itinerary_id) {
 
-        let activityToSkip = "";
+        let activityToSkip = '';
         if (!this.itineraryExport.export_all) {
-            activityToSkip = this.itineraryExport.skip_export_activities.join(",");
+            activityToSkip = this.itineraryExport.skip_export_activities.join(',');
         }
 
         this._itineraryDataService
-            .exportItinerary(itinerary_id, activityToSkip)
+            .exportItinerary(activityToSkip)
             .subscribe(
                 itinerary => {
-                    alert("Itinerary have been successfully exported. ");
+                    alert('Itinerary have been successfully exported. ');
                     // this._router.navigate(['/tutorial-two']); TODO: Uncomment this
                 },
                 error => {
                     // unauthorized access
-                    if (error.status == 401 || error.status == 403) {
+                    if (error.status === 401 || error.status === 403) {
                         this._userService.unauthorizedAccess(error);
                     } else {
-                        //this._errorMessage = error.data.message; // TODO: uncomment later
+                        // this._errorMessage = error.data.message; // TODO: uncomment later
                     }
                 }
             );
     }
 
     oneDayMonth(monthID) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var monthInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-month")).value);
-        var monthDisplayString = document.getElementById("month_of_day_flow").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const monthInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-month')).value);
+        let monthDisplayString = document.getElementById('month_of_day_flow').innerHTML;
         monthDisplayString = monthDisplayString.toLowerCase();
-        var indexOfMonth = monthsArray.indexOf(monthDisplayString);
-        var dateFunction = new Date();
-        var thisMonth = dateFunction.getMonth();
+        const indexOfMonth = monthsArray.indexOf(monthDisplayString);
+        const dateFunction = new Date();
+        const thisMonth = dateFunction.getMonth();
         if (monthID == 'minus' && ((indexOfMonth - 1) >= thisMonth)) {
-            var getLowerMonth = monthsArray[indexOfMonth - 1];
+            const getLowerMonth = monthsArray[indexOfMonth - 1];
             console.log(getLowerMonth);
             document.getElementById('month_of_day_flow').innerHTML = getLowerMonth;
             $('#one-day-flow-month').val(getLowerMonth);
             $('#calendar_dates_month_display').html(getLowerMonth);
 
-            var date = new Date(this._activityFilter.date_starts);
-            var monthNumber = indexOfMonth + 1;
+            const date = new Date(this._activityFilter.date_starts);
+            const monthNumber = indexOfMonth + 1;
             date.setMonth(monthNumber);
 
 
@@ -987,14 +1002,14 @@ export class WishlistComponent implements OnInit {
             this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (monthID == 'plus' && ((indexOfMonth + 1) <= 11)) {
-            var getNextMonth = monthsArray[indexOfMonth + 1];
+            const getNextMonth = monthsArray[indexOfMonth + 1];
             document.getElementById('month_of_day_flow').innerHTML = getNextMonth;
             $('#one-day-flow-month').val(getNextMonth);
             $('#calendar_dates_month_display').html(getNextMonth);
 
 
-            var date = new Date(this._activityFilter.date_starts);
-            var monthNumber = indexOfMonth + 1;
+            const date = new Date(this._activityFilter.date_starts);
+            const monthNumber = indexOfMonth + 1;
             date.setMonth(monthNumber);
 
             this._activityFilter.date_starts = date.toISOString().substring(0, 10);
@@ -1005,30 +1020,30 @@ export class WishlistComponent implements OnInit {
     }
 
     oneDayFlowDay(dayID) {
-        var monthsArray = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-        var thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
-        var thirtyDayMonths = ['april', 'june', 'september', 'november'];
-        var februaryMonth = ['february'];
-        var month = document.getElementById("month_of_day_flow").innerHTML;
+        const monthsArray = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const thirtyOneDayMonths = ['january', 'march', 'may', 'july', 'august', 'october', 'december'];
+        const thirtyDayMonths = ['april', 'june', 'september', 'november'];
+        const februaryMonth = ['february'];
+        let month = document.getElementById('month_of_day_flow').innerHTML;
         month = month.toLowerCase();
-        var indexOfMonth = monthsArray.indexOf(month);
-        var daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var dateFunction = new Date();
-        var todaysDate = dateFunction.getDate();
-        var thisMonth = dateFunction.getMonth();
-        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
-        var dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
-        var indexOfDay = daysArray.indexOf(dayInputVal);
-        console.log("dayInputVal", dayInputVal);
-        var getHigherDay;
+        const indexOfMonth = monthsArray.indexOf(month);
+        const daysArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        const dateFunction = new Date();
+        const todaysDate = dateFunction.getDate();
+        const thisMonth = dateFunction.getMonth();
+        const dayInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-day')).value);
+        const dayDisplayedValue = document.getElementById('day_of_one_day_flow').innerHTML;
+        const indexOfDay = daysArray.indexOf(dayInputVal);
+        console.log('dayInputVal', dayInputVal);
+        let getHigherDay;
         if (dayID == 'minus' && (monthsArray[thisMonth] == month) && indexOfDay >= todaysDate) {
-            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            const getLowerDay = daysArray.indexOf(indexOfDay + 1);
             $('#day_of_one_day_flow').html(getLowerDay);
             $('#one-day-flow-day').val(getLowerDay);
             $('#calendar_dates_day_display').html(getLowerDay);
 
-            var date = new Date(this._activityFilter.date_starts);
-            var dayNumber = getLowerDay;
+            const date = new Date(this._activityFilter.date_starts);
+            const dayNumber = getLowerDay;
             console.log(dayNumber);
             date.setDate(dayNumber);
 
@@ -1036,13 +1051,13 @@ export class WishlistComponent implements OnInit {
             this._activityFilter.date_ends = date.toISOString().substring(0, 10);
         }
         if (dayID == 'minus' && monthsArray[thisMonth] != month && indexOfDay > 0) {
-            var getLowerDay = daysArray.indexOf(indexOfDay + 1);
+            const getLowerDay = daysArray.indexOf(indexOfDay + 1);
             $('#day_of_one_day_flow').html(getLowerDay);
             $('#one-day-flow-day').val(getLowerDay);
             $('#calendar_dates_day_display').html(getLowerDay);
 
-            var date = new Date(this._activityFilter.date_starts);
-            var dayNumber = getLowerDay;
+            const date = new Date(this._activityFilter.date_starts);
+            const dayNumber = getLowerDay;
             console.log(dayNumber);
             date.setDate(dayNumber);
 
@@ -1055,8 +1070,8 @@ export class WishlistComponent implements OnInit {
             $('#one-day-flow-day').val(getHigherDay);
             $('#calendar_dates_day_display').html(getHigherDay);
 
-            var date = new Date(this._activityFilter.date_starts);
-            let dayNumber: number = getHigherDay;
+            const date = new Date(this._activityFilter.date_starts);
+            const dayNumber: number = getHigherDay;
             console.log(dayNumber);
             date.setDate(dayNumber);
 
@@ -1069,8 +1084,8 @@ export class WishlistComponent implements OnInit {
             $('#one-day-flow-day').val(getHigherDay);
             $('#calendar_dates_day_display').html(getHigherDay);
 
-            var date = new Date(this._activityFilter.date_starts);
-            let dayNumber: number = getHigherDay;
+            const date = new Date(this._activityFilter.date_starts);
+            const dayNumber: number = getHigherDay;
             console.log(dayNumber);
             date.setDate(dayNumber);
 
@@ -1083,8 +1098,8 @@ export class WishlistComponent implements OnInit {
             $('#one-day-flow-day').val(getHigherDay);
             $('#calendar_dates_day_display').html(getHigherDay);
 
-            var date = new Date(this._activityFilter.date_starts);
-            let dayNumber: number = getHigherDay;
+            const date = new Date(this._activityFilter.date_starts);
+            const dayNumber: number = getHigherDay;
             console.log(dayNumber);
             date.setDate(dayNumber);
 
@@ -1096,14 +1111,14 @@ export class WishlistComponent implements OnInit {
     }
 
     oneDayTime(timeID) {
-        var timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-one")).value);
-        var timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-time-two")).value);
-        var timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
-        var timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
-        var dayInputVal = parseFloat((<HTMLInputElement>document.getElementById("one-day-flow-day")).value);
-        var dateFunction = new Date();
-        var currentTime = dateFunction.getHours();
-        var currentDay = dateFunction.getDate();
+        let timeOneInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-time-one')).value);
+        let timeTwoInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-time-two')).value);
+        const timeOneDisplayed = document.getElementById('time_of_arrival').innerHTML;
+        const timeTwoDisplayed = document.getElementById('time_of_exit').innerHTML;
+        const dayInputVal = parseFloat((<HTMLInputElement>document.getElementById('one-day-flow-day')).value);
+        const dateFunction = new Date();
+        const currentTime = dateFunction.getHours();
+        const currentDay = dateFunction.getDate();
         if (timeID == 'minus_one' && timeOneInputVal > 0) {
             if (dayInputVal > currentDay) {
                 timeOneInputVal -= 1;
@@ -1163,12 +1178,34 @@ export class WishlistComponent implements OnInit {
     }
 
     showActivityDetails(activity_id) {
-        $("#modal-activity-details-" + activity_id).show();
+        $('#modal-activity-details-' + activity_id).show();
     }
 
     closeActivityDetails(activity_id) {
-        $("#modal-activity-details-" + activity_id).hide('slow');
+        $('#modal-activity-details-' + activity_id).hide('slow');
     }
 
+
+    create_my_itinerary() {
+        if (this._selectedActivities.length === 0) {
+            for(var obj of this._activities) {
+                this._selectedActivities.push(obj.id);
+            }
+            // this._selectedActivities =
+            // $('.select_activity_container').show();
+            // setTimeout(() => {
+            //     $('.select_activity_container').hide();
+            // }, 3000)
+            // alert("Wishlist is empty, Please select one or more items. ");
+        }
+        // else {
+            this.loading = true;
+
+            this._itinerary = this._selectedActivities;
+            let nextParams = Object.assign({}, this.filterParams, { activities:this._selectedActivities });
+
+            this._router.navigate(['/itinerary'], {queryParams: nextParams});
+        // }
+    }
 
 }

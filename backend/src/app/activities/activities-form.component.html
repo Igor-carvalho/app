@@ -209,6 +209,20 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="form-group row">
+                                            <label class="col-sm-12" for="budget">Priority <span class="required">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="priority" name="priority"
+                                                        [(ngModel)]="_activity.priority">
+                                                    <option value=""> Select Budget</option>
+                                                    <option [value]="1">High</option>
+                                                    <option [value]="2">Mid</option>
+                                                    <option [value]="3">Low</option>
+                                                </select>
+
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label class="col-sm-12" for="weather_types">Friendly Weathers <span
                                                     class="required">*</span></label>
                                             <div class="col-sm-8">

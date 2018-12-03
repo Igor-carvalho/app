@@ -129,7 +129,6 @@ class ActivitiesController extends ActiveController
             ]),
             'pagination' => false
         ]);
-
         return $dataProvider;
     }
 
@@ -333,31 +332,50 @@ class ActivitiesController extends ActiveController
         return "ok";
     }
 
-    public function actionFilter($people, $budget, $macros = [], $date_start, $date_end)
+    public function actionFilter($people, $budget, $macros = [], $date_start, $date_end, $lat, $lng, $citylat, $citylng)
     {
 //        $macros = implode(",", $macros);
+
         $activities_macro_table = ActivitiesMacroCategories::tableName();
         $activities_micro_table = ActivitiesMicroCategories::tableName();
 
         $system_micro_table = SystemMicroCategories::tableName();
 
-        $activities = Activities::find()
-            ->where([
-                'budget' => $budget,
-            ])
-//            ->andWhere(['>=', 'date_starts', $date_start])
+        $activities = $this->getActivities($people, $budget, $macros, $date_start, $date_end, $lat, $lng, $citylat, $citylng);
+
+//        $activities = (new \yii\db\Query())
+//            ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN((14.18461 - ABS(latitude)) * PI()/180 / 2),2) + COS(14.18461 * PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN((40.82101 - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+//            ->from('activities')
+//            ->where(['budget' => $budget])
+//            ->andWhere(['not', ['longitude' => null]])
+//            ->andWhere(['not', ['latitude' => null]])
+//            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+//            ->andWhere(['>=', 'max_people', $people])
+//            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+//            ->orderBy('distance')
+//            ->all();
+//        return gettype($activities);
+//        return $activities->createCommand()->sql;
+//        $activities = Activities::find()
+//            ->where([
+//                'budget' => $budget,
+//            ])
+//            ->andWhere(['not', ['longitude' => null]])
+//            ->andWhere(['not', ['latitude' => null]])
+////            ->andWhere(['>=', 'date_starts', $date_start])
 //            ->andWhere(['<=', 'date_ends', $date_end])
-            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
-            ->andWhere(['>=', 'max_people', $people])
-            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
-            ->all();
+//            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+//            ->andWhere(['>=', 'max_people', $people])
+//            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )");
+////            ->all();
 
         if (sizeof($activities) == 0)
             return [];
 
         $activityIds = array_map(function ($activity) {
-            return $activity->id;
+            return $activity['id'];
         }, $activities);
+
         $activitiesIdComma = implode(",", $activityIds);
 
 
@@ -370,17 +388,20 @@ class ActivitiesController extends ActiveController
             ->all();
         $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
 
-
 //        HelperFunction::output($activityMicroIcon);
         $return = [];
 
         foreach ($activities as $activity) {
 
-            if (isset($activityMicroIcon[$activity->id])) {
-                $object = json_decode(json_encode($activity->toArray()));
-                $object->micro_icon = $activityMicroIcon[$activity->id];
+            if (isset($activityMicroIcon[$activity['id']])) {
+                $activity['micro_icon'] = $activityMicroIcon[$activity['id']];
 
-                $return[] = $object;
+                if (is_array(json_decode($activity['images'], true)))
+                    $activity['images'] = json_decode($activity['images'], true);
+                else
+                    $activity['images'] = array($activity['images']);
+
+                $return[] = $activity;
             }
         }
 
@@ -388,7 +409,7 @@ class ActivitiesController extends ActiveController
         return $return;
     }
 
-    public function actionFilterSingleDay($people, $budget, $macros = [], $date_start, $date_end, $time_from, $time_to)
+    public function actionFilterSingleDay($people, $budget, $macros = [], $date_start, $date_end, $time_from, $time_to, $lat, $lng, $citylat, $citylng)
     {
 
         $itinerary = new Itineraries();
@@ -398,29 +419,36 @@ class ActivitiesController extends ActiveController
         $activities_micro_table = ActivitiesMicroCategories::tableName();
 
         $system_micro_table = SystemMicroCategories::tableName();
-
-        $activities = Activities::find()
-            ->where([
-                'budget' => $budget,
-            ])
-//            ->andWhere(['>=', 'date_starts', $date_start])
-//            ->andWhere(['<=', 'date_ends', $date_end])
+        $activities = $this->getActivities($people, $budget, $macros, $date_start, $date_end, $lat, $lng, $citylat, $citylng, $time_from, $time_to);
+//        $activities = Activities::find()
+//            ->where([
+//                'budget' => $budget,
+//            ])
+////            ->andWhere(['>=', 'date_starts', $date_start])
+////            ->andWhere(['<=', 'date_ends', $date_end])
+//            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+//            ->andWhere("('$time_from' BETWEEN time_start_hh AND time_end_hh) OR ('$time_to' BETWEEN time_start_hh AND time_end_hh)")
+//            ->andWhere(['>=', 'max_people', $people])
+//            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+//            ->asArray()
+//            ->all();
+        $activities = (new \yii\db\Query())
+            ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN((14.18461 - ABS(latitude)) * PI()/180 / 2),2) + COS(14.18461 * PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN((40.82101 - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+            ->from('activities')
+            ->where(['budget' => $budget])
+            ->andWhere(['not', ['longitude' => null]])
+            ->andWhere(['not', ['latitude' => null]])
             ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
             ->andWhere("('$time_from' BETWEEN time_start_hh AND time_end_hh) OR ('$time_to' BETWEEN time_start_hh AND time_end_hh)")
             ->andWhere(['>=', 'max_people', $people])
             ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+            ->orderBy('distance')
             ->all();
 
-        if (sizeof($activities) == 0)
-            return $itinerary;
-
-//        HelperFunction::output($activities);
-
         $activityIds = array_map(function ($activity) {
-            return $activity->id;
+            return $activity['id'];
         }, $activities);
         $activitiesIdComma = implode(",", $activityIds);
-
 
         $activitesMicroCategories = SystemMicroCategories::find()
             ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
@@ -431,21 +459,25 @@ class ActivitiesController extends ActiveController
             ->all();
         $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
 
+        foreach ($activities as $key=>$activity) {
 
-        $iteraryCooker = new ItineraryCooker($activities, $date_start, $date_end, true, $time_from, $time_to);
-        $activitiesIternery = $iteraryCooker->sort_activities();
+            if (isset($activityMicroIcon[$activity['id']])) {
+                $activities[$key]['micro_icon'] = $activityMicroIcon[$activity['id']];
 
-
-//        return $activitiesIternery;
-
-        foreach ($activitiesIternery->days as $dayKey => $day) {
-
-            foreach ($day->hours as $hourKey => $hour) {
-                $hour->activity['micro_icon'] = $activityMicroIcon[$hour->activity['id']];
+                if (is_array(json_decode($activity['images'], true)))
+                    $activities[$key]['images'] = json_decode($activity['images'], true);
+                else
+                    $activities[$key]['images'] = array($activity['images']);
             }
-
         }
 
+        $activities = json_decode(json_encode($activities));
+        if (sizeof($activities) == 0)
+            return $itinerary;
+
+//        HelperFunction::output($activities);
+        $iteraryCooker = new ItineraryCooker($activities, $date_start, $date_end, true, $time_from, $time_to);
+        $activitiesIternery = $iteraryCooker->sort_activities();
 
         $itinerary->itinerary_cook_raw = $activitiesIternery;
 
@@ -608,5 +640,198 @@ class ActivitiesController extends ActiveController
         }
     }
 
+    public function actionReplaceActivity()
+    {
+        $post_data = \Yii::$app->getRequest()->getBodyParams();
+        $itinerary = json_decode(json_encode($post_data['itinerary']));
+        $current_activities = $post_data['current_activities'];
+
+
+        $budget = $itinerary->budget_type;
+        $date_start = $itinerary->date_starts;
+        $date_end = $itinerary->date_ends;
+        $people = $itinerary->adults;
+        $macros = $itinerary->macro_categories;
+
+
+        $activities_macro_table = ActivitiesMacroCategories::tableName();
+        $activities_micro_table = ActivitiesMicroCategories::tableName();
+        $itinerary_activities_table = ItinerariesActivities::tableName();
+
+        $system_micro_table = SystemMicroCategories::tableName();
+
+        $activities = Activities::find()
+            ->where([
+                'budget' => $budget,
+            ])
+            ->andWhere("id NOT IN ($current_activities)")
+            ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+            ->andWhere(['>=', 'max_people', $people])
+            ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+            ->all();
+
+//        return $activities;
+        if (sizeof($activities) == 0)
+            return [];
+
+        $filteredActivities = [];
+        $filterActivityIds = [];
+
+
+        $sourceActivityFromDateTime = new \DateTime($post_data['time_from']);
+        $sourceActivityToDateTime = new \DateTime($post_data['time_to']);
+
+        foreach ($activities as $activity) {
+
+            $currentActivityRange = DateTimeHelper::getDatesFromRange($activity->date_starts, $activity->date_ends);
+
+            foreach ($currentActivityRange as $currentActivityDate) {
+
+                $currentActivityDate = new \DateTime($currentActivityDate);
+
+                $currentActivityFromDateTime = new \DateTime("{$currentActivityDate->format("Y-m-d")} {$activity->time_start_hh}:{$activity->time_start_mm}");
+                $currentActivityToDateTime = new \DateTime("{$currentActivityDate->format("Y-m-d")} {$activity->time_end_hh}:{$activity->time_end_mm}");
+
+                $startRangeComparison = DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityFromDateTime);
+                $endRangeComparison = DateTimeHelper::dateIsBetween($currentActivityFromDateTime, $currentActivityToDateTime, $sourceActivityToDateTime);
+
+                if ($startRangeComparison && $endRangeComparison) {
+                    if (!in_array($activity->id, $filterActivityIds)) {
+                        $filteredActivities[] = $activity;
+                        $filterActivityIds[] = $activity->id;
+                    }
+                }
+            }
+        }
+
+        $activities = $filteredActivities;
+
+        if (sizeof($activities) == 0)
+            return [];
+
+        $activityIds = array_map(function ($activity) {
+            return $activity->id;
+        }, $activities);
+        $activitiesIdComma = implode(",", $activityIds);
+
+        $activitesMicroCategories = SystemMicroCategories::find()
+            ->select("{$activities_micro_table}.activities_id, {$system_micro_table}.icon")
+            ->where("id IN (SELECT system_micro_categories_id FROM {$activities_micro_table} WHERE activities_id IN ($activitiesIdComma) )")
+            ->leftJoin($activities_micro_table, "{$activities_micro_table}.system_micro_categories_id = {$system_micro_table}.id")
+            ->groupBy("{$activities_micro_table}.activities_id")
+            ->asArray()
+            ->all();
+        $activityMicroIcon = ArrayHelper::map($activitesMicroCategories, 'activities_id', 'icon');
+
+        $return = [];
+
+        foreach ($activities as $activity) {
+            $object = json_decode(json_encode($activity->toArray()));
+            $object->micro_icon = $activityMicroIcon[$activity->id];
+
+            $return[] = $object;
+        }
+
+
+        return $return;
+    }
+
+    private function getActivities($people, $budget, $macros, $date_start, $date_end, $lat, $lng, $citylat, $citylng, $time_from=null, $time_to=null)
+    {
+        $cityRange = 10;
+        $userRange = 3;
+        $activities_macro_table = ActivitiesMacroCategories::tableName();
+        $distance = $cityRange + 1;
+
+        if ($lat != null && $lng != null) {
+            $lat = (float)$lat;
+            $lng = (float)$lng;
+            $citylat = (float)$citylat;
+            $citylng = (float)$citylng;
+            $distance = round(6378 * 2 * asin(sqrt(pow(sin(($lat - abs($citylat)) * pi() / 180 / 2), 2) + cos($lat * pi() / 180) * cos(abs($citylng) * pi() / 180) * pow(sin(($lng - $citylng) * pi() / 180 / 2), 2))), 2);
+        }
+
+//        print_r($distance);return;
+
+        if ($time_from == null ||$time_to == null) {
+            if ($lat == null || $lng == null || $distance > $cityRange) {
+                $activities = (new \yii\db\Query())
+                    ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN(('.$citylat.'- ABS(latitude)) * PI()/180 / 2),2) + COS('.$citylat.'* PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN(('.$citylng.' - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+                    ->from('activities')
+                    ->where(['budget' => $budget])
+                    ->andWhere(['not', ['longitude' => null]])
+                    ->andWhere(['not', ['latitude' => null]])
+                    ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+                    ->andWhere(['>=', 'max_people', $people])
+                    ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+                    ->having(['<', 'distance', $cityRange])
+                    ->orderBy([
+                        'priority' => SORT_ASC,
+                        'distance'=>SORT_ASC
+                    ])
+                    ->andWhere(['<>','time_start_hh','00'])
+                    ->all();
+            } else {
+                $activities = (new \yii\db\Query())
+                    ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN(('.$lat.'- ABS(latitude)) * PI()/180 / 2),2) + COS('.$lat.'* PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN(('.$lng.' - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+                    ->from('activities')
+                    ->where(['budget' => $budget])
+                    ->andWhere(['not', ['longitude' => null]])
+                    ->andWhere(['not', ['latitude' => null]])
+                    ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+                    ->andWhere(['>=', 'max_people', $people])
+                    ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+                    ->orderBy([
+                        'priority' => SORT_ASC,
+                        'distance'=>SORT_ASC
+                    ])
+                    ->having(['<', 'distance', $userRange])
+                    ->andWhere(['<>','time_start_hh','00'])
+                    ->all();
+            }
+        }
+        else {
+            if ($lat == null || $lng == null || $distance > $cityRange) {
+                $activities = (new \yii\db\Query())
+                    ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN(('.$citylat.'- ABS(latitude)) * PI()/180 / 2),2) + COS('.$citylat.'* PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN(('.$citylng.' - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+                    ->from('activities')
+                    ->where(['budget' => $budget])
+                    ->andWhere(['not', ['longitude' => null]])
+                    ->andWhere(['not', ['latitude' => null]])
+                    ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+                    ->andWhere("('$time_from' BETWEEN time_start_hh AND time_end_hh) OR ('$time_to' BETWEEN time_start_hh AND time_end_hh)")
+                    ->andWhere(['>=', 'max_people', $people])
+                    ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+                    ->having(['<', 'distance', $userRange])
+                    ->orderBy([
+                        'priority' => SORT_ASC,
+                        'distance'=>SORT_ASC
+                    ])
+                    ->andWhere(['<>','time_start_hh','00'])
+                    ->all();
+            } else {
+                $activities = (new \yii\db\Query())
+                    ->select(['*', 'ROUND(6378 * 2  * ASIN(SQRT(POWER(SIN(('.$lat.'- ABS(latitude)) * PI()/180 / 2),2) + COS('.$lat.'* PI()/180 ) * COS(ABS(latitude) * PI()/180) * POWER(SIN(('.$lng.' - longitude ) * PI()/180 / 2), 2) )),2) AS distance'])
+                    ->from('activities')
+                    ->where(['budget' => $budget])
+                    ->andWhere(['not', ['longitude' => null]])
+                    ->andWhere(['not', ['latitude' => null]])
+                    ->andWhere("('$date_start' BETWEEN date_starts AND date_ends) OR ('$date_end' BETWEEN date_starts AND date_ends)")
+                    ->andWhere("('$time_from' BETWEEN time_start_hh AND time_end_hh) OR ('$time_to' BETWEEN time_start_hh AND time_end_hh)")
+                    ->andWhere(['>=', 'max_people', $people])
+                    ->andWhere("id IN (SELECT activities_id FROM {$activities_macro_table} WHERE system_macro_categories_id IN ($macros) )")
+                    ->orderBy([
+                        'priority' => SORT_ASC,
+                        'distance'=>SORT_ASC
+                    ])
+                    ->having(['<', 'distance', $userRange])
+                    ->andWhere(['<>','time_start_hh','00'])
+                    ->all();
+
+            }
+        }
+
+        return $activities;
+    }
 
 }

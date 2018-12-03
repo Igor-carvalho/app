@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Rx';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 import {tokenNotExpired} from 'angular2-jwt';
 import {AuthHttp, JwtHelper} from 'angular2-jwt';
@@ -25,16 +25,16 @@ export class UserService {
     }
 
     public login(username, password) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/login',
                 JSON.stringify({
-                    "LoginForm": {
-                        "username": username,
-                        "password": password
+                    'LoginForm': {
+                        'username': username,
+                        'password': password
                     }
                 }),
                 {headers: headers}
@@ -54,14 +54,14 @@ export class UserService {
     }
 
     public signup(username, email, password) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
-        var parameters = {
-            "SignupForm": {
-                "username": username,
-                "email": email,
-                "password": password
+        const parameters = {
+            'SignupForm': {
+                'username': username,
+                'email': email,
+                'password': password
             }
         };
 
@@ -82,16 +82,16 @@ export class UserService {
     }
 
     public signupConfirm(id, auth_key) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/confirm',
                 JSON.stringify({
-                    "SignupConfirmForm": {
-                        "id": id,
-                        "auth_key": auth_key,
+                    'SignupConfirmForm': {
+                        'id': id,
+                        'auth_key': auth_key,
                     }
                 }),
                 {headers: headers}
@@ -107,15 +107,15 @@ export class UserService {
     }
 
     public passwordResetRequest(email) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/password-reset-request',
                 JSON.stringify({
-                    "PasswordResetRequestForm": {
-                        "email": email
+                    'PasswordResetRequestForm': {
+                        'email': email
                     }
                 }),
                 {headers: headers}
@@ -132,15 +132,15 @@ export class UserService {
 
 
     public passwordResetTokenVerification(token) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/password-reset-token-verification',
                 JSON.stringify({
-                    "PasswordResetTokenVerificationForm": {
-                        "token": token,
+                    'PasswordResetTokenVerificationForm': {
+                        'token': token,
                     }
                 }),
                 {headers: headers}
@@ -156,16 +156,16 @@ export class UserService {
     }
 
     public passwordReset(token, password) {
-        let headers = new Headers();
+        const headers = new Headers();
         headers.append('Content-Type', 'application/json; charset=UTF-8');
 
         return this._authHttp
             .post(
                 this._globalService.apiHost + '/user/password-reset',
                 JSON.stringify({
-                    "PasswordResetForm": {
-                        "token": token,
-                        "password": password
+                    'PasswordResetForm': {
+                        'token': token,
+                        'password': password
                     }
                 }),
                 {headers: headers}
@@ -204,7 +204,7 @@ export class UserService {
 
     public getJWTValue(): any {
         if (this.isLoggedIn()) {
-            let token = this.getToken();
+            const token = this.getToken();
             return this.jwtHelper.decodeToken(token);
         } else {
             return null;
@@ -219,10 +219,9 @@ export class UserService {
             errorMessage = {
                 success: false,
                 status: 0,
-                data: "Sorry, there was a connection error occurred. Please try again.",
+                data: 'Sorry, there was a connection error occurred. Please try again.',
             };
-        }
-        else {
+        } else {
             errorMessage = error.json();
         }
         return Observable.throw(errorMessage);

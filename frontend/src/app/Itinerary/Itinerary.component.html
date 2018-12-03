@@ -10,10 +10,12 @@
                                 <span class="date-weekday">{{dateUtils.mysqlDateToDayhName(day.day)}},</span>
                                 <span class="date-span">{{dateUtils.mysqlDateToDay(day.day)}} {{dateUtils.mysqlDateToMonthName(day.day)}}</span>
                             </div>
-                            <div class="temperature">22&deg;</div>
-                            <div class="weather-icon">
-                                <img src="assets/img/Icon_Weather_Clear.svg" alt="weather">
-                            </div>
+                            <!--<div class="temperature"><span style="font-size: 25px;">{{day.weather_temp}}</span>&#8451;</div>-->
+                            <!--<div class="weather-icon">-->
+                                <!--<img src="assets/img/Icon_Weather_Clear.svg" alt="weather">-->
+                                <!--<canvas id="weather-skycons{{day.day}}" width="55" height="45"></canvas>-->
+                            <!--</div>-->
+                            <!--{{diplayWeatherIcon(day.weather_icon, day.day)}}-->
                         </div>
                     </div>
                     <div class="col-lg-10 middle_section_div">
@@ -31,19 +33,19 @@
                             <div class="events" *ngFor="let hour of day.hours"
                                  (click)="showActivityDetails(hour.activity.id)">
                                 <div class="events_wrapper">
-                                    <img class="itinerary_images" src="{{hour.activity.images[0]}}" alt="image">
+                                    <img *ngIf="hour.activity['images'] != null" class="itinerary_images" src="{{hour.activity['images'][0]}}" alt="image">
                                     <div class="events_transparent_layer" id="modalClickButton">
                                         <div class="title">{{hour.activity.name}}</div>
                                         <span class="time">{{dateUtils.mysqlDateTimeHour(hour.scheduled_hour_from)}}-{{dateUtils.mysqlDateTimeHour(hour.scheduled_hour_to)}}</span>
                                         <span class="cart">
-                                        <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
-                                    </span>
-                                        <span class="cross" (click)="deleteItinerary(hour.activity.id)">
-                                        <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
-                                    </span>
-                                        <span class="double_arrow" (click)="showAddEventModal(hour.activity.id)">
-                                        <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
-                                    </span>
+                                            <img src="assets/img/Icon_Cart_White.svg" alt="Add to cart">
+                                        </span>
+                                            <span class="cross" (click)="deleteItinerary(hour.activity.id)">
+                                            <img src="assets/img/Icon_Delete_Activity.svg" alt="Delete Activity">
+                                        </span>
+                                            <span class="double_arrow" (click)="showAddEventModal(hour.activity.id, hour.scheduled_hour_from, hour.scheduled_hour_to)">
+                                            <img src="assets/img/Icon_Change_Activity.svg" alt="Change Activity">
+                                        </span>
                                     </div>
                                 </div>
 
@@ -218,28 +220,29 @@
                 <div class="exportitineraryModalBody"
                      *ngIf="_itinerary != null && _itinerary.itinerary_cook_raw != null">
                     <div *ngFor="let day of _itinerary.itinerary_cook_raw.days"
-                         class="export_itinerary_half_width_column">
+                         class="export_itinerary_full_width_column">
                         <div *ngFor="let hour of day.hours">
-                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id)">
-                                <div class="export_itinerary_delete_activity_icon">
-                                    <img src="assets/img/Icon_Close.svg" (click)="skipExportActivity(hour.activity.id)"
-                                         alt="Delete activity">
+                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id)" style="display:flex;width: 100%;align-items: center">
+                                <div class="export_itinerary_delete_activity_icon" style="width:30px">
+                                    <!--<img src="assets/img/Icon_Close.svg" (click)="skipExportActivity(hour.activity.id)"-->
+                                         <!--alt="Delete activity">-->
+                                    &mdash;
                                 </div>
                                 <div class="export_itinerary_activity_name">{{ hour.activity.name }}</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="export_itinerary_or_div">or</div>
-                    <div class="export_itinerary_full_width_column checkbox_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <label class="checkbox_container">
-                                <input name="export_all" type="checkbox">
-                                <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
-                    </div>
+                    <!--<div class="export_itinerary_or_div">or</div>-->
+                    <!--<div class="export_itinerary_full_width_column checkbox_column">-->
+                        <!--<div class="export_itinerary_delete_activity_icon">-->
+                            <!--<label class="checkbox_container">-->
+                                <!--<input name="export_all" type="checkbox">-->
+                                <!--<span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>-->
+                    <!--</div>-->
                     <div class="export_itinerary_full_width_column send_column">
                         <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count"
                              class="send_button" (click)="exportItinerary()">

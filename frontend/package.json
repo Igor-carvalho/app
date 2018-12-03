@@ -10,13 +10,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4201",
-    "build": "ng build",
+    "build": "ng build --prod --aot=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "1.0.0-beta.2",
     "@angular/animations": "4.3.4",
     "@angular/common": "4.3.4",
     "@angular/compiler": "4.3.4",

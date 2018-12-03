@@ -11,34 +11,35 @@ export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
+        // loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
+        redirectTo: '/tutorial-one'
     },
+    // {
+    //     path: '',
+    //     component: FrontendLayoutComponent,
+    //     canActivate: [AuthGuard],
+    //     children: [
+    //         {
+    //             path: 'account',
+    //             loadChildren: 'app/account/account.module#AccountModule'
+    //         }
+    //     ]
+    // },
     {
         path: '',
-        component: FrontendLayoutComponent,
-        canActivate: [AuthGuard],
         children: [
-            {
-                path: 'account',
-                loadChildren: 'app/account/account.module#AccountModule'
-            }
-        ]
-    },
-    {
-        path: '',
-        children: [
-            {
-                path: 'tutorial-one',
-                loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
-            },
-            {
-                path: 'tutorial-two',
-                loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
-            },
-            {
-                path: 'login',
-                loadChildren: 'app/login/login.module#LoginModule'
-            },
+            // {
+            //     path: 'tutorial-one',
+            //     loadChildren: 'app/tutorial-one/tutorial-one.module#TutorialOneModule'
+            // },
+            // {
+            //     path: 'tutorial-two',
+            //     loadChildren: 'app/tutorial-two/tutorial-two.module#TutorialTwoModule'
+            // },
+            // {
+            //     path: 'login',
+            //     loadChildren: 'app/login/login.module#LoginModule'
+            // },
             {
                 path: 'logout',
                 loadChildren: 'app/logout/logout.module#LogoutModule'
@@ -63,12 +64,17 @@ export const routes: Routes = [
     },
     {
         path: '',
-        component:FrontendLayoutComponent,
+        component: FrontendLayoutComponent,
         children: [
 
+            // {
+            //     path: 'sample-page',
+            //     loadChildren: 'app/sample-page/sample-page.module#SamplePageModule'
+            // },
+
             {
-                path: 'sample-page',
-                loadChildren: 'app/sample-page/sample-page.module#SamplePageModule'
+                path: 'login',
+                loadChildren: 'app/login/login.module#LoginModule'
             },
             {
                 path: 'tutorial-one',
@@ -84,7 +90,7 @@ export const routes: Routes = [
             },
             {
                 path: 'itinerary',
-                loadChildren: 'app/itinerary/Itinerary.module#ItineraryModule'
+                loadChildren: 'app/Itinerary/Itinerary.module#ItineraryModule'
             },
             {
                 path: 'activity-details',

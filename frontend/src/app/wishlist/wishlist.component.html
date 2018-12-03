@@ -52,14 +52,14 @@
             <div class="icon_container icon_calendar">
                 <img class="calendar_image" src="assets/img/Icon_Calendar_White.svg" alt="person">
             </div>
-            <div class="calendar_dates_display calendar_dates_display_normal">
+            <div class="calendar_dates_display calendar_dates_display_normal" id="calendar_not_singleday">
                 <span id="calendar_dates_month_display_one"></span>
                 <span id="calendar_dates_day_display_one"></span>
                 <span> - </span>
                 <span id="calendar_dates_month_display_two"></span>
                 <span id="calendar_dates_day_display_two"></span>
             </div>
-            <div class="calendar_dates_display calendar_dates_display_one_day">
+            <div class="calendar_dates_display calendar_dates_display_one_day" id="calendar_singleday">
                 <span id="calendar_dates_month_display"></span>
                 <span id="calendar_dates_day_display"></span>
                 <br/>
@@ -219,9 +219,7 @@
                 <div class="checkbox" *ngFor="let category of macroCategories"
                      (click)="_activityFilter.toggleMacroCategory(category.id)"
                 >
-                    <div class="checkboxRound"
-
-                    >
+                    <div class="checkboxRound">
                         <input type="checkbox"
                                [checked]="_arrayUtils.search_string_array(_activityFilter.macro_categories, category.id)"
                                value="1" name=""/>
@@ -235,8 +233,8 @@
 </div>
 <div class="container-fluid wishlist_container">
     <div class="row">
-        <div class="col-lg-1 left_container"></div>
-        <div class="col-lg-9 middle_container">
+        <div class="col-lg-1 col-md-1 left_container"></div>
+        <div class="col-lg-9 col-md-9 middle_container">
             <div *ngIf="!loading && _activities.length == 0 && _singleDayTemporaryItinerary.itinerary_cook_raw != null && _singleDayTemporaryItinerary.itinerary_cook_raw.days.length == 0"
                  class="not_found_container">
                 <div class="not_found_image_container">
@@ -263,7 +261,7 @@
                          *ngFor="let activity of _activities">
                         <div class="element_container">
                             <div class="image_container" (click)="toggle_selected_acctivity(activity.id)">
-                                <div class="image">
+                                <div class="image" *ngIf="activity.images != null">
                                     <img class="elem_image" [src]="activity.images[0]" alt="image">
                                 </div>
                                 <div class="icon">
@@ -453,10 +451,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 right_container">
+        <div class="col-lg-2 col-md-2 right_container">
             <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container edit_itinerary_icon_container">
                 <div class="edit_itinerary_wrapper show_my_itinerary_icon" id="edit_itinerary_wrapper_one">
-                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="show_my_itinerary()"
+                    <img src="assets/img/Icon_Showmyitinerary_mobile.svg" (click)="create_my_itinerary()"
                          alt="show my itinerary">
                 </div>
             </div>
@@ -468,8 +466,9 @@
                 </div>
             </div>
             <div *ngIf="!appInitSettings.isSingleDay" class="edit_itinerary_container edit_itinerary_text_container">
-                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one">
-                    <div class="edit_itinerary" (click)="show_my_itinerary()">Show my<br>Itinerary</div>
+                <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_one1">
+                    <!--<div class="edit_itinerary" (click)="show_my_itinerary()">Show my<br>Itinerary</div>-->
+                    <div class="edit_itinerary" (click)="create_my_itinerary()">Create my<br>Itinerary</div>
                 </div>
                 <div class="edit_itinerary_wrapper" id="edit_itinerary_wrapper_two">
                     <div class="edit_itinerary" (click)="backToItinerary()">Hide my<br>Itinerary</div>
@@ -479,7 +478,7 @@
 
             <div class="select_activity_container">
                 <img src="assets/img/triangle.svg" alt="empty wishlist arrow">
-                <div class="select_activity_description">Select atleast one Activity for your Wishlist!</div>
+                <div class="select_activity_description">Select at least one Activity for your Wishlist!</div>
             </div>
         </div>
         <!-- The Add/Replace Event Modal -->
@@ -499,11 +498,12 @@
                 </div>
                 <div class="exportitineraryModalBody" *ngIf="_singleDayTemporaryItinerary.itinerary_cook_raw != null">
                     <div *ngFor="let day of _singleDayTemporaryItinerary.itinerary_cook_raw.days">
-                        <div *ngFor="let hour of day.hours" class="export_itinerary_half_width_column">
-                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id) && _selectedActivities.includes(hour.activity.id)">
-                                <div class="export_itinerary_delete_activity_icon">
-                                    <img (click)="skipExportActivity(hour.activity.id)"
-                                         src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">
+                        <div *ngFor="let hour of day.hours" class="export_itinerary_full_width_column">
+                            <div *ngIf="!itineraryExport.skip_export_activities.includes(hour.activity.id) && _selectedActivities.includes(hour.activity.id)" style="display:flex;width: 100%;align-items: center">
+                                <div class="export_itinerary_delete_activity_icon" style="width:30px">
+                                    <!--<img (click)="skipExportActivity(hour.activity.id)"-->
+                                         <!--src="assets/img/Icon_Delete_Bluish.svg" alt="Delete activity">-->
+                                    &mdash;
                                 </div>
                                 <div class="export_itinerary_activity_name">{{ hour.activity.name }}</div>
                             </div>
@@ -515,17 +515,17 @@
 
                     </div>
 
-                    <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_or_div">or</div>
-                    <div *ngIf="_selectedActivities.length > 0"
-                         class="export_itinerary_full_width_column checkbox_column">
-                        <div class="export_itinerary_delete_activity_icon">
-                            <label class="checkbox_container">
-                                <input type="checkbox">
-                                <span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>
-                    </div>
+                    <!--<div *ngIf="_selectedActivities.length > 0" class="export_itinerary_or_div">or</div>-->
+                    <!--<div *ngIf="_selectedActivities.length > 0"-->
+                         <!--class="export_itinerary_full_width_column checkbox_column">-->
+                        <!--<div class="export_itinerary_delete_activity_icon">-->
+                            <!--<label class="checkbox_container">-->
+                                <!--<input type="checkbox">-->
+                                <!--<span (click)="itineraryExport.toggleExportAll()" class="checkbox_checkmark"></span>-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="export_itinerary_activity_name checkbox_text">Export the whole itinerary</div>-->
+                    <!--</div>-->
                     <div *ngIf="_selectedActivities.length > 0" class="export_itinerary_full_width_column send_column">
                         <div *ngIf="itineraryExport.export_all || itineraryExport.skip_export_activities.length < itineraryExport.total_activities_count"
                              (click)="exportItinerary()" class="send_button">

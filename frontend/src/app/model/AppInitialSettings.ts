@@ -1,16 +1,16 @@
 export class AppInitialSettings {
 
-    isSingleDay: boolean;
+    private static LOCAL_STORAGE_LABEL = 'AppInitialSettings';
 
-    private static LOCAL_STORAGE_LABEL = "AppInitialSettings";
+    isSingleDay: boolean;
 
     constructor() {
 
         this.isSingleDay = false;
 
-        let settingsJson: string = localStorage.getItem(AppInitialSettings.LOCAL_STORAGE_LABEL);
+        const settingsJson: string = localStorage.getItem(AppInitialSettings.LOCAL_STORAGE_LABEL);
         if (settingsJson != null) {
-            let object = JSON.parse(settingsJson);
+            const object = JSON.parse(settingsJson);
             Object.assign(this, object);
         }
     }

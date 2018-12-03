@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../model/user.service";
+import {UserService} from '../model/user.service';
 import {
     TweenMax,
     Power2,
@@ -13,10 +13,10 @@ import {
     TweenLite,
     CSSPlugin,
     EasePack
-} from "gsap";
+} from 'gsap';
 import * as $ from 'jquery';
 import { Location } from '@angular/common';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-frontend',
@@ -24,9 +24,9 @@ import {Router} from "@angular/router";
 })
 export class FrontendLayoutComponent implements OnInit {
 
-    public disabled: boolean = false;
-    public status: { isopen: boolean } = {isopen: false};
     public static loading;
+    public disabled = false;
+    public status: { isopen: boolean } = {isopen: false};
 
     public userData: any = {};
 
@@ -34,20 +34,21 @@ export class FrontendLayoutComponent implements OnInit {
                 private _location: Location,
                 private _router: Router) {
         FrontendLayoutComponent.loading = false;
-        console.log(this._router);
+        // console.log(this._router);
     }
 
     ngOnInit(): void {
-        let jwtValue: any = this._userService.getJWTValue();
+        console.log('logged:', this._userService.isLoggedIn());
+        const jwtValue: any = this._userService.getJWTValue();
         if (jwtValue != null) {
             this.userData = jwtValue.data;
         }
 
-        var tl = new TimelineMax;
-        var tlm = new TimelineMax;
-        //tl.to('#bone_container', 2, {rotation: 360, repeatDelay:0, repeat: -1, yoyo:true});
-        //tl.to('.eye_level_three_container', 2, {rotation: 360, repeatDelay:0, delay: 2, repeat: -1, yoyo:true});
-        //tl.play();
+        const tl = new TimelineMax;
+        const tlm = new TimelineMax;
+        // tl.to('#bone_container', 2, {rotation: 360, repeatDelay:0, repeat: -1, yoyo:true});
+        // tl.to('.eye_level_three_container', 2, {rotation: 360, repeatDelay:0, delay: 2, repeat: -1, yoyo:true});
+        // tl.play();
         tl.to('#bone_container', 2, {rotation: 360, repeatDelay: 0, delay: 0, repeat: -1, ease: Power0.easeNone});
         tlm.to('.eye_level_three_container', 2, {
             rotation: 360,
@@ -76,5 +77,18 @@ export class FrontendLayoutComponent implements OnInit {
 
     public goBack() {
         this._location.back();
+    }
+
+    public clickLogo() {
+        window.location.href = 'https://www.dobedoo.it';
+    }
+
+    public clickCard() {
+        window.location.href = 'https://www.dobedoo.it/dobedoocard';
+    }
+
+    public goItinerary() {
+        const params = localStorage.getItem('itinerary');
+        this._router.navigate(['/itinerary'], {queryParams: JSON.parse(params)});
     }
 }

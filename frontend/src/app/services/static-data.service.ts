@@ -22,7 +22,7 @@ export class StaticDataService {
     }
 
     public getWeatherTypes(): Observable<any> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/static-data/weather-types',
@@ -38,7 +38,7 @@ export class StaticDataService {
     }
 
     public getMacroCategories(): Observable<any> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/static-data/macro-categories',
@@ -54,7 +54,7 @@ export class StaticDataService {
     }
 
     public getMicroCategories(): Observable<any> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/static-data/micro-categories',
@@ -70,7 +70,7 @@ export class StaticDataService {
     }
 
     public getBudgetTypes(): Observable<any> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/static-data/budget-types',
@@ -96,14 +96,13 @@ export class StaticDataService {
 
         let errorMessage: any = {};
         // Connection error
-        if (error.status == 0) {
+        if (error.status === 0) {
             errorMessage = {
                 success: false,
                 status: 0,
-                data: "Sorry, there was a connection error occurred. Please try again.",
+                data: 'Sorry, there was a connection error occurred. Please try again.',
             };
-        }
-        else {
+        } else {
             errorMessage = error.json();
         }
         return Observable.throw(errorMessage);

@@ -1,4 +1,5 @@
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+
 <div class="h1-container">
     <h1 id="heading" i18n="tut-one-htu">How to use the dobedoo app</h1>
 </div>
@@ -22,8 +23,8 @@
         </div>
     </div>
     <div class="tutorials_get_started">
-        <div [routerLink]="['/tutorial-two']" class="tutorials_get_started_container">
-            <div class="tutorials_get_started_wrapper">Let's get started</div>
+        <div class="tutorials_get_started_container">
+            <div class="tutorials_get_started_wrapper" (click)="goTutorialTwo()">Let's get started</div>
             <div class="underline_border_get_started"></div>
         </div>
     </div>

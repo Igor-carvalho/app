@@ -3,7 +3,7 @@ import {
     Routes,
     RouterModule
 } from '@angular/router';
-import {TutorialOneComponent} from "./tutorial-one.component";
+import {TutorialOneComponent} from './tutorial-one.component';
 
 
 

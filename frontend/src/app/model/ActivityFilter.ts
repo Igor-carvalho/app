@@ -1,4 +1,6 @@
 import {ArrayUtils} from '../utilities/ArrayUtils';
+import {DateUtils} from '../utilities/date-utils';
+import {isDefined} from '@angular/compiler/src/util';
 
 export class ActivityFilter {
     num_childs: number;
@@ -11,14 +13,29 @@ export class ActivityFilter {
     time_from: number;
     time_to: number;
 
+    lat:number;
+    lng:number;
+    citylat:number;
+    citylng:number;
 
     constructor(values: Object = {}) {
         this.macro_categories = [];
         this.num_adults = 1;
         this.num_childs = 0;
 
-        this.date_starts = new Date().toISOString().substring(0, 10);
-        this.date_ends = new Date().toISOString().substring(0, 10);
+        this.lat = null;
+        this.lng = null;
+        this.citylat = 40.8518;
+        this.citylng = 14.2681;
+
+        this.budget_type = 0;
+
+        const today = new Date();
+        // Y-m-d
+        const today_formated = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        this.date_starts = today_formated;
+        this.date_ends = today_formated;
 
         this.time_from = new Date().getHours();
         this.time_to = new Date().getHours() + 1;
@@ -26,15 +43,16 @@ export class ActivityFilter {
     }
 
     toggleMacroCategory(id) {
-        id = id + "";
-        console.log(id);
-        let arrayUtils = new ArrayUtils();
-        var index = this.macro_categories.indexOf(id);
+        id = id + '';
+        console.log(typeof id);
+        // const arrayUtils = new ArrayUtils();
+        const index = this.macro_categories.indexOf(id);
         if (index != -1) {
-            console.log("remove");
+            console.log('remove');
             this.macro_categories.splice(index, 1);
         } else {
-            console.log("add");
+            console.log('add');
+            // console.log(this.macro_categories);
             this.macro_categories.push(id);
         }
 

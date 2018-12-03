@@ -29,11 +29,13 @@ use Yii;
  * @property string $updated_at
  * @property string $duration
  * @property integer $created_by
+ * @property string $priority
  *
  * @property User $createdBy
  * @property ActivitiesWeathers[] $activitiesWeathers
  * @property WeatherTypes[] $weatherTypes
  */
+
 class Activities extends \yii\db\ActiveRecord
 {
     public static $LANGUAGE_TABLE_ID = 1; //Reference from DB.
@@ -42,6 +44,8 @@ class Activities extends \yii\db\ActiveRecord
     public $micro_category;
     public $weather_types;
     public $translations;
+
+    public $distance;
 
     /**
      * @inheritdoc
@@ -67,6 +71,7 @@ class Activities extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 200],
             [['city', 'country'], 'string', 'max' => 45],
             [['budget'], 'string', 'max' => 10],
+            [['priority'], 'string', 'max' => 10],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
         ];
     }

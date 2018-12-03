@@ -14,17 +14,17 @@ import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {SmartResizeDirective} from './shared/smart-resize.directive';
 
-import {SocialLoginModule, AuthServiceConfig} from "angularx-social-login";
-import {GoogleLoginProvider, FacebookLoginProvider} from "angularx-social-login";
+import {SocialLoginModule, AuthServiceConfig} from 'angularx-social-login';
+import {GoogleLoginProvider, FacebookLoginProvider} from 'angularx-social-login';
 
-let config = new AuthServiceConfig([
+const config = new AuthServiceConfig([
     {
         id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider("468914330550-ehmk8qsfdna76v3tmdm9mqpfa3i2nnd8.apps.googleusercontent.com")
+        provider: new GoogleLoginProvider('468914330550-ehmk8qsfdna76v3tmdm9mqpfa3i2nnd8.apps.googleusercontent.com')
     },
     {
         id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider("427439887695383")
+        provider: new FacebookLoginProvider('427439887695383')
     },
 ]);
 
@@ -48,12 +48,12 @@ import {GlobalService} from './model/global.service';
 import {UserService} from './model/user.service';
 import {UserDataService} from './model/user-data.service';
 import {SettingDataService} from './model/setting-data.service';
-import {ActivitiesDataService} from "./services/activities-data.service";
-import {StaticDataService} from "./services/static-data.service";
-import {ItineraryDataService} from "./services/itinerary-data.service";
+import {ActivitiesDataService} from './services/activities-data.service';
+import {StaticDataService} from './services/static-data.service';
+import {ItineraryDataService} from './services/itinerary-data.service';
 import {LoadingScreenComponent} from './loading-screen/loading-screen.component';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {SocialUserService} from "./services/social-user.service";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SocialUserService} from './services/social-user.service';
 
 @NgModule({
     imports: [

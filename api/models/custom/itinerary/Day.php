@@ -13,4 +13,7 @@ class Day
 {
     public $day;
     public $hours;
+    public $weather_temp;
+    public $weather_icon;
+    public $weather;
 }

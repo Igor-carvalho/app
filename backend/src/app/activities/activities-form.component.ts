@@ -107,6 +107,7 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
             date_ends: {valid: true, message: ''},
             budget: {valid: true, message: ''},
             max_people: {valid: true, message: ''},
+            priority: {valid: true, message: ''},
         };
     }
 
@@ -154,6 +155,7 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
         this._activity.date_ends = "";
         this._activity.budget = "";
         this._activity.max_people = 0;
+        this._activity.priority = "";
     }
 
     public ngOnInit() {
@@ -377,7 +379,7 @@ export class ActivitiesFormComponent implements OnInit, OnDestroy {
         this._staticData.getBudgetTypes()
             .subscribe(
                 result => {
-                    // console.log(result);
+                    // console.log('budgets',result);
                     this.budgetList = result;
                 },
                 error => {

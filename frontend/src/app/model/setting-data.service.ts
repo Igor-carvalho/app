@@ -14,17 +14,47 @@ import {AuthHttp} from 'angular2-jwt';
 @Injectable()
 export class SettingDataService {
 
-    constructor(private _globalService:GlobalService,
-                private _userService:UserService,
-                private _authHttp: AuthHttp){
+    public static getMetaTypes(): Array<any> {
+        return [
+            {
+                label: 'Select',
+                value: 'select'
+            },
+            {
+                label: 'Number',
+                value: 'number'
+            },
+            {
+                label: 'Text',
+                value: 'text'
+            }
+        ];
+    }
+
+    public static getIsPublicTypes(): Array<any> {
+        return [
+            {
+                label: 'Public',
+                value: 1
+            },
+            {
+                label: 'Private',
+                value: 0
+            }
+        ];
+    }
+
+    constructor(private _globalService: GlobalService,
+                private _userService: UserService,
+                private _authHttp: AuthHttp) {
     }
 
     // POST /v1/setting
-    addSetting(setting:Setting):Observable<any>{
-        let headers = this.getHeaders();
+    addSetting(setting: Setting): Observable<any> {
+        const headers = this.getHeaders();
 
         return this._authHttp.post(
-            this._globalService.apiHost+'/setting',
+            this._globalService.apiHost + '/setting',
             JSON.stringify(setting),
             {
                 headers: headers
@@ -38,11 +68,11 @@ export class SettingDataService {
     }
 
     // DELETE /v1/setting/1
-    deleteSettingById(id:number):Observable<boolean>{
-        let headers = this.getHeaders();
+    deleteSettingById(id: number): Observable<boolean> {
+        const headers = this.getHeaders();
 
         return this._authHttp.delete(
-            this._globalService.apiHost+'/setting/'+id,
+            this._globalService.apiHost + '/setting/' + id,
             {
                 headers: headers
             }
@@ -55,11 +85,11 @@ export class SettingDataService {
     }
 
     // PUT /v1/setting/1
-    updateSettingById(setting:Setting):Observable<any>{
-        let headers = this.getHeaders();
+    updateSettingById(setting: Setting): Observable<any> {
+        const headers = this.getHeaders();
 
         return this._authHttp.put(
-            this._globalService.apiHost+'/setting/'+setting.id,
+            this._globalService.apiHost + '/setting/' + setting.id,
             JSON.stringify(setting),
             {
                 headers: headers
@@ -72,18 +102,18 @@ export class SettingDataService {
             .catch(this.handleError);
     }
 
-    private getHeaders():Headers {
+    private getHeaders(): Headers {
         return new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+this._userService.getToken(),
+            'Authorization': 'Bearer ' + this._userService.getToken(),
         });
     }
     // GET /v1/setting
     getAllSettings(): Observable<Setting[]> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
-            this._globalService.apiHost+'/setting?sort=meta_key',
+            this._globalService.apiHost + '/setting?sort=meta_key',
             {
                 headers: headers
             }
@@ -95,7 +125,7 @@ export class SettingDataService {
             .catch(this.handleError);
     }
 
-    refreshGlobalSettings():void{
+    refreshGlobalSettings(): void {
         // get settings
         this._globalService.loadGlobalSettingsFromSessionStorage();
 
@@ -103,7 +133,7 @@ export class SettingDataService {
             .subscribe(
                 settings => {
                     settings.forEach(setting => {
-                        switch(setting.meta_type) {
+                        switch (setting.meta_type) {
                             case 'select':
                             case 'text':
                                 this._globalService.setting[setting.meta_key] = setting.meta_value;
@@ -122,10 +152,10 @@ export class SettingDataService {
 
     // GET /v1/setting/public
     getAllSettingsPublic(): Observable<Array<any>> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
-            this._globalService.apiHost+'/setting/public',
+            this._globalService.apiHost + '/setting/public',
             {
                 // headers: headers
             }
@@ -137,11 +167,11 @@ export class SettingDataService {
             .catch(this.handleError);
     }
 
-    getSettingById(id:number):Observable<Setting> {
-        let headers = this.getHeaders();
+    getSettingById(id: number): Observable<Setting> {
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
-            this._globalService.apiHost+'/setting/'+id,
+            this._globalService.apiHost + '/setting/' + id,
             {
                 headers: headers
             }
@@ -154,49 +184,19 @@ export class SettingDataService {
     }
 
     private handleError (error: Response | any) {
-        let errorMessage:any = {};
+        let errorMessage: any = {};
 
         // Connection error
-        if(error.status == 0) {
+        if (error.status == 0) {
             errorMessage = {
                 success: false,
                 status: 0,
-                data: "Sorry, there was a connection error occurred. Please try again.",
+                data: 'Sorry, there was a connection error occurred. Please try again.',
             };
-        }
-        else {
+        } else {
             errorMessage = error.json();
         }
         return Observable.throw(errorMessage);
     }
 
-    public static getMetaTypes():Array<any>{
-        return [
-            {
-                label: 'Select',
-                value: 'select'
-            },
-            {
-                label: 'Number',
-                value: 'number'
-            },
-            {
-                label: 'Text',
-                value: 'text'
-            }
-        ];
-    }
-
-    public static getIsPublicTypes():Array<any>{
-        return [
-            {
-                label: 'Public',
-                value: 1
-            },
-            {
-                label: 'Private',
-                value: 0
-            }
-        ];
-    }
 }

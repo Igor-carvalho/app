@@ -26,6 +26,8 @@ export class Activities {
     time_end_mm: string;
     duration: number;
 
+    priority: string;
+
     translations: LanguageContent[];
 
 

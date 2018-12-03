@@ -141,6 +141,8 @@ $config = [
                         'GET cooking-itinerary' => 'cooking-itinerary',
                         'OPTIONS replace-filter/{id}' => 'options',
                         'GET replace-filter/{id}' => 'replace-filter',
+                        'OPTIONS replace-activity' => 'options',
+                        'POST replace-activity' => 'replace-activity',
                     ]
                 ],
                 [
@@ -153,14 +155,16 @@ $config = [
                     'extraPatterns' => [
                         'OPTIONS cooking' => 'options',
                         'GET cooking' => 'cooking',
+                        'OPTIONS listing' => 'options',
+                        'GET listing' => 'listing',
                         'OPTIONS public-update/{id}' => 'options',
                         'POST public-update/{id}' => 'public-update',
                         'OPTIONS public-delete/{id}' => 'options',
                         'GET public-delete/{id}' => 'public-delete',
                         'OPTIONS public/{id}' => 'options',
                         'GET public/{id}' => 'public',
-                        'OPTIONS export/{id}' => 'options',
-                        'GET export/{id}' => 'export',
+                        'OPTIONS export' => 'options',
+                        'POST export' => 'export',
                         'OPTIONS cooking-single-day' => 'options',
                         'POST cooking-single-day' => 'cooking-single-day',
                     ]
@@ -255,8 +259,8 @@ $config = [
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
-
                 $response = $event->sender;
+//                return $response;
                 if ($response->format == 'html') {
                     return $response;
                 }

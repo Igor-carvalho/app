@@ -13,7 +13,7 @@ export class GlobalService{
         if(environment.production == true) {
             this.apiHost = 'http://18.217.74.152/v1';
         } else {
-            this.apiHost = 'http://localhost/dobedoo/source/api/web/v1';
+            this.apiHost = 'http://localhost/api/web/v1';
         }
     }
 

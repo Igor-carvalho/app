@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {SettingDataService} from "./model/setting-data.service";
+import {SettingDataService} from './model/setting-data.service';
 
 @Component({
     selector: 'body',

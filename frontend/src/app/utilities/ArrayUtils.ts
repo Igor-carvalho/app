@@ -13,7 +13,7 @@ export class ArrayUtils {
     }
 
     public search_string_array(array, string) {
-        string = string + "";
+        string = string + '';
         return array.indexOf(string) != -1
     }
 

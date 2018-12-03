@@ -127,6 +127,7 @@ body {
         line-height: 60px;
         float: left;
         text-transform: uppercase;
+        font-family: 'Nunito';
     }
     .cart_icon_main_menu {
         position: relative;
@@ -274,7 +275,7 @@ body {
         }
     }
     .nav_pages {
-        position: relative;
+        position: relative !important;
         float: left;
         .nav-item {
             position: relative;
@@ -313,9 +314,9 @@ body {
     }
     .footer_right {
         img {
-            width: 252px;
+            width: 245px;
             position: absolute;
-            right: 20px;
+            right: 16px;
             bottom: 35px;
         }
         span {

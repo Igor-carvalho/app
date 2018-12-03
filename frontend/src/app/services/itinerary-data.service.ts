@@ -10,11 +10,11 @@ import {GlobalService} from './../model/global.service';
 import {UserService} from './../model/user.service';
 import {Setting} from './../model/setting';
 import {AuthHttp} from 'angular2-jwt';
-import {Activities} from "../model/Activities";
-import {HttpUtils} from "../utilities/http-utils";
-import {Itinerary} from "../model/itinerary/Itinerary";
-import {ActivityFilter} from "../model/ActivityFilter";
-import {ItineraryActivities} from "../model/ItineraryActivities";
+import {Activities} from '../model/Activities';
+import {HttpUtils} from '../utilities/http-utils';
+import {Itinerary} from '../model/itinerary/Itinerary';
+import {ActivityFilter} from '../model/ActivityFilter';
+import {ItineraryActivities} from '../model/ItineraryActivities';
 
 @Injectable()
 export class ItineraryDataService {
@@ -33,9 +33,9 @@ export class ItineraryDataService {
     }
 
     cookItinerary(activities: any, activityFilter: ActivityFilter): Observable<Itinerary> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
-        var parameters = {
+        const parameters = {
             num_childs: activityFilter.num_adults,
             num_adults: activityFilter.num_adults,
             date_starts: activityFilter.date_starts,
@@ -63,9 +63,9 @@ export class ItineraryDataService {
     }
 
     cookSingleDay(itineraryActivities: ItineraryActivities[], activityFilter: ActivityFilter): Observable<Itinerary> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
-        var parameters = {
+        const parameters = {
             num_childs: activityFilter.num_adults,
             num_adults: activityFilter.num_adults,
             date_starts: activityFilter.date_starts,
@@ -76,7 +76,7 @@ export class ItineraryDataService {
             time_to: activityFilter.time_to,
         };
 
-        let paramPost = {
+        const paramPost = {
             itinerary_activities: itineraryActivities
         };
 
@@ -95,7 +95,7 @@ export class ItineraryDataService {
     }
 
     getOne(id: number): Observable<Itinerary> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/itinerary/' + id,
@@ -110,8 +110,24 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
+    getItinerary(params: any): Observable<Itinerary> {
+        const headers = this.getHeaders();
+
+        return this._authHttp.get(
+            this._globalService.apiHost + '/itinerary/listing?' + HttpUtils.ObjectToUriParams(params),
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Activities[]>response.data;
+            })
+            .catch(this.handleError);
+    }
+
     getPublic(id: number): Observable<Itinerary> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
         return this._authHttp.get(
             this._globalService.apiHost + '/itinerary/public/' + id,
@@ -127,9 +143,9 @@ export class ItineraryDataService {
     }
 
     updatePublic(id: number, itineraries: ItineraryActivities[]): Observable<any> {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
-        let param = {
+        const param = {
             itinerary_activities: itineraries
         };
 
@@ -147,26 +163,27 @@ export class ItineraryDataService {
             .catch(this.handleError);
     }
 
-    exportItinerary(id: number, skip_activities: string) {
-        let headers = this.getHeaders();
+    exportItinerary(itinerary) {
+        // exportItinerary(id: number, skip_activities: string) {
+        const headers = this.getHeaders();
 
-        let parameters = {
-            skip_activities: skip_activities
+        const parameters = {
+            // skip_activities: skip_activities
+            itinerary: itinerary
         };
 
-        return this._authHttp.get(
-            this._globalService.apiHost + '/itinerary/export/' + id + "?" + HttpUtils.ObjectToUriParams(parameters),
-            {
-                headers: headers
-            }
-        )
+        return this._authHttp.post(
+            this._globalService.apiHost + '/itinerary/export', itinerary,
+                {
+                    headers: headers
+                }
+            )
             .map(response => response.json())
             .map((response) => {
                 return response;
             })
             .catch(this.handleError);
     }
-
 
     private handleError(error: Response | any) {
         let errorMessage: any = {};
@@ -176,7 +193,7 @@ export class ItineraryDataService {
             errorMessage = {
                 success: false,
                 status: 0,
-                data: "Sorry, there was a connection error occurred. Please try again.",
+                data: 'Sorry, there was a connection error occurred. Please try again.',
             };
         }
         else {

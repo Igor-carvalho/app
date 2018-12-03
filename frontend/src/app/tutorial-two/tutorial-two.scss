@@ -1,4 +1,7 @@
 app-tutorial-two {
+  .geolocation {
+    height: 350px;
+  }
   #adult_number, #child_number {
     display: inline-block;
   }
@@ -100,7 +103,7 @@ app-tutorial-two {
     text-transform: uppercase;
   }
   .month {
-    width: calc(100% -86px);
+    width: calc(100% - 86px);
   }
   .day_container {
     width: 130px;
@@ -129,16 +132,16 @@ app-tutorial-two {
     float: left;
   }
   .slider_section_heading {
-    margin-top: 70px;
+    margin-top: 50px;
     text-align: center;
   }
   .slider_icons {
     width: 100%;
     margin: 0px;
     padding: 0px;
-    min-height: 300px;
+    min-height: 260px;
     text-align: center;
-    padding-top: 30px;
+    //padding-top: 30px;
 
     img {
       padding: 0px 5px;
@@ -157,7 +160,7 @@ app-tutorial-two {
     padding:0px;
     text-align: center;
     height: 55px;
-    margin-top: 30px;
+    //margin-top: 30px;
   }
   .slider_dot {
     width: 14px;
@@ -288,12 +291,13 @@ app-tutorial-two {
     text-align: left;
     padding: 0px 15px 0px 0px;
     position: relative;
-    float: right;
-    right: 40px;
+    //float: right;
+    //right: 40px;
+    left: 100px;
     padding-top: 0px;
   }
   .budget_icons_group {
-    padding-top: 120px;
+    padding-top: 100px;
   }
   .from_day_flow {
     text-transform: lowercase;
@@ -313,13 +317,13 @@ app-tutorial-two {
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 993px) and (max-width : 1200px) {
     .budget_icons_group {
-      padding-top: 120px;
+      padding-top: 100px;
     }
     .checkboxes_wrapper {
-      margin-top: 120px;
+      margin-top: 100px;
     }
     .calendar_top_row {
-      margin-top: 120px;
+      margin-top: 100px;
     }
   }
 
@@ -336,13 +340,13 @@ app-tutorial-two {
       width: 190px;
     }
     .budget_icons_group {
-      padding-top: 120px;
+      padding-top: 100px;
     }
     .checkboxes_wrapper {
-      margin-top: 120px;
+      margin-top: 100px;
     }
     .calendar_top_row {
-      margin-top: 120px;
+      margin-top: 100px;
     }
   }
 
@@ -456,6 +460,17 @@ app-tutorial-two {
 
   /* Extra Small Devices, Phones */ 
   @media only screen and (min-width : 320px) and (max-width : 480px) {
+    .geolocation_wraper {
+      position: relative;
+      height: 300px;
+    }
+    .geolocation {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
     .slider_left_arrow {
       margin-right: 5px;
     }

@@ -1,2 +1,93 @@
 
-.idea/
+/.idea
+/.project
+/.classpath
+/.c9/
+/*.launch
+/.settings/
+/.DS_Store
+/.git
+/README.md
+/screenshots
+
+#api ignores
+/api/vendor
+
+# backend ignores
+/backend/dist
+/backend/tmp
+
+# dependencies
+/backend/node_modules
+
+# IDEs and editors
+/backend/.idea
+/backend/.project
+/backend/.classpath
+/backend/.c9/
+/backend/*.launch
+/backend/.settings/
+
+# IDE - VSCode
+/backend/.vscode/
+!/backend/.vscode/settings.json
+!/backend/.vscode/tasks.json
+!/backend/.vscode/launch.json
+!/backend/.vscode/extensions.json
+
+# misc
+/backend/.sass-cache
+/backend/connect.lock
+/backend/coverage/*
+/backend/libpeerconnection.log
+/backend/npm-debug.log
+/backend/testem.log
+/backend/typings
+
+# e2e
+/backend/e2e/*.js
+/backend/e2e/*.map
+
+#System Files
+/backend/.DS_Store
+/backend/Thumbs.db
+
+# frontend ignores
+
+/frontend/dist
+/frontend/tmp
+
+# dependencies
+/frontend/node_modules
+
+# IDEs and editors
+/frontend/.idea
+/frontend/.project
+/frontend/.classpath
+/frontend/.c9/
+/frontend/*.launch
+/frontend/.settings/
+
+# IDE - VSCode
+/frontend/.vscode/
+!/frontend/.vscode/settings.json
+!/frontend/.vscode/tasks.json
+!/frontend/.vscode/launch.json
+!/frontend/.vscode/extensions.json
+
+# misc
+/frontend/.sass-cache
+/frontend/connect.lock
+/frontend/coverage/*
+/frontend/libpeerconnection.log
+/frontend/npm-debug.log
+/frontend/testem.log
+/frontend/typings
+
+# e2e
+/frontend/e2e/*.js
+/frontend/e2e/*.map
+
+#System Files
+/frontend/.DS_Store
+/frontend/Thumbs.db

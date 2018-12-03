@@ -15,6 +15,7 @@ use app\models\custom\itinerary\Hour;
 use app\models\custom\itinerary\Itinerary;
 use app\models\database\Activities;
 use Symfony\Component\Console\Command\HelpCommand;
+use yii\web\HttpException;
 
 class ItineraryCooker
 {
@@ -37,17 +38,19 @@ class ItineraryCooker
         $this->time_to = $time_to;
 
         $difference = $this->date_ends->diff($this->date_start);
-        $dayDifference = intval($difference->d);
+        $dayDifference = $difference->days;
         if ($dayDifference > 0)
-            $this->eachDayLimit = sizeof($activities) / intval($difference->d);
-
+            $this->eachDayLimit = count((array)$activities) / intval($difference->days);
+        if ($dayDifference > count((array)$activities)) {
+            throw new HttpException(404, json_encode("No much activities available for your itinerary"));
+        }
 
         $this->activities = $activities;
-        $this->expand_activity_day_key(); // put all activities in date array with key by date
+        $this->activity_day_key = [];
+        $this->assign_activities_day_key();
+//        $this->expand_activity_day_key(); // put all activities in date array with key by date
         $this->expand_activity_by_day(); // make an object specific to date
-        $this->calculate_distance(); // calculate distance
-
-
+        $this->calculate_distance(); // calculate distance between first activity and others in the same day
     }
 
     //break down all activities with days prospective
@@ -63,7 +66,20 @@ class ItineraryCooker
             $object->day = $date;
             $object->hours = [];
 
+//            $weather_str = $this->getWeather($date);
+//            $object->weather = $weather_str;
+//            $weather = json_decode($weather_str);
+//
+//            if (isset($weather) && $weather->currently->temperature !='') {
+//                $object->weather_temp = (($weather->currently->temperature) - 32) * 5/9;
+//                $object->weather_icon = $weather->currently->icon;
+//            } else {
+//                $object->weather_temp = '';
+//                $object->weather_icon = '';
+//            }
+
             foreach ($activities as $activity) {
+                $activity = json_decode(json_encode($activity));
                 $hour = new Hour();
 
                 $hour->hour_from = intval($activity->time_start_hh);
@@ -84,12 +100,10 @@ class ItineraryCooker
 
 
         $this->activity_day_breakdown = $iteraries;
-
     }
 
     private function expand_activity_day_key()
     {
-
         foreach ($this->activities as $activity) {
 
             $startDate = new \DateTime($activity->date_starts);
@@ -99,7 +113,6 @@ class ItineraryCooker
 
             $interval = \DateInterval::createFromDateString('1 day');
             $period = new \DatePeriod($startDate, $interval, $endDate);
-
             foreach ($period as $dt) {
 
                 if ($dt < $this->date_start || $dt > $this->date_ends) {
@@ -116,6 +129,8 @@ class ItineraryCooker
         }
 //        HelperFunction::output($this->activity_day_key);
         ksort($this->activity_day_key);
+//        echo '<pre>';
+//        print_r($this->activity_day_key);exit;
     }
 
     private function calculate_distance()
@@ -140,10 +155,9 @@ class ItineraryCooker
 
     public function sort_activities()
     {
+//        echo '<pre>';print_r(($this->activity_day_breakdown));exit;
         $distanceTimeCalculator = new ActivityTimeDistance();
         $activities_assigned = [];
-
-//        HelperFunction::output($this->activity_day_breakdown);
 
         foreach ($this->activity_day_breakdown->days as $day) {
 
@@ -151,12 +165,12 @@ class ItineraryCooker
             $successScheduleCounter = 0;
 
             foreach ($day->hours as $key => $hour) {
-
-                if ($this->eachDayLimit > 0 && $successScheduleCounter >= $this->eachDayLimit) {
-//                    echo $hour->activity['id'], ", ";
-                    unset($day->hours[$key]);
-                    continue;
-                }
+//
+//                if ($this->eachDayLimit > 0 && $successScheduleCounter >= $this->eachDayLimit) {
+////                    echo $hour->activity['id'], ", ";
+//                    unset($day->hours[$key]);
+//                    continue;
+//                }
 
                 if (in_array($hour->activity->id, $activities_assigned)) {
                     unset($day->hours[$key]);
@@ -164,6 +178,11 @@ class ItineraryCooker
                 }
 
                 $activityScheduleStarts = new \DateTime("{$day->day} {$hour->hour_from}:00");
+
+                if (intval($hour->hour_to) < intval($hour->hour_from)) {
+                    $hour->hour_to = 24;
+//                    print_r(intval($hour->hour_to) );exit;
+                }
                 $activityScheduleEnds = new \DateTime("{$day->day} {$hour->hour_to}:00");
 
                 if ($previousHour == null) {
@@ -210,7 +229,8 @@ class ItineraryCooker
                     $hour->debug = "{$hour->activity->longitude}, {$hour->activity->latitude}, {$hour->activity->name}";
 
                     $activities_assigned[] = $hour->activity->id;
-                } else {
+                }
+                else {
 
                     $distanceToPreviousActivity = DistanceHelper::long_lat_distance($previousHour->activity->latitude, $previousHour->activity->longitude,
                         $hour->activity->latitude, $hour->activity->longitude);
@@ -218,6 +238,8 @@ class ItineraryCooker
                     $timeToTravelMinutes = ceil($distanceTimeCalculator->calculate_time($distanceToPreviousActivity));
 
                     $startTime = clone $previousHour->scheduled_hour_to;
+//                    echo '<pre>';
+//                    print_r($startTime);
 
                     if ($startTime < $activityScheduleStarts) {
                         $startTime = clone $activityScheduleStarts;
@@ -273,6 +295,7 @@ class ItineraryCooker
                 $previousHour = $hour;
 
             }
+//            exit;
 
             $day->hours = array_values($day->hours);
 //            usort($day->hours, function ($a, $b) {
@@ -284,31 +307,103 @@ class ItineraryCooker
 
         $this->format_sorted_data();
 
-
 //        HelperFunction::output($this->activity_day_breakdown);
         return $this->activity_day_breakdown;
     }
 
     private function format_sorted_data()
     {
-
 //        $this->activity_day_breakdown = array_values($this->activity_day_breakdown);
 
 //        HelperFunction::output($this->activity_day_breakdown);
         foreach ($this->activity_day_breakdown->days as $day) {
-
             foreach ($day->hours as $hour) {
-                $hour->activity = $hour->activity->toArray();
+                $hour->activity = $hour->activity;
                 $hour->scheduled_hour_from = $hour->scheduled_hour_from->format("Y-m-d H:i:s");
                 $hour->scheduled_hour_to = $hour->scheduled_hour_to->format("Y-m-d H:i:s");
-
 //                echo $hour->debug . "<br>";
             }
-
 //            echo "<br>";
-
         }
     }
 
 
+    private function assign_activities_day_key() {
+        // number of activities per day
+
+        $startDate = $this->date_start;
+        $endDate = $this->date_ends;
+
+        $endDate = $endDate->modify('+1 day'); //to include end date
+
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($startDate, $interval, $endDate);
+        $date_diff = $endDate->diff($startDate)->days;
+//        print_r([$startDate,$endDate]);exit;
+
+        if ($date_diff > 0) {
+            $numOfActivities = count($this->activities);
+            $date = $this->date_start->format("Y-m-d");
+            if ($numOfActivities <= $date_diff) {
+                for ($i = 0;$i < $numOfActivities;$i++) {
+                    $this->activity_day_key[$date][] = $this->activities[$i];
+                    $date = date('Y-m-d', strtotime("+1 day", strtotime($date)));
+                }
+            } else {
+                $list = $this->activities;
+                $p = $date_diff;
+                $listlen = $numOfActivities;
+                $partlen = floor( $listlen / $p );
+                $partrem = $listlen % $p;
+                $partition = array();
+                $mark = 0;
+                for ($px = 0; $px < $p; $px++) {
+                    $incr = ($px < $partrem) ? $partlen+1 : $partlen;
+//                    if ($px == 0) {
+//                        $incr = $partlen;
+//                        $partrem++;
+//                    }
+                    $partition[$date] = array_slice( $list, $mark, $incr );
+                    $mark += $incr;
+                    $date = date('Y-m-d', strtotime("+1 day", strtotime($date)));
+                }
+                $this->activity_day_key = $partition;
+            }
+        } else {
+            foreach ($this->activities as $activity) {
+                $date = $activity->date_starts->format("Y-m-d");
+                if (!isset($this->activity_day_key[$date]) || !is_array($this->activity_day_key[$date])) {
+                    $this->activity_day_key[$date] = [];
+                }
+
+                $this->activity_day_key[$date][] = $activity;
+            }
+        }
+    }
+
+
+    private function getWeather($day){
+        return [];
+        $apiKey = 'a75faa7064f87561cf9b73aa921310cb';
+        $exclude = '?exclude=minutely,hourly,daily,alerts,flags';
+        $unit = '?units=si';
+        $lat = '14.2484765';
+        $long = '40.8382879';
+
+        $day = '2018-10-29';
+        $localtime = $day.'T12:00:00+02:00';
+//        return $localtime;
+//        $url = 'https://api.darksky.net/forecast/a75faa7064f87561cf9b73aa921310cb/14.2484765,40.8382879,2018-05-24T12:00:00+02:00?exclude=minutely,hourly,daily,alerts,flags?units=si';
+        $url = 'https://api.darksky.net/forecast/'.$apiKey.'/'.$lat.','.$long.','.$localtime.$exclude.$unit;
+
+        $curlSession = curl_init();
+        curl_setopt($curlSession, CURLOPT_URL, $url);
+        curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+
+        $jsonData = (curl_exec($curlSession));
+        curl_close($curlSession);
+//        print_r($url);
+        return $jsonData;
+    }
 }

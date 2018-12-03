@@ -179,6 +179,11 @@
         }
 
         public function actionLogin(){
+//            $user = User::model()->findByPk(48);
+//            $user->username = 'hello world';
+//            $user->password = 'password';
+//            $user->update();
+
             $model = new LoginForm();
 	        $model->roles = [
 		        User::ROLE_USER,

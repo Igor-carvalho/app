@@ -10,9 +10,9 @@ import {GlobalService} from './../model/global.service';
 import {UserService} from './../model/user.service';
 import {Setting} from './../model/setting';
 import {AuthHttp} from 'angular2-jwt';
-import {Activities} from "../model/Activities";
-import {HttpUtils} from "../utilities/http-utils";
-import {Itinerary} from "../model/itinerary/Itinerary";
+import {Activities} from '../model/Activities';
+import {HttpUtils} from '../utilities/http-utils';
+import {Itinerary} from '../model/itinerary/Itinerary';
 
 @Injectable()
 export class ActivitiesDataService {
@@ -31,15 +31,19 @@ export class ActivitiesDataService {
     }
 
     // GET /v1/setting
-    filterActivites(numberOfPeople, budgetType, macros, dateStart, dateEnd): Observable<Activities[]> {
-        let headers = this.getHeaders();
+    filterActivites(numberOfPeople, budgetType, macros, dateStart, dateEnd, lat, lng, citylat, citylng): Observable<Activities[]> {
+        const headers = this.getHeaders();
 
-        var parameters = {
+        const parameters = {
             people: numberOfPeople,
             budget: budgetType,
             macros: macros,
             date_start: dateStart,
-            date_end: dateEnd
+            date_end: dateEnd,
+            lat: lat,
+            lng: lng,
+            citylat: citylat,
+            citylng: citylng,
         };
 
 
@@ -56,17 +60,21 @@ export class ActivitiesDataService {
             .catch(this.handleError);
     }
 
-    filterSingleDay(numberOfPeople, budgetType, macros, dateStart, dateEnd, time_from, time_to): Observable<Itinerary> {
-        let headers = this.getHeaders();
+    filterSingleDay(numberOfPeople, budgetType, macros, dateStart, dateEnd, time_from, time_to, lat, lng, citylat, citylng): Observable<Itinerary> {
+        const headers = this.getHeaders();
 
-        var parameters = {
+        const parameters = {
             people: numberOfPeople,
             budget: budgetType,
             macros: macros,
             date_start: dateStart,
             date_end: dateEnd,
             time_from: time_from,
-            time_to: time_to
+            time_to: time_to,
+            lat: lat,
+            lng: lng,
+            citylat: citylat,
+            citylng: citylng
         };
 
 
@@ -84,9 +92,9 @@ export class ActivitiesDataService {
     }
 
     replaceFilter(itinerary_id: number, activity_id: number, current_activities: string) {
-        let headers = this.getHeaders();
+        const headers = this.getHeaders();
 
-        var parameters = {
+        const parameters = {
             activity_id: activity_id,
             current_activities: current_activities
         };
@@ -114,7 +122,7 @@ export class ActivitiesDataService {
             errorMessage = {
                 success: false,
                 status: 0,
-                data: "Sorry, there was a connection error occurred. Please try again.",
+                data: 'Sorry, there was a connection error occurred. Please try again.',
             };
         }
         else {
@@ -122,4 +130,32 @@ export class ActivitiesDataService {
         }
         return Observable.throw(errorMessage);
     }
+
+
+    replaceActivity(itinerary, activity_id: number, current_activities: string, time_from, time_to) {
+        const headers = this.getHeaders();
+
+        const parameters = {
+            itinerary: itinerary,
+            activity_id: activity_id,
+            time_from: time_from,
+            time_to: time_to,
+            current_activities: current_activities
+        };
+
+
+        return this._authHttp.post(
+            this._globalService.apiHost + '/activities/replace-activity', parameters,
+            {
+                headers: headers
+            }
+        )
+            .map(response => response.json())
+            .map((response) => {
+                return <Activities[]>response.data;
+            })
+            .catch(this.handleError);
+    }
+
+
 }

@@ -39,6 +39,25 @@
          */
         public function authenticate($user, $request, $response)
         {
+            $exceptions = [
+                'v1/setting/public',
+                'v1/static-data/macro-categories',
+                'v1/activities/filter',
+                'v1/itinerary/listing',
+//                'v1/itinerary/cooking-single-day',
+                'v1/activities/filter-single-day',
+                'v1/activities/replace-activity'
+//                'v1/itinerary/cooking'
+                ];
+//            print_r($request->getPathInfo());exit;
+            if (in_array($request->getPathInfo(), $exceptions)) {
+                return true;
+            }
+
+            if (substr_count($request->getPathInfo(),"v1/itinerary/test") > 0)
+                return true;
+//            print_r($request);exit;
+
             $authHeader = $request->getHeaders()->get('Authorization');
 
             // Added following lines to support fastcgi issue.
